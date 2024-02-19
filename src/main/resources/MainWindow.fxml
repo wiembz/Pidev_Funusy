@@ -63,7 +63,7 @@
                     </ImageView>
                   </graphic>
                 </Button>
-                <Button fx:id="accountsbtn" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="78.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="215.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" text="      Accounts" textFill="#8b8585" onAction="#handleAccountsButtonClick" onMouseClicked="#handleAccountsButtonClick">
+                <Button fx:id="accountsbtn" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="78.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="215.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" text="      Accounts" textFill="#8b8585">
                   <font>
                     <Font name="Arial" size="14.0" />
                   </font>
@@ -75,7 +75,7 @@
                     </ImageView>
                   </graphic>
                 </Button>
-                <Button fx:id="transactionsbtn" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="142.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="215.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" text="      Transactions" textFill="#8b8585" onAction="#handleTransactionsButtonClick" onMouseClicked="#handleTransactionsButtonClick">
+                <Button fx:id="transactionsbtn" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="142.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="215.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" text="      Transactions" textFill="#8b8585">
                   <font>
                     <Font size="14.0" />
                   </font>
@@ -87,7 +87,7 @@
                     </ImageView>
                   </graphic>
                 </Button>
-                <Button fx:id="creditsbtn" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="208.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="215.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" text="      Credits" textFill="#8b8585" onAction="#handleCreditsButtonClick" onMouseClicked="#handleCreditsButtonClick">
+                <Button fx:id="creditsbtn" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="208.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="215.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" text="      Credits" textFill="#8b8585">
                   <font>
                     <Font size="14.0" />
                   </font>
@@ -111,7 +111,7 @@
                     </ImageView>
                   </graphic>
                 </Button>
-                <Button fx:id="commentsbtn" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="335.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="215.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" text="      Comments" textFill="#8b8585" onAction="#handleCommentairesButtonClick" onMouseClicked="#handleCommentairesButtonClick">
+                <Button fx:id="commentsbtn" alignment="BASELINE_LEFT" layoutX="17.0" layoutY="335.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="215.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" text="      Comments" textFill="#8b8585">
                   <font>
                     <Font name="Arial" size="14.0" />
                   </font>
@@ -136,13 +136,10 @@
               </children>
             </AnchorPane>
           </left>
-          
+
           <center>
-            <AnchorPane onMouseClicked="#handleAccountsButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@Stylesheet/Style.css" BorderPane.alignment="CENTER" />
-            <AnchorPane onMouseClicked="#handleTransactionsButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@Stylesheet/Style.css" BorderPane.alignment="CENTER" />
-            <AnchorPane onMouseClicked="#handleCreditsButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@Stylesheet/Style.css" BorderPane.alignment="CENTER" />
             <AnchorPane onMouseClicked="#handleInvestmentsButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@Stylesheet/Style.css" BorderPane.alignment="CENTER" />
-            <AnchorPane onMouseClicked="#handleCommentairesButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@Stylesheet/Style.css" BorderPane.alignment="CENTER" />
+            <AnchorPane onMouseClicked="#handleProfilesButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@Stylesheet/Style.css" BorderPane.alignment="CENTER" />
           </center>
         </BorderPane>
       </children>
