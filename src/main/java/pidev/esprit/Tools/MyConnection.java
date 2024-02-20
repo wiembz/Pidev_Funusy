@@ -14,7 +14,7 @@ public class MyConnection {
     private MyConnection() {
         try {
             cnx = DriverManager.getConnection(url,login,pwd);
-            System.out.println("connexion etablie!");
+            System.out.println("Sahitek :D connexion etablie !! ");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
