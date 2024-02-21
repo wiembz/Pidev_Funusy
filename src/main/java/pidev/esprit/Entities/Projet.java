@@ -1,13 +1,13 @@
 package pidev.esprit.Entities;
 
 public class Projet {
-    int id_projet;
-    int id_user;
-    String nom_projet;
-    float montant_req;
-    String id_type_projet;
-    String longitude;
-    String latitude;
+    private  int id_projet;
+    private  int id_user;
+    private  String nom_projet;
+    private  float montant_req;
+    private  String id_type_projet;
+    private String longitude;
+    private String latitude;
 
     public Projet() {
     }

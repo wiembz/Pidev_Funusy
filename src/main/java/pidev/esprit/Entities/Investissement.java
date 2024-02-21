@@ -1,38 +1,45 @@
 package pidev.esprit.Entities;
 
 
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
+import javafx.util.Callback;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Investissement {
-    int id;
-    int id_user;
-    float montant;
-    Date date_inv;
-    int periode;
+    private  int id_investissement;
+    private  int id_user;
+    private  float montant;
+    private  Date date_investissement;
+    private  int periode;
     public Investissement() {
     }
 
-    public Investissement(int id, int id_user, float montant, Date date_inv, int periode) {
-        this.id = id;
+    public Investissement(int id_investissement, int id_user, float montant, Date date_investissement, int periode) {
+        this.id_investissement = id_investissement;
         this.id_user = id_user;
         this.montant = montant;
-        this.date_inv = date_inv;
+        this.date_investissement = date_investissement;
         this.periode = periode;
     }
 
-    public Investissement(int id_user, float montant, Date date_inv, int periode) {
+    public Investissement(int id_user, float montant, Date date_investissement, int periode) {
         this.id_user = id_user;
         this.montant = montant;
-        this.date_inv = date_inv;
+        this.date_investissement = date_investissement;
         this.periode = periode;
     }
 
-    public int getId() {
-        return id;
+
+
+    public int getId_investissement() {
+        return id_investissement;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId_investissement(int id_investissement) {
+        this.id_investissement = id_investissement;
     }
 
     public int getId_user() {
@@ -51,12 +58,12 @@ public class Investissement {
         this.montant = montant;
     }
 
-    public Date getDate_inv() {
-        return date_inv;
+    public Date getDate_investissement() {
+        return date_investissement;
     }
 
-    public void setDate_inv(Date date_inv) {
-        this.date_inv = date_inv;
+    public void setDate_investissement(Date date_investissement) {
+        this.date_investissement = date_investissement;
     }
 
     public int getPeriode() {
@@ -70,10 +77,10 @@ public class Investissement {
     @Override
     public String toString() {
         return "Investissement{" +
-                "id=" + id +
+                "id=" + id_investissement +
                 ", id_user=" + id_user +
                 ", montant=" + montant +
-                ", date_inv=" + date_inv +
+                ", date_investissement=" + date_investissement +
                 ", periode=" + periode +
                 '}';
     }

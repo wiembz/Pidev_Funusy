@@ -110,3 +110,17 @@
     -fx-background-color:#E6E5E5;
     -fx-background-radius:8px;
 }
+/* Set the text color to dark */
+.table-view .table-cell {
+    -fx-text-fill: #000000; /* Black color */
+}
+
+/* Set alternating row colors */
+.table-row-cell:odd {
+    -fx-background-color: #f0f0f0; /* Light gray */
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #4d90fe; /* Blue color for selected rows */
+    -fx-text-fill: white; /* White text color for selected rows */
+}

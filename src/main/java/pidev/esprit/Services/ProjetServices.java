@@ -34,6 +34,12 @@ public class ProjetServices implements ICrud<Projet> {
 
     }
 
+
+    @Override
+    public boolean EntiteExists(Projet p) {
+        return false;
+    }
+
     @Override
     public List<Projet> afficherEntite() {
         List<Projet> projets = new ArrayList<>();

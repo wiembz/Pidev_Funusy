@@ -7,41 +7,61 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvestissementServices implements ICrud<Investissement>{
+public class InvestissementServices implements ICrud<Investissement> {
     Connection cnx2;
-    public InvestissementServices(){
+
+    public InvestissementServices() {
         cnx2 = MyConnection.getInstance().getCnx();
     }
+
     @Override
     public void ajouterEntite(Investissement i) {
-        String requet = "INSERT INTO investissement (idClient,montant,date_inv,periode,typeProjet) ";
+        String requet = "INSERT INTO investissement (id_user, montant, date_inv, periode) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement pst = cnx2.prepareStatement(requet);
-            pst.setInt(1,i.getId_user());
-            pst.setFloat(2,i.getMontant());
-            pst.setString(3, String.valueOf(i.getDate_inv()));
-            pst.setFloat(4,i.getPeriode());
+            pst.setInt(1, i.getId_user());
+            pst.setFloat(2, i.getMontant());
+            pst.setDate(3, new java.sql.Date(i.getDate_investissement().getTime()));
+            pst.setInt(4, i.getPeriode());
             pst.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
     }
+    public boolean EntiteExists(Investissement i) {
+        String query = "SELECT COUNT(*) FROM investissement WHERE id_user = ? AND montant = ? AND date_inv = ? AND periode = ?";
+        try {
+            PreparedStatement pst = cnx2.prepareStatement(query);
+            pst.setInt(1, i.getId_user());
+            pst.setFloat(2, i.getMontant());
+            pst.setDate(3, new java.sql.Date(i.getDate_investissement().getTime()));
+            pst.setInt(4, i.getPeriode());
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
+
 
     @Override
     public List<Investissement> afficherEntite() {
         List<Investissement> investissements = new ArrayList<>();
-        String req3="SELECT * FROM investissement";
+        String req3 = "SELECT * FROM investissement";
         try {
             Statement stm = cnx2.createStatement();
-            ResultSet rs= stm.executeQuery(req3);
-            while (rs.next())
-            {
+            ResultSet rs = stm.executeQuery(req3);
+            while (rs.next()) {
                 Investissement inv = new Investissement();
-                inv.setId(rs.getInt(1));
-                inv.setId_user(rs.getInt(2));
-                inv.setMontant(rs.getFloat(3));
-                inv.setDate_inv(rs.getDate(4));
-                inv.setPeriode(rs.getInt(5));
+                inv.setId_investissement(rs.getInt("id_investissement"));
+                inv.setId_user(rs.getInt("id_user"));
+                inv.setMontant(rs.getFloat("montant"));
+                inv.setDate_investissement(rs.getDate("date_inv"));
+                inv.setPeriode(rs.getInt("periode"));
                 investissements.add(inv);
             }
         } catch (SQLException e) {
@@ -52,14 +72,14 @@ public class InvestissementServices implements ICrud<Investissement>{
 
     @Override
     public void updateEntite(Investissement i) {
-        String req = "UPDATE investissement SET idClient = ?, montant = ?, date_inv = ?, periode = ? WHERE id = ?";
+        String req = "UPDATE investissement SET id_user = ?, montant = ?, date_inv = ?, periode = ? WHERE id = ?";
         try {
             PreparedStatement pst = cnx2.prepareStatement(req);
-            pst.setInt(1,i.getId_user());
-            pst.setFloat(2,i.getMontant());
-            pst.setDate(3, (Date) i.getDate_inv());
-            pst.setFloat(4,i.getPeriode());
-            pst.setInt(5,i.getId());
+            pst.setInt(1, i.getId_user());
+            pst.setFloat(2, i.getMontant());
+            pst.setDate(3, new java.sql.Date(i.getDate_investissement().getTime())); // Convert Date to SQL Date
+            pst.setInt(4, i.getPeriode()); // Changed to setInt
+            pst.setInt(5, i.getId_investissement());
             pst.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -68,10 +88,10 @@ public class InvestissementServices implements ICrud<Investissement>{
 
     @Override
     public void deleteEntite(int id) {
-        String req = "DELETE FROM investissement WHERE id_investissement = ?";
+        String req = "DELETE FROM investissement WHERE id = ?";
         try {
             PreparedStatement pst = cnx2.prepareStatement(req);
-            pst.setInt(1,id);
+            pst.setInt(1, id);
             pst.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
