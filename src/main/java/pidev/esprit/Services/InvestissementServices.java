@@ -72,23 +72,24 @@ public class InvestissementServices implements ICrud<Investissement> {
 
     @Override
     public void updateEntite(Investissement i) {
-        String req = "UPDATE investissement SET id_user = ?, montant = ?, date_inv = ?, periode = ? WHERE id = ?";
+        String req = "UPDATE investissement SET id_user = ?, montant = ?, date_inv = ?, periode = ? WHERE id_investissement = ?";
         try {
             PreparedStatement pst = cnx2.prepareStatement(req);
             pst.setInt(1, i.getId_user());
             pst.setFloat(2, i.getMontant());
-            pst.setDate(3, new java.sql.Date(i.getDate_investissement().getTime())); // Convert Date to SQL Date
-            pst.setInt(4, i.getPeriode()); // Changed to setInt
+            pst.setDate(3, new java.sql.Date(i.getDate_investissement().getTime()));
+            pst.setInt(4, i.getPeriode());
             pst.setInt(5, i.getId_investissement());
             pst.executeUpdate();
+            System.out.println("Update successful");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error updating entity: " + e.getMessage());
         }
     }
 
     @Override
     public void deleteEntite(int id) {
-        String req = "DELETE FROM investissement WHERE id = ?";
+        String req = "DELETE FROM investissement WHERE id_investissement = ?";
         try {
             PreparedStatement pst = cnx2.prepareStatement(req);
             pst.setInt(1, id);
