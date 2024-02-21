@@ -2,52 +2,67 @@ package pidev.esprit.Controllers.Account;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 
 public class GestionAccountController {
-
+    @FXML
+    private BorderPane mainBorderPane;
+    @FXML
+    private AnchorPane contentPlaceholder;
 
         @FXML
         private Pane accountsPane;
 
         @FXML
-        private void handleAccountsButtonClick(ActionEvent event) {
-            loadFxmlFile( "/AddAccounts.fxml");
+        private void loadAccount(ActionEvent event) {
+            loadFXML( "/AddAccounts.fxml");
         }
 
-        @FXML
-        private void handleCardButtonClick(ActionEvent event) {
-            loadFxmlFile( "/AddCard.fxml");
-        }
 
-    private void loadFxmlFile(String fxmlPath) {
-            try {
-                // Try to find the FXML file using its path
-                URL resourceUrl = getClass().getResource(fxmlPath);
-
-                // If the file is not found, throw an exception
-                if (resourceUrl == null) {
-                    throw new IllegalArgumentException("Sorryy 404 not found :( ! " + fxmlPath);
-                }
-
-                // Create an FXMLLoader object to load the FXML file
-                FXMLLoader loader = new FXMLLoader(resourceUrl);
-
-                // Load the FXML file and add the loaded content to the investmentsPane
-                Pane content = loader.load();
-                accountsPane.getChildren().add(content);
-
-                // Catch any exceptions that occur during loading
-            }catch (IOException e) {
+    private void loadFXML(String fxmlFile) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/" + fxmlFile));
+            AnchorPane content = loader.load();
+            AnchorPane.setTopAnchor(content, 0.0);
+            AnchorPane.setBottomAnchor(content, 0.0);
+            AnchorPane.setLeftAnchor(content, 0.0);
+            AnchorPane.setRightAnchor(content, 0.0);
+            contentPlaceholder.getChildren().setAll(content);
+        } catch (IOException e) {
             e.printStackTrace();
-            // Handle the error here, for example by displaying a message to the user
         }
     }
 
+    public void handleAccountsButtonClick(javafx.event.ActionEvent actionEvent) {
+
+        try {
+            Parent GestionAccount = FXMLLoader.load(getClass().getResource("/GestionAccount.fxml"));
+            mainBorderPane.setCenter(GestionAccount);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void loadAccount(javafx.event.ActionEvent actionEvent) {
+
+        try {
+            Parent AddAccounts = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/AddAccounts.fxml")));
+            mainBorderPane.setCenter(AddAccounts);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
+
 
 

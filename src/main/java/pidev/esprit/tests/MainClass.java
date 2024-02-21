@@ -20,7 +20,7 @@ public class MainClass {
        /* TypeCompte tp = TypeCompte.1;
 
         Compte c = new Compte("FR1234567890123456789", 1000.0,tp);*/
-        TypeCompte tp = TypeCompte.EPARGNE;
+
 
         // Create a Compte object
        /* Compte c = new Compte("1010678", 500.258, tp);
@@ -28,12 +28,15 @@ public class MainClass {
 
         pcd.addCompte(c);*/
         CompteCrud pcd=new CompteCrud();
+       /* System.out.println(pcd.displayCompte());
+
+        pcd.deleteCompte("12345678910121314150");*/
+
+      // Compte updatedCompte = new Compte("123678", 870,"Epargne");
+      // pcd.updateCompte(updatedCompte); // Provide the updated Compte object
+        Compte c = new Compte("99999", 00000, "Epargne");
+        pcd.addCompte(c);
         System.out.println(pcd.displayCompte());
-
-        pcd.deleteCompte("12345678910121314150");
-
-        Compte updatedCompte = new Compte("123678", 150, TypeCompte.EPARGNE);
-        pcd.updateCompte(updatedCompte); // Provide the updated Compte object
 
     }
 }

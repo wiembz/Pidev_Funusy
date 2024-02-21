@@ -10,13 +10,14 @@ public class Compte {
     private String rib;
     private double solde;
     private LocalDate  date_ouverture;
-    private TypeCompte TP;
-    public TypeCompte getTP() {
-        return TP;
+    private String type_compte;
+
+    public String getType_compte() {
+        return type_compte;
     }
 
-    public void setTP(TypeCompte TP) {
-        this.TP = TP;
+    public void setType_compte(String type_compte) {
+        this.type_compte = type_compte;
     }
 
     public String getRib() {
@@ -44,14 +45,14 @@ public class Compte {
 
     }
 
-   public Compte(String rib, double solde, TypeCompte TP) {
+    public Compte(String rib, double solde, String type_compte) {
         this.rib = rib;
         this.solde = solde;
-       this.date_ouverture = LocalDate.now();
-        this.TP = TP;
+        this.type_compte = type_compte;
+        this.date_ouverture = LocalDate.now();
     }
 
-    /*public Compte(String rib, double solde, Date date_ouverture) {
+  /*public Compte(String rib, double solde, Date date_ouverture) {
         this.rib = rib;
         this.solde = solde;
         this.date_ouverture = date_ouverture;
@@ -66,8 +67,8 @@ public class Compte {
                 "rib='" + rib + '\'' +
                 ", solde=" + solde +
                 ", date_ouverture=" + date_ouverture +
-                ","+ TypeCompte.EPARGNE +
-        '}';
+                ", type_compte='" + type_compte + '\'' +
+                '}';
     }
 }
 

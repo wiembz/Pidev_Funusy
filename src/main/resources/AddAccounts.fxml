@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Account.AddAccountController">
+   <children>
+      <TextField fx:id="tf_rib" layoutX="194.0" layoutY="74.0" />
+      <TextField fx:id="tf_solde" layoutX="195.0" layoutY="151.0" />
+      <Label layoutX="96.0" layoutY="77.0" prefHeight="18.0" prefWidth="42.0" text="RIB" />
+      <Label layoutX="102.0" layoutY="155.0" text="Solde" />
+      <Button layoutX="31.0" layoutY="309.0" mnemonicParsing="false" onAction="#add_account" onMouseClicked="#add_account" prefHeight="45.0" prefWidth="150.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="ADD" />
+      <Label layoutX="83.0" layoutY="221.0" text="Type compte" />
+      <RadioButton fx:id="epargne" layoutX="182.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Epargne" />
+      <RadioButton fx:id="courant" layoutX="301.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Courant" />
+      <RadioButton fx:id="bloque" layoutX="432.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Bloque" />
+      <Button fx:id="update_account" layoutX="225.0" layoutY="309.0" mnemonicParsing="false" onAction="#update_account" onMouseClicked="#update_account" prefHeight="46.0" prefWidth="167.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="UPDATE" />
+      <Button layoutX="405.0" layoutY="309.0" mnemonicParsing="false" onAction="#handleAccountsButtonClick" onMouseClicked="#handleAccountsButtonClick" prefHeight="48.0" prefWidth="150.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="DELETE" />
+   </children>
+</AnchorPane>
