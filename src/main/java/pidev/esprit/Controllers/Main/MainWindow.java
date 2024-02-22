@@ -19,7 +19,7 @@ public class MainWindow extends Application {
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/MainWindow.fxml"));
-            primaryStage.setTitle("Inscription");
+    primaryStage.setTitle("Inscription");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
         } catch (IOException e) {
