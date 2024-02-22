@@ -1,8 +1,8 @@
 package pidev.esprit.tests;
-import pidev.esprit.entities.Compte;
-import pidev.esprit.entities.TypeCompte;
+import pidev.esprit.entities.CarteBancaire;
 
-import pidev.esprit.services.CompteCrud;
+
+import pidev.esprit.services.CardCrud;
 import pidev.esprit.Tools.MyConnection;
 
 import java.text.ParseException;
@@ -27,16 +27,20 @@ public class MainClass {
 
 
         pcd.addCompte(c);*/
-        CompteCrud pcd=new CompteCrud();
+        //CompteCrud pcd=new CompteCrud();
        /* System.out.println(pcd.displayCompte());
 
         pcd.deleteCompte("12345678910121314150");*/
 
       // Compte updatedCompte = new Compte("123678", 870,"Epargne");
       // pcd.updateCompte(updatedCompte); // Provide the updated Compte object
-        Compte c = new Compte("99999", 00000, "Epargne");
-        pcd.addCompte(c);
-        System.out.println(pcd.displayCompte());
+        java.sql.Date sqlDate = java.sql.Date.valueOf(LocalDate.of(2025, 2, 24));
+
+        CarteBancaire c =new CarteBancaire("123086789",1234,0000,sqlDate,"9784");
+        CardCrud pc=new CardCrud();
+        pc.addCard(c,c.getRib());
+        System.out.println(pc.displayCard());
+
 
     }
 }

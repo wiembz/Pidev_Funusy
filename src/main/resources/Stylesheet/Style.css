@@ -111,13 +111,13 @@
     -fx-background-radius:8px;
 }
 .backgroundAccount{
-    -fx-background-color:#7E8BBA;
+    -fx-background-color:#5C7080;
     -fx-background-radius: 5px; /*round shape*/
 
 }
 
 .buttonAccount {
-  -fx-background-color: linear-gradient(#f5f5f5, #4C66A7); /* Fond dégradé orange/gris clair */
+  -fx-background-color: linear-gradient(#f5f5f5, #5C7080); /* Fond dégradé orange/gris clair */
   -fx-text-fill: #000000; /* Couleur du texte noire */
   -fx-font-size: 18px; /* Taille de police */
   -fx-font-weight: bold; /* Poids de la police */
@@ -138,7 +138,7 @@
   }
 
   &:active {
-    -fx-background-color: #e6e6e6; /* Couleur de fond légèrement grisée enfoncée */
+    -fx-background-color: #5C7080; /* Couleur de fond légèrement grisée enfoncée */
   }
 
 

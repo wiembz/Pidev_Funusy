@@ -2,22 +2,58 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Account.AddAccountController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleEditCommit" prefHeight="571.0" prefWidth="856.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Account.AddAccountController">
    <children>
-      <TextField fx:id="tf_rib" layoutX="194.0" layoutY="74.0" />
-      <TextField fx:id="tf_solde" layoutX="195.0" layoutY="151.0" />
-      <Label layoutX="96.0" layoutY="77.0" prefHeight="18.0" prefWidth="42.0" text="RIB" />
-      <Label layoutX="102.0" layoutY="155.0" text="Solde" />
-      <Button layoutX="31.0" layoutY="309.0" mnemonicParsing="false" onAction="#add_account" onMouseClicked="#add_account" prefHeight="45.0" prefWidth="150.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="ADD" />
-      <Label layoutX="83.0" layoutY="221.0" text="Type compte" />
-      <RadioButton fx:id="epargne" layoutX="182.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Epargne" />
-      <RadioButton fx:id="courant" layoutX="301.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Courant" />
-      <RadioButton fx:id="bloque" layoutX="432.0" layoutY="221.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Bloque" />
-      <Button fx:id="update_account" layoutX="225.0" layoutY="309.0" mnemonicParsing="false" onAction="#update_account" onMouseClicked="#update_account" prefHeight="46.0" prefWidth="167.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="UPDATE" />
-      <Button layoutX="405.0" layoutY="309.0" mnemonicParsing="false" onAction="#handleAccountsButtonClick" onMouseClicked="#handleAccountsButtonClick" prefHeight="48.0" prefWidth="150.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="DELETE" />
+      <TextField fx:id="tf_rib" layoutX="126.0" layoutY="341.0" />
+      <TextField fx:id="tf_solde" layoutX="484.0" layoutY="341.0" />
+      <Label layoutX="73.0" layoutY="344.0" prefHeight="18.0" prefWidth="42.0" text="RIB">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Label>
+      <Label layoutX="409.0" layoutY="342.0" text="Balance">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
+      <Button layoutX="42.0" layoutY="479.0" mnemonicParsing="false" onAction="#add_account" onMouseClicked="#add_account" prefHeight="37.0" prefWidth="110.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="ADD" />
+      <Label layoutX="116.0" layoutY="413.0" text="Account Type">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
+      <RadioButton fx:id="epargne" layoutX="243.0" layoutY="413.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Epargne">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></RadioButton>
+      <RadioButton fx:id="courant" layoutX="354.0" layoutY="413.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Courant">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></RadioButton>
+      <RadioButton fx:id="bloque" layoutX="463.0" layoutY="413.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Bloque">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></RadioButton>
+      <Button fx:id="update_account" layoutX="530.0" layoutY="479.0" mnemonicParsing="false" onAction="#update_account" onMouseClicked="#update_account" prefHeight="34.0" prefWidth="123.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="UPDATE" />
+      <ImageView fitHeight="48.0" fitWidth="117.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Assets/1.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="282.0" layoutY="477.0" mnemonicParsing="false" onAction="#Delete_account" onMouseClicked="#Delete_account" prefHeight="46.0" prefWidth="109.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="DELETE" />
+
+       <ListView fx:id="accountListView"  editable="true" layoutX="72.0" layoutY="111.0" onKeyPressed="#handleDelete" prefHeight="184.0" prefWidth="557.0">
+         
+       </ListView>
+      <Label layoutX="219.0" layoutY="27.0" text="List Account " textFill="#e1a729">
+         <font>
+            <Font name="System Bold Italic" size="44.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

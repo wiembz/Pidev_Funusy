@@ -1,6 +1,6 @@
 package pidev.esprit.services;
 import pidev.esprit.entities.Compte;
-import pidev.esprit.entities.TypeCompte;
+
 import pidev.esprit.Tools.MyConnection;
 
 import java.sql.*;
@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class CompteCrud implements CRUD<Compte> {
-    Connection cnx2;
+    public static Connection cnx2;
 
     public CompteCrud() {
         cnx2 = MyConnection.getInstance().getCnx();
@@ -21,7 +21,7 @@ public class CompteCrud implements CRUD<Compte> {
         add_account(compte, "default_account_type");
     }
 
-    public void add_account(Compte c, String selectedType) {
+    public static void add_account(Compte c, String selectedType) {
         String sql = "INSERT INTO compte (rib, solde, date_ouverture, type_compte) VALUES (?, ?, ?, ?)";
 
         try {
@@ -53,6 +53,7 @@ public class CompteCrud implements CRUD<Compte> {
                 c.setSolde(rs.getDouble("Solde"));
                 c.setDate_ouverture(rs.getDate("date_ouverture").toLocalDate());
                 c.setType_compte(rs.getString("type_compte"));
+
                 comptes.add(c);
             }
         } catch (SQLException e) {
@@ -85,8 +86,8 @@ public class CompteCrud implements CRUD<Compte> {
     }
 
 
-    @Override
-    public void deleteCompte(String rib) {
+
+    public static void deleteCompte(String rib) {
         String sql = "DELETE FROM compte WHERE rib = ?";
 
         try {
@@ -100,7 +101,7 @@ public class CompteCrud implements CRUD<Compte> {
     }
 
 
-    public boolean accountExists(String rib) {
+    public  boolean accountExists(String rib) {
         String sql = "SELECT COUNT(*) FROM compte WHERE rib = ?";
         try (PreparedStatement pstmt = cnx2.prepareStatement(sql)) {
             pstmt.setString(1, rib);
@@ -113,6 +114,13 @@ public class CompteCrud implements CRUD<Compte> {
             System.err.println("Error checking if account exists: " + e.getMessage());
         }
         return false; // Return false in case of exceptions or if the query fails
+    }
+
+    private static final CompteCrud instance = new CompteCrud();
+
+    // Method to access the single instance
+    public static CompteCrud getInstance() {
+        return instance;
     }
 
 }

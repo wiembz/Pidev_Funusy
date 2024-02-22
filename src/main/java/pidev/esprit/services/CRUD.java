@@ -7,6 +7,9 @@ public interface CRUD <T> {
     public void addCompte(T c);
     public List<T> displayCompte();
     public void updateCompte(Compte c);
-    public void deleteCompte(String rib);
+
+    public static void deleteCompte(String rib) {
+
+    }
 }
 

@@ -61,6 +61,16 @@ public class GestionAccountController {
             e.printStackTrace();
         }
     }
+
+    public void loadAccount2(javafx.event.ActionEvent actionEvent) {
+
+        try {
+            Parent AddCards = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/AddCards.fxml")));
+            mainBorderPane.setCenter(AddCards);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
 

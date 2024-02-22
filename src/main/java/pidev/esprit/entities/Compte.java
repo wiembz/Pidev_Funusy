@@ -63,12 +63,8 @@ public class Compte {
 
     @Override
     public String toString() {
-        return "Compte{" +
-                "rib='" + rib + '\'' +
-                ", solde=" + solde +
-                ", date_ouverture=" + date_ouverture +
-                ", type_compte='" + type_compte + '\'' +
-                '}';
+        return "RIB: " + rib + " Solde: " + solde + " Type compte= " + type_compte + "\n";
     }
+
 }
 
