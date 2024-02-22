@@ -110,3 +110,7 @@
     -fx-background-color:#E6E5E5;
     -fx-background-radius:8px;
 }
+.split-pane
+{
+    -fx-padding: 0;
+}
