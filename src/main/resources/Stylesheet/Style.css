@@ -124,3 +124,33 @@
     -fx-background-color: #4d90fe; /* Blue color for selected rows */
     -fx-text-fill: white; /* White text color for selected rows */
 }
+.backgroundAccount{
+    -fx-background-color:#5C7080;
+    -fx-background-radius: 5px; /*round shape*/
+
+}
+
+.buttonAccount {
+    -fx-background-color: linear-gradient(#f5f5f5, #5C7080); /* Fond dégradé orange/gris clair */
+    -fx-text-fill: #000000; /* Couleur du texte noire */
+    -fx-font-size: 18px; /* Taille de police */
+    -fx-font-weight: bold; /* Poids de la police */
+    -fx-padding: 10px 20px; /* Rembourrage */
+    -fx-border-radius: 5px; /* Bordure arrondie */
+
+    -fx-border-width: 1px; /* Largeur de la bordure */
+    -fx-transition: all 0.2s ease-in-out;}
+
+.buttonAccount:hover {
+    -fx-background-color: #D5A12B; /* Couleur de fond orange au survol */
+    -fx-text-fill: #ffffff; /* Couleur du texte blanche au survol */
+    -fx-transform: scale(1.1); /* Zoom au survol */
+}
+
+.buttonAccount:focus {
+    -fx-outline: 2px solid #000000; /* Contour noir au focus */
+}
+
+&:active {
+    -fx-background-color: #5C7080; /* Couleur de fond légèrement grisée enfoncée */
+}

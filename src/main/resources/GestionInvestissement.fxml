@@ -8,11 +8,11 @@
    <children>
       <BorderPane fx:id="mainBorderPane" prefHeight="494.0" prefWidth="594.0" styleClass="My-background" stylesheets="@Stylesheet/Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="5.600000000000023" AnchorPane.topAnchor="0.0">
          <left>
-            <AnchorPane prefHeight="400.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="480.0" prefWidth="216.0" styleClass="background" stylesheets="@Stylesheet/Style.css" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="Projectsbtn" alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="350.0" mnemonicParsing="false" onAction="#handleProjectsButtonClick" prefHeight="143.0" prefWidth="230.0" styleClass="my-button" text="Projects" textFill="#8b8585" />
-                  <Button fx:id="Investmentsbtn" alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleInvestmentsButtonClick" prefHeight="143.0" prefWidth="230.0" styleClass="my-button" text="Benefits" textFill="#8b8585" />
-                  <Button fx:id="Benefitsbtn" alignment="CENTER" contentDisplay="CENTER" layoutX="2.0" layoutY="179.0" mnemonicParsing="false" onAction="#handleBenefitsButtonClick" prefHeight="143.0" prefWidth="230.0" styleClass="my-button" text="Investments" textFill="#8b8585" />
+                  <Button fx:id="Projectsbtn" alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="317.0" mnemonicParsing="false" onAction="#handleProjectsButtonClick" prefHeight="86.0" prefWidth="192.0" styleClass="my-button" text="Projects" textFill="#8b8585" />
+                  <Button fx:id="Investmentsbtn" alignment="CENTER" contentDisplay="CENTER" layoutX="11.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleInvestmentsButtonClick" prefHeight="86.0" prefWidth="192.0" styleClass="my-button" text="Investments" textFill="#8b8585" />
+                  <Button fx:id="Benefitsbtn" alignment="CENTER" contentDisplay="CENTER" layoutX="12.0" layoutY="159.0" mnemonicParsing="false" onAction="#handleBenefitsButtonClick" prefHeight="86.0" prefWidth="192.0" styleClass="my-button" text="Benefits" textFill="#8b8585" />
                </children>
             </AnchorPane>
          </left>

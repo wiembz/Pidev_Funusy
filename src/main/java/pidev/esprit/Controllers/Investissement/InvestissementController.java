@@ -52,6 +52,7 @@
             setupCellFactories();
             populateInvestissementTable();
         }
+
         private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
@@ -59,6 +60,7 @@
             // Set cell factories for each editable column
             montant.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
             periode.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+
             date_investissement.setCellFactory(TextFieldTableCell.forTableColumn(new StringConverter<Date>() {
                 @Override
                 public String toString(Date date) {
@@ -67,7 +69,6 @@
                     }
                     return null;
                 }
-
                 @Override
                 public Date fromString(String string) {
                     if (string != null && !string.trim().isEmpty()) {
@@ -100,6 +101,7 @@
                     // Update the entity in the database
                     switch (columnName) {
                         case "Id_user":
+
                             selectedInvestissement.setId_user((Integer) event.getNewValue());
                             break;
                         case "Montant":
@@ -158,6 +160,8 @@
             } catch (NumberFormatException e) {
                 showErrorDialog("Invalid input", "Please enter valid numeric values");
                 return;
+
+
             }
 
             // Check if montant is not negative
@@ -188,12 +192,12 @@
             investissement.setPeriode(periode);
             investissement.setDate_investissement(date_inv);
 
+
             // Check if the investment already exists
             if (investissementServices.EntiteExists(investissement)) {
                 showErrorDialog("Investment exists", "An investment with the same attributes already exists.");
                 return;
             }
-
 
                 investissementServices.ajouterEntite(investissement);
                 // Clear fields after successful addition
