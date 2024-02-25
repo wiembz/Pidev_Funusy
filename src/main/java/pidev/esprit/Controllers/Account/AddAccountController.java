@@ -1,4 +1,6 @@
 package pidev.esprit.Controllers.Account;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,12 +15,17 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.util.StringConverter;
 import pidev.esprit.entities.Compte;
+import pidev.esprit.entities.User;
 import pidev.esprit.services.CompteCrud;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import static pidev.esprit.services.CompteCrud.deleteCompte;
+import static pidev.esprit.services.CompteCrud.userExists;
+import javafx.scene.control.DatePicker;
+
 
 public class AddAccountController {
 
@@ -32,11 +39,31 @@ public class AddAccountController {
     private RadioButton epargne;
 
     @FXML
-    private TextField tf_rib;
+    private TextField tf_adr;
 
+    @FXML
+    private TextField tf_cin;
+
+    @FXML
+    private TextField tf_nom;
+
+    @FXML
+    private TextField tf_prenom;
+
+    @FXML
+    private TextField tf_rib;
 
     @FXML
     private TextField tf_solde;
+
+    @FXML
+    private TextField tf_tel;
+
+    @FXML
+    private TextField tf_user;
+    @FXML
+    private DatePicker tf_date;
+
 
     @FXML
     private Button update_account;
@@ -46,12 +73,28 @@ public class AddAccountController {
     private ListView<Compte> accountListView;
 
 
+
     @FXML
     private void add_account() throws SQLException {
+        int id_user = Integer.parseInt(tf_user.getText());
         try {
-            // Parse input values and perform validation
-            String rib = tf_rib.getText();
-            validateRIB(rib); // Validate RIB length and format
+
+            try {
+                id_user = Integer.parseInt(tf_user.getText());
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Veuillez saisir un ID utilisateur valide.", ButtonType.OK);
+                alert.showAndWait();
+                return;
+            }
+
+            // Check if the user exists
+            if (!userExists(id_user)) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Id user " + id_user + " doesn't exist :( !! ", ButtonType.OK);
+                alert.showAndWait();
+                return;
+            }
+
+
 
             double solde = Double.parseDouble(tf_solde.getText());
             validateSolde(solde); // Validate solde range
@@ -60,26 +103,28 @@ public class AddAccountController {
             String selectedType = getSelectedType();
 
             // Create a new Compte object
-            Compte compte = new Compte(rib, solde, selectedType);
 
 
+            Compte compte = new Compte(Compte.generateRib(), solde, selectedType,id_user);
             // Add the compte to the database
             CompteCrud compteCrud = new CompteCrud();
-            CompteCrud.add_account(compte, selectedType);
+            tf_rib.setText(compte.getRib());
+            CompteCrud.add_account(compte,id_user, selectedType);
             ObservableList<Compte> items = accountListView.getItems();
             items.add(compte);
+
+
             // Show success message
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Compte ajouté avec succès !", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Account added :) !!", ButtonType.OK);
             alert.showAndWait();
 
             // Clear input fields
-            tf_rib.setText("");
-            tf_solde.setText("");
-            epargne.setSelected(true); // Assuming this sets a default account type
+
+            // Assuming this sets a default account type
 
         } catch (NumberFormatException e) {
             // Handle invalid solde input
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Veuillez saisir un solde valide (ex: 123.45).", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Balance should be positive ! ", ButtonType.OK);
             alert.showAndWait();
         } catch (IllegalArgumentException e) {
             // Handle other validation errors
@@ -88,12 +133,64 @@ public class AddAccountController {
         }
     }
 
+//    @FXML
+//    private void add_account() throws SQLException {
+//        try {
+//            // Create a new instance of Compte
+//            Compte compte = new Compte();
+//
+//            // Generate RIB using the instance method from Compte class
+//            String rib = compte.generateRib();
+//
+//            // Parse input values and perform validation
+//            double solde = Double.parseDouble(tf_solde.getText());
+//            validateSolde(solde); // Validate solde range
+//            tf_rib.setText(rib);
+//
+//            // Make the TextField visible
+//
+//            // Parse id_user from the text field
+//            int id_user = Integer.parseInt(tf_user.getText());
+//
+//            // Get selected account type
+//            String selectedType = getSelectedType();
+//
+//            // Initialize the Compte object with the generated RIB and other values
+//            compte.setRib(rib);
+//            compte.setSolde(solde);
+//            compte.setType_compte(selectedType);
+//            compte.setId_user(id_user);  // Assuming setId_user method exists in Compte class
+//
+//            // Add the compte to the database
+//            CompteCrud compteCrud = new CompteCrud();
+//            compteCrud.addCompte(compte);
+//
+//            ObservableList<Compte> items = accountListView.getItems();
+//            items.add(compte);
+//
+//            // Show success message
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Compte ajouté avec succès !", ButtonType.OK);
+//            alert.showAndWait();
+//
+//            // Clear input fields
+//            tf_solde.setText("");
+//            tf_user.setText("");
+//            epargne.setSelected(true); // Assuming this sets a default account type
+//
+//        } catch (NumberFormatException e) {
+//            // Handle invalid input (either solde or id_user)
+//            Alert alert = new Alert(Alert.AlertType.ERROR, "Veuillez saisir un nombre valide.", ButtonType.OK);
+//            alert.showAndWait();
+//        } catch (IllegalArgumentException e) {
+//            // Handle other validation errors
+//            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+//            alert.showAndWait();
+//        }
+//    }
 
-    private void validateRIB(String rib) {
-        if (rib.length() != 20 || !rib.matches("^[0-9]+$")) {
-            throw new IllegalArgumentException("RIB must be 20 digits long and contains only numbers.");
-        }
-    }
+
+
+
 
     private void validateSolde(double solde) {
         if (solde < 0) {
@@ -129,10 +226,12 @@ public class AddAccountController {
 
 
 
+
     @FXML
     private void initialize() throws SQLException {
-        epargne.setSelected(true);
 
+epargne.setSelected(true);
+      handleRadioButtonAction();
         refreshListView();
         accountListView.setEditable(true);
         accountListView.setCellFactory(TextFieldListCell.forListView(new StringConverter<Compte>() {
@@ -148,6 +247,7 @@ public class AddAccountController {
             }
         }));
 
+
         // Handle edit commit events
         accountListView.setOnEditCommit(event -> {
             Compte editedCompte = event.getNewValue();
@@ -161,7 +261,32 @@ public class AddAccountController {
                 // Optionally, display an error message to the user
             }
         });
-    }
+        tf_user.textProperty().addListener((observableValue, s, t1) -> {
+            try {
+                int userId = Integer.parseInt(t1);
+                // If valid, retrieve user information and populate fields
+                User user = CompteCrud.retrieveUserById(userId);
+                if (user != null) {
+                    tf_nom.setText(user.getNom_user());
+                    tf_prenom.setText(user.getPrenom_user());
+                    tf_cin.setText(String.valueOf(user.getCIN()));
+                    tf_tel.setText(String.valueOf(user.getTel()));
+                    tf_adr.setText(user.getAdresse_user());
+                    // Optionally, you can also set the date of birth if available
+                    // tf_date_naissance.setText(user.getDateNaissance());
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "User not found!! The entered ID does not exist.", ButtonType.OK);
+                    alert.showAndWait();
+                }
+            } catch (NumberFormatException e) {
+                // Clear fields if invalid input
+
+            }
+        });
+        tf_date.setValue(LocalDate.parse(LocalDate.now().toString()));
+            }
+
+
 
 
 
@@ -237,6 +362,7 @@ public class AddAccountController {
         // Retrieve the RIB from the form field
         String rib = tf_rib.getText();
 
+
         // Create an instance of CompteCrud
         CompteCrud compteCrud = new CompteCrud();
 
@@ -255,9 +381,9 @@ public class AddAccountController {
             }
 
             String selectedType = getSelectedType(); // Assuming you have a method to get the selected account type
-
+            int id_user = Integer.parseInt(tf_user.getText());
             // Create a Compte object with the updated values
-            Compte updatedCompte = new Compte(rib, solde, selectedType);
+            Compte updatedCompte = new Compte( rib,solde, selectedType,id_user);
 
             // Call the updateCompte method in your service class (e.g., CompteCrud) to update the account
             compteCrud.updateCompte(updatedCompte);
@@ -381,6 +507,8 @@ public class AddAccountController {
 
 
     }
+
+
 
 
 

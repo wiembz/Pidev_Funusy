@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
@@ -10,49 +11,91 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleEditCommit" prefHeight="571.0" prefWidth="856.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Account.AddAccountController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleEditCommit" prefHeight="644.0" prefWidth="957.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Account.AddAccountController">
    <children>
-      <TextField fx:id="tf_rib" layoutX="126.0" layoutY="341.0" />
-      <TextField fx:id="tf_solde" layoutX="484.0" layoutY="341.0" />
-      <Label layoutX="73.0" layoutY="344.0" prefHeight="18.0" prefWidth="42.0" text="RIB">
+      <TextField fx:id="tf_rib" layoutX="566.0" layoutY="319.0" />
+      <TextField fx:id="tf_solde" layoutX="304.0" layoutY="367.0" />
+      <Label layoutX="503.0" layoutY="322.0" prefHeight="18.0" prefWidth="42.0" text="RIB">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Label>
-      <Label layoutX="409.0" layoutY="342.0" text="Balance">
+      <Label layoutX="193.0" layoutY="369.0" text="Balance">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Label>
-      <Button layoutX="42.0" layoutY="479.0" mnemonicParsing="false" onAction="#add_account" onMouseClicked="#add_account" prefHeight="37.0" prefWidth="110.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="ADD" />
-      <Label layoutX="116.0" layoutY="413.0" text="Account Type">
+      <Button layoutX="84.0" layoutY="568.0" mnemonicParsing="false" onAction="#add_account" onMouseClicked="#add_account" prefHeight="37.0" prefWidth="110.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="ADD" />
+      <Label layoutX="221.0" layoutY="509.0" text="Account Type">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Label>
-      <RadioButton fx:id="epargne" layoutX="243.0" layoutY="413.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Epargne">
+      <RadioButton fx:id="epargne" layoutX="348.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Epargne">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></RadioButton>
-      <RadioButton fx:id="courant" layoutX="354.0" layoutY="413.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Courant">
+      <RadioButton fx:id="courant" layoutX="459.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Courant">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></RadioButton>
-      <RadioButton fx:id="bloque" layoutX="463.0" layoutY="413.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Bloque">
+      <RadioButton fx:id="bloque" layoutX="568.0" layoutY="509.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="Bloque">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></RadioButton>
-      <Button fx:id="update_account" layoutX="530.0" layoutY="479.0" mnemonicParsing="false" onAction="#update_account" onMouseClicked="#update_account" prefHeight="34.0" prefWidth="123.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="UPDATE" />
+      <Button fx:id="update_account" layoutX="640.0" layoutY="568.0" mnemonicParsing="false" onAction="#update_account" onMouseClicked="#update_account" prefHeight="34.0" prefWidth="123.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="UPDATE" />
       <ImageView fitHeight="48.0" fitWidth="117.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Assets/1.png" />
          </image>
       </ImageView>
-      <Button layoutX="282.0" layoutY="477.0" mnemonicParsing="false" onAction="#Delete_account" onMouseClicked="#Delete_account" prefHeight="46.0" prefWidth="109.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="DELETE" />
+      <Button layoutX="335.0" layoutY="568.0" mnemonicParsing="false" onAction="#Delete_account" onMouseClicked="#Delete_account" prefHeight="46.0" prefWidth="109.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="DELETE" />
 
-       <ListView fx:id="accountListView"  editable="true" layoutX="72.0" layoutY="111.0" onKeyPressed="#handleDelete" prefHeight="184.0" prefWidth="557.0">
+       <ListView fx:id="accountListView" editable="true" layoutX="70.0" layoutY="60.0" onKeyPressed="#handleDelete" prefHeight="152.0" prefWidth="808.0">
          
        </ListView>
-      <Label layoutX="219.0" layoutY="27.0" text="List Account " textFill="#e1a729">
+      <Label layoutX="296.0" layoutY="4.0" text="Account List " textFill="#e1a729">
          <font>
             <Font name="System Bold Italic" size="44.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tf_user" layoutX="304.0" layoutY="240.0" />
+      <Label layoutX="194.0" layoutY="243.0" prefHeight="20.0" prefWidth="55.0" text="Id_user">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tf_nom" layoutX="565.0" layoutY="232.0" />
+      <Label layoutX="476.0" layoutY="235.0" prefHeight="20.0" prefWidth="85.0" text="Last name">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tf_cin" layoutX="566.0" layoutY="275.0" />
+      <TextField fx:id="tf_prenom" layoutX="304.0" layoutY="283.0" />
+      <Label layoutX="496.0" layoutY="278.0" prefHeight="20.0" prefWidth="55.0" text="CIN">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tf_tel" layoutX="305.0" layoutY="327.0" />
+      <Label layoutX="193.0" layoutY="329.0" text="Phone number">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="194.0" layoutY="286.0" prefHeight="20.0" prefWidth="76.0" text="First name">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tf_adr" layoutX="567.0" layoutY="359.0" />
+      <Label layoutX="487.0" layoutY="362.0" prefHeight="20.0" prefWidth="64.0" text="Adresse">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="tf_date" layoutX="341.0" layoutY="432.0" />
+      <Label layoutX="272.0" layoutY="433.0" prefHeight="22.0" prefWidth="64.0" text="Date">
+         <font>
+            <Font name="System Bold" size="15.0" />
          </font>
       </Label>
    </children>

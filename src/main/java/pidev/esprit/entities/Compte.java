@@ -1,9 +1,6 @@
 package pidev.esprit.entities;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-
-import static java.time.LocalTime.now;
 
 public class Compte {
 
@@ -11,6 +8,7 @@ public class Compte {
     private double solde;
     private LocalDate  date_ouverture;
     private String type_compte;
+    private int id_user;
 
     public String getType_compte() {
         return type_compte;
@@ -45,12 +43,36 @@ public class Compte {
 
     }
 
-    public Compte(String rib, double solde, String type_compte) {
-        this.rib = rib;
+//    public Compte(String rib, double solde, String type_compte) {
+//        this.rib = rib;
+//        this.solde = solde;
+//        this.type_compte = type_compte;
+//        this.date_ouverture = LocalDate.now();
+//    }
+public static String generateRib() {
+    StringBuilder ribBuilder = new StringBuilder();
+    for (int i = 0; i < 20; i++) {
+        int digit = (int) (Math.random() * 10); // Generate a random digit (0-9)
+        ribBuilder.append(digit);
+    }
+    return ribBuilder.toString();
+}
+
+
+    public Compte(String rib,double solde, String type_compte,int id_user) {
+        this.rib = generateRib();
         this.solde = solde;
         this.type_compte = type_compte;
         this.date_ouverture = LocalDate.now();
+        this.id_user=id_user;
+
     }
+
+
+
+
+
+
 
   /*public Compte(String rib, double solde, Date date_ouverture) {
         this.rib = rib;
@@ -61,9 +83,17 @@ public class Compte {
     public Compte() {
     }
 
+    public int getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(int id_user) {
+        this.id_user = id_user;
+    }
+
     @Override
     public String toString() {
-        return "RIB: " + rib + " Solde: " + solde + " Type compte= " + type_compte + "\n";
+        return "RIB: " + rib + " Solde: " + solde + " Type compte= " + type_compte +"\n";
     }
 
 }

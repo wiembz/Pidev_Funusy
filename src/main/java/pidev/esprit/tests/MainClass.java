@@ -1,20 +1,13 @@
 package pidev.esprit.tests;
-import pidev.esprit.entities.CarteBancaire;
-
-
-import pidev.esprit.services.CardCrud;
 import pidev.esprit.Tools.MyConnection;
 
-import java.text.ParseException;
-import java.time.LocalDate;
+public class MainClass{
+    public static void main(String[] args) {
+        MyConnection mc= MyConnection.getInstance();
+        MyConnection mc2= MyConnection.getInstance();
 
-import static java.time.LocalDate.now;
-
-
-public class MainClass {
-    public static void main(String[] args) throws ParseException {
-        MyConnection mc = MyConnection.getInstance();
-        MyConnection mc2 = MyConnection.getInstance();
+    }}
+// Use 'connection2' to perform database operations
 
 
        /* TypeCompte tp = TypeCompte.1;
@@ -34,13 +27,12 @@ public class MainClass {
 
       // Compte updatedCompte = new Compte("123678", 870,"Epargne");
       // pcd.updateCompte(updatedCompte); // Provide the updated Compte object
-        java.sql.Date sqlDate = java.sql.Date.valueOf(LocalDate.of(2025, 2, 24));
+      /*  java.sql.Date sqlDate = java.sql.Date.valueOf(LocalDate.of(2025, 2, 24));
 
         CarteBancaire c =new CarteBancaire("123086789",1234,0000,sqlDate,"9784");
         CardCrud pc=new CardCrud();
         pc.addCard(c,c.getRib());
-        System.out.println(pc.displayCard());
+        System.out.println(pc.displayCard());*/
 
 
-    }
-}
+

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import pidev.esprit.entities.User;
 
 public class CompteCrud implements CRUD<Compte> {
     public static Connection cnx2;
@@ -15,14 +16,43 @@ public class CompteCrud implements CRUD<Compte> {
     public CompteCrud() {
         cnx2 = MyConnection.getInstance().getCnx();
     }
-   @Override
-   public void addCompte(Compte compte) {
-        // This method could call the add_account method with a default account type
-        add_account(compte, "default_account_type");
-    }
 
-    public static void add_account(Compte c, String selectedType) {
-        String sql = "INSERT INTO compte (rib, solde, date_ouverture, type_compte) VALUES (?, ?, ?, ?)";
+
+//    public static void add_account(Compte c, int id_user, String selectedType) {
+//        // First, verify if the user exists
+//        if (!userExists(id_user)) {
+//            System.err.println("Erreur : L'utilisateur avec l'ID " + id_user + " n'existe pas.");
+//            return; // Exit the method if the user does not exist
+//        }
+//        String rib = Compte.generateRib();
+//        if (userExists(id_user)) {
+//            // If the user exists, proceed to add the account
+//            String sql = "INSERT INTO compte (rib, solde, date_ouverture, type_compte, id_user) VALUES (?, ?, ?, ?, ?)";
+//
+//            try {
+//                PreparedStatement pstmt = cnx2.prepareStatement(sql);
+//                pstmt.setString(1, c.getRib());
+//                pstmt.setDouble(2, c.getSolde());
+//                pstmt.setDate(3, java.sql.Date.valueOf(c.getDate_ouverture()));
+//                pstmt.setString(4, selectedType); // Use the selected type
+//                pstmt.setInt(5, id_user); // Set the id_user
+//
+//                pstmt.executeUpdate();
+//                System.out.println("Compte ajouté avec succès !");
+//            } catch (SQLException e) {
+//                System.err.println("Erreur lors de l'ajout du compte : " + e.getMessage());
+//            }
+//        }
+//    }
+
+    public static void add_account(Compte c, int id_user, String selectedType) {
+        // First, verify if the user exists
+
+
+       // Assuming generateRib() method is properly implemented
+
+        // If the user exists, proceed to add the account
+        String sql = "INSERT INTO compte (rib, solde, date_ouverture, type_compte, id_user) VALUES (?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement pstmt = cnx2.prepareStatement(sql);
@@ -30,14 +60,37 @@ public class CompteCrud implements CRUD<Compte> {
             pstmt.setDouble(2, c.getSolde());
             pstmt.setDate(3, java.sql.Date.valueOf(c.getDate_ouverture()));
             pstmt.setString(4, selectedType); // Use the selected type
+            pstmt.setInt(5, id_user); // Set the id_user
 
             pstmt.executeUpdate();
-            System.out.println("Compte Ajoute");
+            System.out.println("Compte ajouté avec succès !");
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Erreur lors de l'ajout du compte : " + e.getMessage());
         }
     }
 
+
+    // Method to check if a user exists
+    public static boolean userExists(int id_user) {
+        String sql = "SELECT COUNT(*) FROM user WHERE id_user = ?";
+        try (PreparedStatement pstmt = cnx2.prepareStatement(sql)) {
+            pstmt.setInt(1, id_user);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking if user exists: " + e.getMessage());
+        }
+        return false; // Return false in case of exceptions or if the query fails
+    }
+
+
+    @Override
+    public void addCompte(Compte c) {
+
+    }
 
     @Override
     public List<Compte> displayCompte() {
@@ -53,7 +106,7 @@ public class CompteCrud implements CRUD<Compte> {
                 c.setSolde(rs.getDouble("Solde"));
                 c.setDate_ouverture(rs.getDate("date_ouverture").toLocalDate());
                 c.setType_compte(rs.getString("type_compte"));
-
+                c.setId_user(rs.getInt("id_user"));
                 comptes.add(c);
             }
         } catch (SQLException e) {
@@ -123,5 +176,63 @@ public class CompteCrud implements CRUD<Compte> {
         return instance;
     }
 
-}
+    public static User retrieveUserById(int id_user) {
+        String sql = "SELECT nom_user, prenom_user, tel, adresse_user, CIN FROM user WHERE id_user = ?";
+
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
+        User user = null;
+        try {
+            // Establish database connection
+            pstmt = cnx2.prepareStatement(sql);
+
+            // Prepare SQL statement to select user information based on ID
+
+
+            pstmt.setInt(1, id_user);
+            rs = pstmt.executeQuery();
+
+            // Execute the query
+            rs = pstmt.executeQuery();
+
+            // If a user with the given ID is found, populate the User object
+            if (rs.next()) {
+                user = new User();
+                user.setNom_user(rs.getString("nom_user"));
+                user.setPrenom_user(rs.getString("prenom_user"));
+                user.setTel(rs.getInt("tel"));
+                user.setAdresse_user(rs.getString("adresse_user"));
+                user.setCIN(rs.getInt("CIN"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle database-related errors
+        } finally {
+            // Close resources in reverse order of their creation to avoid resource leaks
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (pstmt != null) {
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        return user;
+    }
+
+
+    }
+
+    // Other methods and fields...
+
+
+
 
