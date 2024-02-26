@@ -4,30 +4,38 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import java.io.IOException;
 
 public class GestionInvestissementController {
+
     @FXML
     private BorderPane mainBorderPane;
 
     @FXML
     private AnchorPane contentPlaceholder;
 
+    // Keep track of the currently selected button
+    private Button selectedButton;
+
     @FXML
-    private void loadInvestissement() {
+    public void handleInvestmentsButtonClick(ActionEvent actionEvent) {
         loadFXML("Investissement.fxml");
+        updateButtonStyle((Button) actionEvent.getSource());
     }
 
     @FXML
-    private void loadProfits() {
+    public void handleBenefitsButtonClick(ActionEvent actionEvent) {
         loadFXML("Profit.fxml");
+        updateButtonStyle((Button) actionEvent.getSource());
     }
 
     @FXML
-    private void loadProjet() {
+    public void handleProjectsButtonClick(ActionEvent actionEvent) {
         loadFXML("Projet.fxml");
+        updateButtonStyle((Button) actionEvent.getSource());
     }
 
     private void loadFXML(String fxmlFile) {
@@ -44,33 +52,11 @@ public class GestionInvestissementController {
         }
     }
 
-    @FXML
-    public void handleInvestmentsButtonClick(ActionEvent actionEvent) {
-        try {
-            Parent Investissement = FXMLLoader.load(getClass().getResource("/Investissement.fxml"));
-            mainBorderPane.setCenter(Investissement);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void updateButtonStyle(Button clickedButton) {
+        if (selectedButton != null) {
+            selectedButton.getStyleClass().remove("clicked");
         }
-    }
-
-    @FXML
-    public void handleBenefitsButtonClick(ActionEvent actionEvent) {
-        try {
-            Parent Profit = FXMLLoader.load(getClass().getResource("/Profit.fxml"));
-            mainBorderPane.setCenter(Profit);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void handleProjectsButtonClick(ActionEvent actionEvent) {
-        try {
-            Parent Projet = FXMLLoader.load(getClass().getResource("/Projet.fxml"));
-            mainBorderPane.setCenter(Projet);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        clickedButton.getStyleClass().add("clicked");
+        selectedButton = clickedButton;
     }
 }

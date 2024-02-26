@@ -3,6 +3,7 @@ package pidev.esprit.Controllers.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
@@ -15,6 +16,7 @@ public class HomeWindowController {
     private BorderPane mainBorderPane;
     @FXML
     private AnchorPane contentPlaceholder;
+    private Button selectedButton;
 
     @FXML
     private void loadUser() {
@@ -63,6 +65,8 @@ public class HomeWindowController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        updateButtonStyle((Button) actionEvent.getSource());
+
     }
     public void handleInvestmentsButtonClick(ActionEvent actionEvent) {
         try {
@@ -71,22 +75,28 @@ public class HomeWindowController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        updateButtonStyle((Button) actionEvent.getSource());
+
     }
-    public void handleTransactionsButtonClick(ActionEvent mouseEvent) {
+    public void handleTransactionsButtonClick(ActionEvent actionEvent) {
         try {
             Parent GestionTransaction = FXMLLoader.load(getClass().getResource("/GestionTransaction.fxml"));
             mainBorderPane.setCenter(GestionTransaction);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        updateButtonStyle((Button) actionEvent.getSource());
+
     }
-    public void handleCreditsButtonClick(ActionEvent mouseEvent) {
+    public void handleCreditsButtonClick(ActionEvent actionEvent) {
         try {
             Parent GestionCredit = FXMLLoader.load(getClass().getResource("/GestionCredit.fxml"));
             mainBorderPane.setCenter(GestionCredit);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        updateButtonStyle((Button) actionEvent.getSource());
+
     }
     public void handleCommentairesButtonClick(ActionEvent actionEvent) {
         try {
@@ -95,6 +105,8 @@ public class HomeWindowController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        updateButtonStyle((Button) actionEvent.getSource());
+
     }
 
     public void handleProfilesButtonClick(ActionEvent actionEvent) {
@@ -104,5 +116,15 @@ public class HomeWindowController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        updateButtonStyle((Button) actionEvent.getSource());
+
     }
+    private void updateButtonStyle(Button clickedButton) {
+        if (selectedButton != null) {
+            selectedButton.getStyleClass().remove("clicked");
+        }
+        clickedButton.getStyleClass().add("clicked");
+        selectedButton = clickedButton;
+    }
+
 }

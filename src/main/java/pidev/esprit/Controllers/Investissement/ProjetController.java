@@ -120,7 +120,7 @@ public class ProjetController {
 
     @FXML
     private void handleDeleteButtonAction() {
-    Projet selectedproject = table.getSelectionModel().getSelectedItem();
+        Projet selectedproject = table.getSelectionModel().getSelectedItem();
         if (selectedproject == null) {
             showErrorDialog("No Selection", "Please select a project to delete.");
             return;
@@ -136,9 +136,9 @@ public class ProjetController {
                 // User confirmed the deletion
                 int idToDelete = selectedproject.getId_projet();
                 projetServices.deleteEntite(idToDelete);
-        populateProjetTable();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Project deleted successfully!", ButtonType.OK);
-        alert.showAndWait();
+                populateProjetTable();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Project deleted successfully!", ButtonType.OK);
+                alert.showAndWait();
             }
         });
     }
@@ -167,17 +167,20 @@ public class ProjetController {
         nom_projet.setCellFactory(TextFieldTableCell.forTableColumn());
         type_projet.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        montant_req.setCellValueFactory(new PropertyValueFactory<>("montant"));
+        montant_req.setCellValueFactory(new PropertyValueFactory<>("montant_req"));
         longitude.setCellValueFactory(new PropertyValueFactory<>("longitude"));
         latitude.setCellValueFactory(new PropertyValueFactory<>("latitude"));
         nom_projet.setCellValueFactory(new PropertyValueFactory<>("nom_projet"));
-        type_projet.setCellValueFactory(new PropertyValueFactory<>("type_projet"));
-    }
+        type_projet.setCellValueFactory(new PropertyValueFactory<>("type_projet"));    }
     @FXML
     public void handleCellEditCommit(TableColumn.CellEditEvent<Projet, ?> event) {
         Projet selectedProject = event.getRowValue();
         String columnName = event.getTableColumn().getText();
 
+        if ("type_projet".equals(columnName)) {
+            // If the edited column is type_projet, update the ComboBox items
+            type_projetField.setItems(FXCollections.observableArrayList(ProjectType.values()));
+        }
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText("Edit Record");
@@ -194,7 +197,7 @@ public class ProjetController {
                         case "id_user":
                             selectedProject.setId_user((Integer) event.getNewValue());
                             break;
-                        case "Montant Requis":
+                        case "montant_req":
                             selectedProject.setMontant_req((Float) event.getNewValue());
                             break;
                         case "longitude":

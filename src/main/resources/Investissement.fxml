@@ -1,69 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="backgroundINV" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Investissement.InvestissementController">
-   <children>
-      <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@Stylesheet/Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <AnchorPane layoutX="164.0" layoutY="14.0" prefHeight="243.0" prefWidth="690.0" styleClass="background" stylesheets="@Stylesheet/Style.css" AnchorPane.bottomAnchor="217.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <TableView fx:id="table" editable="true" layoutX="39.0" layoutY="50.0" prefHeight="193.0" prefWidth="522.0" stylesheets="@Stylesheet/Style.css" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="40.200000000000045">
-                     <columns>
-                        <TableColumn fx:id="id_investissement" prefWidth="116.00006985664368" text="Id_investment" />
-                        <TableColumn fx:id="montant" onEditCommit="#handleCellEditCommit" prefWidth="91.199951171875" text="amount" />
-                        <TableColumn fx:id="periode" onEditCommit="#handleCellEditCommit" prefWidth="80.79997253417969" text="Periode" />
-                        <TableColumn fx:id="date_investissement" onEditCommit="#handleCellEditCommit" prefWidth="132.0" text="Date_investment" />
-                        <TableColumn fx:id="id_user" onEditCommit="#handleCellEditCommit" prefWidth="109.59994506835938" text="Id_user" />
-                     </columns>
-                     <styleClass>
-                        <String fx:value="table-cell" />
-                        <String fx:value="table-row-cell" />
-                        <String fx:value="table-view" />
-                     </styleClass>
-                  </TableView>
-               </children>
-            </AnchorPane>
-            <AnchorPane layoutY="241.0" prefHeight="219.0" prefWidth="684.0" styleClass="background" stylesheets="@Stylesheet/Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="241.0">
-               <children>
-                  <Label fx:id="warningLabel" prefHeight="27.0" prefWidth="196.0" text="Warning" textAlignment="CENTER" visible="false" />
-                  <Button fx:id="Addbtn" layoutX="122.0" layoutY="179.0" mnemonicParsing="false" onAction="#handleAddButtonAction" prefHeight="26.0" prefWidth="113.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="Add" />
-                  <DatePicker fx:id="datePicker" layoutX="304.0" layoutY="89.0" prefHeight="26.0" prefWidth="263.0" />
-                  <TextField fx:id="montantField" layoutX="12.0" layoutY="89.0" prefHeight="26.0" prefWidth="263.0" />
-                  <Label layoutX="300.0" layoutY="61.0" prefHeight="27.0" prefWidth="88.0" text="Date_inv">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Label>
-                  <Label alignment="CENTER" layoutX="108.0" layoutY="2.0" prefHeight="58.0" prefWidth="370.0" text="Add An Investment" textAlignment="CENTER" textFill="#e1a729" AnchorPane.leftAnchor="108.0" AnchorPane.rightAnchor="122.39999999999998">
-                     <font>
-                        <Font name="System Bold Italic" size="30.0" />
-                     </font></Label>
-                  <Label layoutX="15.0" layoutY="61.0" prefHeight="27.0" prefWidth="88.0" text="Amount" AnchorPane.leftAnchor="15.0">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Label>
-                  <Label layoutX="14.0" layoutY="112.0" prefHeight="27.0" prefWidth="88.0" text="Periode">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Label>
-                  <TextField fx:id="periodeField" layoutX="16.0" layoutY="139.0" prefHeight="26.0" prefWidth="263.0" />
-                  <Button fx:id="deleteButton" layoutX="364.0" layoutY="173.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" prefHeight="26.0" prefWidth="114.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="Delete" />
-                  <Label layoutX="300.0" layoutY="112.0" prefHeight="27.0" prefWidth="88.0" text="Id_user">
-                     <font>
-                        <Font name="System Bold" size="12.0" />
-                     </font></Label>
-                  <TextField fx:id="id_userField" layoutX="304.0" layoutY="139.0" prefHeight="26.0" prefWidth="263.0" />
-               </children>
-            </AnchorPane>
-         </children>
-      </AnchorPane>
-   </children>
+<AnchorPane prefHeight="504.0" prefWidth="602.0" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Investissement.InvestissementController">
+    <children>
+        <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@Stylesheet/Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <TabPane prefHeight="467.0" prefWidth="600.0" stylesheets="@Stylesheet/Style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <tabs>
+                        <Tab text="Investments">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <AnchorPane prefHeight="371.0" prefWidth="600.0" styleClass="background" stylesheets="@Stylesheet/Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <children>
+                                                <TableView fx:id="table" editable="true" layoutX="18.4" layoutY="55.2" prefHeight="348.0" prefWidth="562.0" stylesheets="@Stylesheet/Style.css" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="55.0">
+                                                    <columns>
+                                                        <TableColumn fx:id="id_investissement" prefWidth="127.20004558563232" text="Id_investment" />
+                                                        <TableColumn fx:id="montant" onEditCommit="#handleCellEditCommit" prefWidth="119.99998474121094" text="Montant" />
+                                                        <TableColumn fx:id="periode" onEditCommit="#handleCellEditCommit" prefWidth="120.0" text="Periode" />
+                                                        <TableColumn fx:id="date_investissement" onEditCommit="#handleCellEditCommit" prefWidth="132.0" text="Date_investment" />
+                                                        <TableColumn fx:id="id_user" onEditCommit="#handleCellEditCommit" prefWidth="72.7999267578125" text="Id_user" />
+                                                    </columns>
+                                                    <styleClass>
+                                                        <String fx:value="table-view" />
+                                                        <String fx:value="table-row-cell" />
+                                                        <String fx:value="table-cell" />
+                                                    </styleClass>
+                                                    <columnResizePolicy>
+                                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                    </columnResizePolicy>
+                                                </TableView>
+                                                <Button fx:id="deleteButton" layoutX="50.0" layoutY="13.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" prefHeight="34.0" prefWidth="88.0" stylesheets="@Stylesheet/Style.css" text="Delete" AnchorPane.leftAnchor="50.0" />
+                                    <Pane layoutX="395.0" layoutY="11.0" prefHeight="38.0" prefWidth="181.0" AnchorPane.rightAnchor="25.799999999999983">
+                                       <children>
+                                                      <TextField alignment="CENTER" prefHeight="32.0" prefWidth="175.0" promptText="Search Investment" />
+                                                     <FontAwesomeIconView fill="#716e6e" glyphName="SEARCH" layoutX="4.0" layoutY="23.0" selectionFill="#dcd3d3" size="13.5" text="" wrappingWidth="19.942906379699707" x="5.0" />
+                                       </children>
+                                    </Pane>
+                                            </children>
+                                        </AnchorPane>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                        <Tab closable="false" text="Add Investment">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                    <children>
+                                        <AnchorPane prefHeight="402.0" prefWidth="600.0" styleClass="background" stylesheets="@Stylesheet/Style.css" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                            <children>
+                                    <Pane layoutX="159.0" layoutY="54.0" prefHeight="455.2" prefWidth="602.4" styleClass="My-background1" stylesheets="@Stylesheet/Style.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                                      <!-- WebView for displaying GIF -->
+                                                      <WebView fx:id="gifWebView" prefHeight="455.2" prefWidth="602.4" />
+                                                      <Button fx:id="Addbtn" layoutX="168.0" layoutY="374.0" mnemonicParsing="false" onAction="#handleAddButtonAction" prefHeight="31.0" prefWidth="265.0" styleClass="nav-btn1" stylesheets="@Stylesheet/Style.css" text="Add" />
+                                                      <DatePicker fx:id="datePicker" layoutX="168.0" layoutY="256.0" prefHeight="34.0" prefWidth="268.0" promptText="Date of investment" />
+                                                      <TextField fx:id="montantField" layoutX="166.0" layoutY="119.0" prefHeight="33.0" prefWidth="269.0" promptText="Amount in DNT" />
+                                                      <Label layoutX="173.0" layoutY="223.0" prefHeight="27.0" prefWidth="88.0" text="Date_inv">
+                                                          <font>
+                                                              <Font name="System Bold" size="12.0" />
+                                                          </font>
+                                                      </Label>
+                                                      <Label layoutX="170.0" layoutY="84.0" prefHeight="37.0" prefWidth="94.0" text="montant">
+                                                          <font>
+                                                              <Font name="System Bold" size="12.0" />
+                                                          </font>
+                                                      </Label>
+                                                      <Label layoutX="166.0" layoutY="160.0" prefHeight="27.0" prefWidth="88.0" text="Periode">
+                                                          <font>
+                                                              <Font name="System Bold" size="12.0" />
+                                                          </font>
+                                                      </Label>
+                                                      <TextField fx:id="periodeField" layoutX="167.0" layoutY="190.0" prefHeight="34.0" prefWidth="267.0" promptText="Periode in months" />
+                                                      <Label layoutX="173.0" layoutY="289.0" prefHeight="27.0" prefWidth="88.0" text="Id_user">
+                                                          <font>
+                                                              <Font name="System Bold" size="12.0" />
+                                                          </font>
+                                                      </Label>
+                                                      <TextField fx:id="id_userField" layoutX="169.0" layoutY="321.0" prefHeight="32.0" prefWidth="263.0" />
+                                                      <Label alignment="CENTER" layoutX="111.0" layoutY="14.0" prefHeight="45.0" prefWidth="382.0" text="Add An Investment" textAlignment="CENTER" textFill="#e1a729">
+                                                          <font>
+                                                              <Font name="System Bold Italic" size="30.0" />
+                                                          </font>
+                                                      </Label>
+                                       </children>
+                                    </Pane>
+                                            </children>
+                                        </AnchorPane>
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </Tab>
+                    </tabs>
+                    <styleClass>
+                        <String fx:value="tab-header-background" />
+                        <String fx:value="tab-header-area" />
+                  <String fx:value="My-background1" />
+                    </styleClass>
+                </TabPane>
+            </children>
+        </AnchorPane>
+    </children>
+    <styleClass>
+        <String fx:value="My-background1" />
+        <String fx:value="anchor-pane" />
+    </styleClass>
 </AnchorPane>

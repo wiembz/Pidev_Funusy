@@ -23,7 +23,7 @@
                     <Image url="@Assets/1.png" />
                   </image>
                 </ImageView>
-                <Button fx:id="profilebtn" alignment="CENTER" contentDisplay="RIGHT" layoutX="1033.0" layoutY="-2.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" prefHeight="71.0" prefWidth="68.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" textAlignment="RIGHT" AnchorPane.rightAnchor="0.599999999999909" onAction="#handleProfilesButtonClick" onMouseClicked="#handleProfilesButtonClick">
+                <Button fx:id="profilebtn" alignment="CENTER" contentDisplay="RIGHT" layoutX="1033.0" layoutY="-2.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#handleProfilesButtonClick" onMouseClicked="#handleProfilesButtonClick" prefHeight="71.0" prefWidth="68.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" textAlignment="RIGHT" AnchorPane.rightAnchor="0.599999999999909">
                   <graphic>
                     <ImageView fitHeight="40.0" fitWidth="32.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                       <image>
