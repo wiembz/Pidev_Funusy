@@ -4,10 +4,7 @@ package pidev.esprit.Services;
 import pidev.esprit.Entities.Credit;
 import pidev.esprit.Tools.MyConnection;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +29,31 @@ public class CreditCrud implements ICrud <Credit> {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void ajouterGarantie(Credit p, int id_credit) {
+
+    }
+
+    @Override
+    public boolean EntiteExists(Credit p) {
+        String query = "SELECT COUNT(*) FROM Credit WHERE montant_credit = ? AND duree_credit = ? AND taux_credit = ? AND id_user = ?";
+        try {
+            PreparedStatement pst = cnx2.prepareStatement(query);
+            pst.setDouble(1, p.getMontant_credit());
+            pst.setInt(2, p.getDuree_credit());
+            pst.setDouble(3, p.getTaux_credit());
+            pst.setInt(4, p.getId_user());
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
     }
 
     @Override
@@ -83,5 +105,40 @@ public class CreditCrud implements ICrud <Credit> {
         }
 
         return list;
+    }
+
+
+
+    public int getLastInsertedCreditId() {
+        int lastInsertedId = 0;
+        String query = "SELECT MAX(id_credit) AS last_id FROM credit"; // Assuming 'credit' is the name of your table
+
+        try (PreparedStatement statement = cnx2.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                lastInsertedId = resultSet.getInt("last_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lastInsertedId;
+    }
+    public double getLastInsertedMontantCredit() {
+        double lastInsertedMontantCredit = 0;
+        String query = "SELECT montant_credit FROM credit WHERE id_credit = (SELECT MAX(id_credit) FROM credit)";
+
+        try (PreparedStatement statement = cnx2.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                lastInsertedMontantCredit = resultSet.getDouble("montant_credit");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lastInsertedMontantCredit;
     }
 }

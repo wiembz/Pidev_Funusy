@@ -14,12 +14,11 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.FloatStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import pidev.esprit.Entities.Credit;
 import pidev.esprit.Services.CreditCrud;
+import pidev.esprit.Services.GarantieCrud;
 
 import java.io.IOException;
 import java.net.URL;
@@ -61,12 +60,6 @@ public class AjouterCredit {
     @FXML
     private Button btncontinue;
 
-
-    @FXML
-    private void loadGaranties() {
-        loadFXML("GarantieController.fxml", "Insert Guarantee");
-    }
-
     private CreditCrud creditServices = new CreditCrud();
     private ObservableList<Credit> creditList = FXCollections.observableArrayList();// Créez une liste observable pour stocker les données de crédit
 
@@ -80,41 +73,38 @@ public class AjouterCredit {
 
     @FXML
     void SaveCredit(ActionEvent event) {
-        // Validate user inputs
+        // Valider les entrées de l'utilisateur
         if (!validateInputs()) {
+            return; // Sortir de la méthode si les entrées ne sont pas valides
+        }
+
+        // Créer un nouvel objet Credit avec les valeurs saisies par l'utilisateur
+        Credit c = new Credit();
+        c.setMontant_credit(Double.parseDouble(tf_montant.getText()));
+        c.setDuree_credit(Integer.valueOf(tf_duree.getText()));
+        c.setTaux_credit(Double.parseDouble(tf_taux.getText()));
+        c.setId_user(Integer.valueOf(tf_user.getText()));
+
+        // Vérifier si le crédit existe déjà
+        if (creditServices.EntiteExists(c)) {
+            showErrorDialog("Crédit Existant", "Ce crédit existe déjà.");
             return;
         }
 
-        // User inputs are valid, continue with addition
-        Credit c = new Credit(Double.parseDouble(tf_montant.getText()), Integer.valueOf(tf_duree.getText()), Double.parseDouble(tf_taux.getText()), Integer.valueOf(tf_user.getText()));
+        // Ajouter le crédit à la base de données et actualiser la table
         CreditCrud cc = new CreditCrud();
         cc.ajouterEntite(c);
         addCredit(c);
         initialize();
         table.refresh();
+
+        // Afficher un message de confirmation à l'utilisateur
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Crédit ajouté", ButtonType.OK);
         alert.show();
 
-        // Load the GarantieController and pass the credit ID
-        GarantieController garantieController = new GarantieController(c.getId_credit());
-        loadFXML("GarantieController.fxml", "Insert Guarantee");
-//        // Valider les entrées de l'utilisateur
-//
-//        if (!validateInputs()) {
-//            return; // Sortir de la méthode si les entrées ne sont pas valides
-//        }
-//
-//        // Les entrées de l'utilisateur sont valides, continuer avec l'ajout
-//        Credit c = new Credit(Double.parseDouble(tf_montant.getText()), Integer.valueOf(tf_duree.getText()), Double.parseDouble(tf_taux.getText()), Integer.valueOf(tf_user.getText()));
-//        CreditCrud cc = new CreditCrud();
-//        cc.ajouterEntite(c);
-//        addCredit(c);
-//        initialize();
-//        table.refresh();
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Crédit ajouté", ButtonType.OK);
-//        alert.show();
-//        loadFXML("GarantieController.fxml", "Insert Guarantee");
+        suivre(null);
     }
+
 
     boolean validateInputs() {
         // Valider le montant
@@ -164,6 +154,7 @@ public class AjouterCredit {
             showErrorDialog("Erreur de saisie", "Veuillez saisir un ID utilisateur valide.");
             return false;
         }
+
         // Toutes les entrées sont valides
         return true;
     }
@@ -195,6 +186,10 @@ public class AjouterCredit {
             CreditCrud cc = new CreditCrud();
             cc.deleteEntite(selectedCredit);
 
+            // Supprimer les garanties associées à ce crédit de la base de données
+            GarantieCrud gc = new GarantieCrud();
+            gc.deleteGarantiesByCreditId(selectedCredit.getId_credit());
+
             // Supprimer le crédit de la liste observable et rafraîchir la TableView
             creditList.remove(selectedCredit);
             table.refresh();
@@ -203,7 +198,7 @@ public class AjouterCredit {
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
             successAlert.setTitle("Suppression réussie");
             successAlert.setHeaderText(null);
-            successAlert.setContentText("Le crédit a été supprimé avec succès.");
+            successAlert.setContentText("Le crédit et les garanties associées ont été supprimés avec succès.");
             successAlert.showAndWait();
         }
     }
@@ -317,14 +312,39 @@ public class AjouterCredit {
         setupEditableCells();
     }
 
+    private void loadGarantie(String s, String windowTitle, int id_credit) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/" + s));
+            Parent root = loader.load();
+
+            // Access the controller
+            GarantieController controller = loader.getController();
+
+            // Pass id_credit to the controller
+            controller.setId_credit(id_credit);
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle(windowTitle);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadFXML(String s, String windowTitle) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/" + s));
             Parent root = loader.load();
+
+            // Access the controller
+
+
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle(windowTitle); // Définir le titre de la fenêtre
+            stage.setTitle(windowTitle);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -332,7 +352,11 @@ public class AjouterCredit {
     }
 
     public void suivre(MouseEvent event) {
-        loadFXML("GarantieController.fxml", "Insert Guarantee");
+        CreditCrud cc = new CreditCrud();
+        int lastInsertedCreditId = cc.getLastInsertedCreditId();
+        // Pass the last inserted credit ID to the GarantieController
+       loadGarantie("GarantieController.fxml", "Insert Guarantee", lastInsertedCreditId);
+
 
     }
 }

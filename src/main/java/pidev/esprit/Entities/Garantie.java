@@ -5,9 +5,9 @@ import java.util.Arrays;
 public class Garantie extends Credit {
     private int Id_garantie;
     private int Id_credit;
-    private Nature nature;
-    private double valeur;
-    private String data;
+    private String nature_garantie;
+    private double Valeur_Garantie;
+    private String preuve;
 
 
     public Garantie() {
@@ -17,17 +17,17 @@ public class Garantie extends Credit {
         this.Id_credit = id_credit;
     }
 
-    public Garantie(int Id_credit, Nature nature, double valeur, String data) {
+    public Garantie(int Id_credit, String nature, double valeur, String data) {
         this.Id_credit = Id_credit;
-        this.nature = nature;
-        this.valeur = valeur;
-        this.data = data;
+        this.nature_garantie = nature;
+        this.Valeur_Garantie = valeur;
+        this.preuve = data;
     }
 
-    public Garantie(Nature nature, double valeur, String data) {
-        this.nature = nature;
-        this.valeur = valeur;
-        this.data = data;
+    public Garantie(String nature, double valeur, String data) {
+        this.nature_garantie = nature;
+        this.Valeur_Garantie = valeur;
+        this.preuve = data;
 
     }
 
@@ -49,28 +49,27 @@ public class Garantie extends Credit {
         Id_credit = id_credit;
     }
 
-    public Nature getNature() {
-        return nature;
+    public String getNature_garantie() {
+        return nature_garantie;
+    }
+    public void setNature_garantie(String nature_garantie) {
+        this.nature_garantie = nature_garantie;
     }
 
-    public void setNature(Nature nature) {
-        this.nature = nature;
+    public double getValeur_Garantie() {
+        return Valeur_Garantie;
     }
 
-    public double getValeur() {
-        return valeur;
+    public void setValeur_Garantie(double valeur_Garantie) {
+        Valeur_Garantie = valeur_Garantie;
     }
 
-    public void setValeur(double valeur) {
-        this.valeur = valeur;
+    public String getPreuve() {
+        return preuve;
     }
 
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
+    public void setPreuve(String preuve) {
+        this.preuve = preuve;
     }
 
     @Override
@@ -78,13 +77,10 @@ public class Garantie extends Credit {
         return "Garantie{" +
                 "Id_garantie=" + Id_garantie +
                 ", Id_credit=" + Id_credit +
-                ", nature=" + nature +
-                ", valeur=" + valeur +
-                ", data='" + data + '\'' +
+                ", nature_garantie=" + nature_garantie +
+                ", Valeur_Garantie=" + Valeur_Garantie +
+                ", preuve='" + preuve + '\'' +
                 '}';
     }
 
-    public enum Nature {
-        Maison, Voiture, Terrain, LocalCommercial
-    }
 }
