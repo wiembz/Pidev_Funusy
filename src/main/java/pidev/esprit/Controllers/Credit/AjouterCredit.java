@@ -5,10 +5,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.FloatStringConverter;
@@ -16,6 +21,7 @@ import javafx.util.converter.IntegerStringConverter;
 import pidev.esprit.Entities.Credit;
 import pidev.esprit.Services.CreditCrud;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Optional;
@@ -52,6 +58,14 @@ public class AjouterCredit {
     private TableColumn<Credit, Double> taux_credit;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button btncontinue;
+
+
+    @FXML
+    private void loadGaranties() {
+        loadFXML("GarantieController.fxml", "Insert Guarantee");
+    }
 
     private CreditCrud creditServices = new CreditCrud();
     private ObservableList<Credit> creditList = FXCollections.observableArrayList();// Créez une liste observable pour stocker les données de crédit
@@ -66,19 +80,40 @@ public class AjouterCredit {
 
     @FXML
     void SaveCredit(ActionEvent event) {
-        // Valider les entrées de l'utilisateur
+        // Validate user inputs
         if (!validateInputs()) {
-            return; // Sortir de la méthode si les entrées ne sont pas valides
+            return;
         }
 
-        // Les entrées de l'utilisateur sont valides, continuer avec l'ajout
+        // User inputs are valid, continue with addition
         Credit c = new Credit(Double.parseDouble(tf_montant.getText()), Integer.valueOf(tf_duree.getText()), Double.parseDouble(tf_taux.getText()), Integer.valueOf(tf_user.getText()));
         CreditCrud cc = new CreditCrud();
         cc.ajouterEntite(c);
         addCredit(c);
+        initialize();
         table.refresh();
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Crédit ajouté", ButtonType.OK);
         alert.show();
+
+        // Load the GarantieController and pass the credit ID
+        GarantieController garantieController = new GarantieController(c.getId_credit());
+        loadFXML("GarantieController.fxml", "Insert Guarantee");
+//        // Valider les entrées de l'utilisateur
+//
+//        if (!validateInputs()) {
+//            return; // Sortir de la méthode si les entrées ne sont pas valides
+//        }
+//
+//        // Les entrées de l'utilisateur sont valides, continuer avec l'ajout
+//        Credit c = new Credit(Double.parseDouble(tf_montant.getText()), Integer.valueOf(tf_duree.getText()), Double.parseDouble(tf_taux.getText()), Integer.valueOf(tf_user.getText()));
+//        CreditCrud cc = new CreditCrud();
+//        cc.ajouterEntite(c);
+//        addCredit(c);
+//        initialize();
+//        table.refresh();
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Crédit ajouté", ButtonType.OK);
+//        alert.show();
+//        loadFXML("GarantieController.fxml", "Insert Guarantee");
     }
 
     boolean validateInputs() {
@@ -109,7 +144,7 @@ public class AjouterCredit {
         // Valider le taux
         try {
             double taux = Double.parseDouble(tf_taux.getText());
-            if (taux< 0) {
+            if (taux < 0) {
                 showErrorDialog("Erreur de saisie", "Le taux doit être positif.");
                 return false;
             }
@@ -121,7 +156,7 @@ public class AjouterCredit {
         // Valider l'utilisateur
         try {
             int Id_user = Integer.parseInt(tf_user.getText());
-            if ( Id_user< 0) {
+            if (Id_user < 0) {
                 showErrorDialog("Erreur de saisie", "L'ID utilisateur doit être positif.");
                 return false;
             }
@@ -129,7 +164,6 @@ public class AjouterCredit {
             showErrorDialog("Erreur de saisie", "Veuillez saisir un ID utilisateur valide.");
             return false;
         }
-
         // Toutes les entrées sont valides
         return true;
     }
@@ -262,6 +296,7 @@ public class AjouterCredit {
         date_credit.setCellValueFactory(new PropertyValueFactory<Credit, Date>("date_credit"));
         id_user.setCellValueFactory(new PropertyValueFactory<Credit, Integer>("id_user"));
         CreditCrud cc = new CreditCrud();
+        creditList.clear();
         creditList.addAll(cc.afficherEntite());
         table.setItems(creditList);// Associez la liste observable à votre TableView
         // Configurer la sélection de ligne
@@ -271,8 +306,7 @@ public class AjouterCredit {
         table.setRowFactory(tv -> {
             TableRow<Credit> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY
-                        && event.getClickCount() == 1) {
+                if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                     Credit selectedItem = row.getItem();
                     // Sélectionner la ligne et mettre à jour les boutons
                     deleteButton.setDisable(false);
@@ -283,6 +317,24 @@ public class AjouterCredit {
         setupEditableCells();
     }
 
+    private void loadFXML(String s, String windowTitle) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/" + s));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle(windowTitle); // Définir le titre de la fenêtre
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void suivre(MouseEvent event) {
+        loadFXML("GarantieController.fxml", "Insert Guarantee");
+
+    }
 }
 
 

@@ -33,6 +33,7 @@ public class GestionCreditController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
     public void handleCreditsButtonClick(ActionEvent mouseEvent) {
         try {
@@ -42,6 +43,7 @@ public class GestionCreditController {
             e.printStackTrace();
         }
     }
+
 
 }
 

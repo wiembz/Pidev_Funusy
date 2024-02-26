@@ -90,8 +90,8 @@ public class Credit {
     public String toString() {
         return "Credit{" +
                 "Id_credit=" + Id_credit +
-                ", Montant_credit=" + Montant_credit +
-                ", Taux_credit=" + Taux_credit +
+                ", Montant_credit=" + Montant_credit + "DT"+
+                ", Taux_credit=" + Taux_credit + "% "+
                 ", Duree_credit=" + Duree_credit +
                 ", date_credit=" + date_credit +
                 '}';
