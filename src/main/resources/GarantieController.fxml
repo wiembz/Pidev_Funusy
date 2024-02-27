@@ -44,5 +44,6 @@
      </columns>
    </TableView>
    <Button fx:id="btndelete" layoutX="312.0" layoutY="152.0" mnemonicParsing="false" onAction="#deleteGarantie" stylesheets="@Stylesheet/Style.css" text="DELETE" />
+   <Label layoutX="389.0" layoutY="113.0" text="DT" />
 
 </AnchorPane>

@@ -33,7 +33,7 @@ public class GarantieCrud implements ICrud<Garantie> {
 
             pst.executeUpdate();
 
-            System.out.println("Garantie ajoutée");
+            System.out.println("Added warranty");
 
             ResultSet rs = pst.getGeneratedKeys();
             if (rs.next()) {
@@ -71,7 +71,7 @@ public class GarantieCrud implements ICrud<Garantie> {
         try {
             Statement st = cnx2.createStatement();
             st.executeUpdate(req2);
-            System.out.println("Garantie modifié");
+            System.out.println("Warranty modified");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
@@ -85,7 +85,7 @@ public class GarantieCrud implements ICrud<Garantie> {
         try {
             Statement st = cnx2.createStatement();
             st.executeUpdate(req3);
-            System.out.println("Garantie supprimé");
+            System.out.println("Warranty removed");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
@@ -120,7 +120,7 @@ public class GarantieCrud implements ICrud<Garantie> {
         try {
             Statement st = cnx2.createStatement();
             st.executeUpdate(req3);
-            System.out.println("Garanties supprimées");
+            System.out.println("Warranty removed");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }

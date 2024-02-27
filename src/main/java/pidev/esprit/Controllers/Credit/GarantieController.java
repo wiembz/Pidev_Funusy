@@ -5,24 +5,22 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.IntegerStringConverter;
-import pidev.esprit.Entities.Credit;
 import pidev.esprit.Entities.Garantie;
 import pidev.esprit.Entities.Nature;
 import pidev.esprit.Services.CreditCrud;
 import pidev.esprit.Services.GarantieCrud;
-import pidev.esprit.Controllers.Credit.AjouterCredit;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Date;
 import java.util.Optional;
 
 
@@ -35,7 +33,7 @@ public class GarantieController {
     private TableColumn<Garantie, Integer> id_garantie;
 
     @FXML
-    private TableColumn<Garantie, String> nature_garantie;
+    private TableColumn<Object, Nature> nature_garantie;
 
     @FXML
     private TableColumn<Garantie, String> preuve;
@@ -83,7 +81,7 @@ public class GarantieController {
     @FXML
     void ChooseFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choisir un fichier");
+        fileChooser.setTitle("Choose a file");
         // Filtre pour les fichiers de type texte (txt)
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers texte (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
@@ -114,7 +112,7 @@ public class GarantieController {
 
         id_garantie.setCellValueFactory(new PropertyValueFactory<>("id_garantie"));
         id_credit.setCellValueFactory(new PropertyValueFactory<>("id_credit"));
-        nature_garantie.setCellValueFactory(new PropertyValueFactory<>("nature_garantie"));
+        nature_garantie.setCellValueFactory(new PropertyValueFactory<Object, Nature>("nature_garantie"));
         Valeur_Garantie.setCellValueFactory(new PropertyValueFactory<>("Valeur_Garantie"));
         preuve.setCellValueFactory(new PropertyValueFactory<>("preuve"));
         GarantieCrud gc = new GarantieCrud();
@@ -158,7 +156,7 @@ public class GarantieController {
 
                         // Vérifier si la garantie existe déjà
                         if (garantieServices.EntiteExists(G)) {
-                            showErrorDialog("Garantie Existante", "Cette garantie existe déjà.");
+                            showErrorDialog("Existing Warranty", "This warranty already exists.");
                             return;
                         }
 
@@ -168,18 +166,18 @@ public class GarantieController {
                         addGarantie(G);
                         initialize();
                         table_garantie.refresh();
-                        showAlert(Alert.AlertType.INFORMATION, "Garantie ajoutée");
+                        showAlert(Alert.AlertType.INFORMATION, "Added Warranty");
                     } else {
-                        showAlert(Alert.AlertType.ERROR, "Le montant du crédit est supérieur à la valeur de la garantie");
+                        showAlert(Alert.AlertType.ERROR, "The amount of the credit is greater than the value of the guarantee");
                     }
                 } catch (NumberFormatException e) {
-                    showAlert(Alert.AlertType.ERROR, "Valeur de garantie invalide");
+                    showAlert(Alert.AlertType.ERROR, "Invalid warranty value");
                 }
             } else {
-                showAlert(Alert.AlertType.ERROR, "Veuillez sélectionner une nature de garantie");
+                showAlert(Alert.AlertType.ERROR, "Please select a type of guarantee");
             }
         } else {
-            showAlert(Alert.AlertType.ERROR, "Veuillez choisir un fichier");
+            showAlert(Alert.AlertType.ERROR, "Please choose a file");
         }
     }
 
@@ -190,18 +188,18 @@ public class GarantieController {
         if (selectedGarantie == null) {
             // Aucun élément sélectionné, afficher un message d'avertissement
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Aucune sélection");
+            alert.setTitle("No selection");
             alert.setHeaderText(null);
-            alert.setContentText("Veuillez sélectionner un garantie à supprimer.");
+            alert.setContentText("Please select a warranty to delete.");
             alert.showAndWait();
             return;
 
         }
         // Afficher une boîte de dialogue de confirmation
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Confirmation de suppression");
+        confirmationAlert.setTitle("Deletion confirmation");
         confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText("Êtes-vous sûr de vouloir supprimer ce garantie ?");
+        confirmationAlert.setContentText("Are you sure you want to remove this warranty ?");
 
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -215,27 +213,34 @@ public class GarantieController {
 
             // Afficher un message de confirmation
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            successAlert.setTitle("Suppression réussie");
+            successAlert.setTitle("Deletion successful");
             successAlert.setHeaderText(null);
-            successAlert.setContentText("Le garantie a été supprimé avec succès.");
+            successAlert.setContentText("Warranty has been successfully removed.");
             successAlert.showAndWait();
         }
     }
+
     private void setupEditableGarantie() {
         // Nature_garantie
-        nature_garantie.setCellFactory(TextFieldTableCell.forTableColumn());
+        ObservableList<Nature> natureOptions = FXCollections.observableArrayList(Nature.values());
+        // Créez une factory de cellules pour la colonne nature_garantie
+        Callback<TableColumn<Object, Nature>, TableCell<Object, Nature>> cellFactory = ComboBoxTableCell.forTableColumn(natureOptions);
+
+        // Configurez la factory de cellules pour la colonne nature_garantie
+        nature_garantie.setCellFactory(cellFactory);
         nature_garantie.setOnEditCommit(event -> {
-            String newValue = event.getNewValue();
-            Garantie selectedGarantie = event.getTableView().getItems().get(event.getTablePosition().getRow());
+            String newValueString = String.valueOf(event.getNewValue());
+            Nature newValue = Nature.valueOf(newValueString);
+            Garantie selectedGarantie = (Garantie) event.getTableView().getItems().get(event.getTablePosition().getRow());
 
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationAlert.setTitle("Confirmation");
-            confirmationAlert.setHeaderText("Modifier la garantie");
-            confirmationAlert.setContentText("Êtes-vous sûr de vouloir modifier cette garantie ?");
+            confirmationAlert.setHeaderText("Change warranty");
+            confirmationAlert.setContentText("Are you sure you want to change this warranty ?");
 
             confirmationAlert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    selectedGarantie.setNature_garantie(newValue);
+                    selectedGarantie.setNature_garantie(newValue.getTypeName());
                     table_garantie.refresh(); // Rafraîchir la TableView pour refléter les modifications
                     garantieServices.updateEntite(selectedGarantie); // Enregistrer les modifications dans la base de données
                 } else {
@@ -252,8 +257,8 @@ public class GarantieController {
 
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationAlert.setTitle("Confirmation");
-            confirmationAlert.setHeaderText("Modifier la garantie");
-            confirmationAlert.setContentText("Êtes-vous sûr de vouloir modifier cette garantie ?");
+            confirmationAlert.setHeaderText("Change warranty");
+            confirmationAlert.setContentText("Are you sure you want to change this warranty  ?");
 
             confirmationAlert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
@@ -274,8 +279,8 @@ public class GarantieController {
 
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationAlert.setTitle("Confirmation");
-            confirmationAlert.setHeaderText("Modifier la garantie");
-            confirmationAlert.setContentText("Êtes-vous sûr de vouloir modifier cette garantie ?");
+            confirmationAlert.setHeaderText("Change warranty");
+            confirmationAlert.setContentText("Are you sure you want to change this warranty  ?");
 
             confirmationAlert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
@@ -289,10 +294,8 @@ public class GarantieController {
         });
     }
 
-
     private void showAlert(Alert.AlertType alertType, String message) {
         Alert alert = new Alert(alertType, message, ButtonType.OK);
         alert.show();
     }
-
 }

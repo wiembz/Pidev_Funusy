@@ -20,7 +20,7 @@ public class CreditCrud implements ICrud <Credit> {
         try {
             Statement st = cnx2.createStatement();
             st.executeUpdate(req1);
-            System.out.println("Credit ajouté");
+            System.out.println("Added credit");
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
                 int id = rs.getInt(1);
@@ -62,7 +62,7 @@ public class CreditCrud implements ICrud <Credit> {
         try {
             Statement st = cnx2.createStatement();
             st.executeUpdate(req2);
-            System.out.println("Crédit modifié");
+            System.out.println("Added credit");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
@@ -75,7 +75,7 @@ public class CreditCrud implements ICrud <Credit> {
         try {
             Statement st = cnx2.createStatement();
             st.executeUpdate(req3);
-            System.out.println("Crédit supprimé");
+            System.out.println("Credit deleted");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
@@ -111,7 +111,7 @@ public class CreditCrud implements ICrud <Credit> {
 
     public int getLastInsertedCreditId() {
         int lastInsertedId = 0;
-        String query = "SELECT MAX(id_credit) AS last_id FROM credit"; // Assuming 'credit' is the name of your table
+        String query = "SELECT MAX(id_credit) AS last_id FROM credit"; // Get the last inserted id
 
         try (PreparedStatement statement = cnx2.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
@@ -127,7 +127,7 @@ public class CreditCrud implements ICrud <Credit> {
     }
     public double getLastInsertedMontantCredit() {
         double lastInsertedMontantCredit = 0;
-        String query = "SELECT montant_credit FROM credit WHERE id_credit = (SELECT MAX(id_credit) FROM credit)";
+        String query = "SELECT montant_credit FROM credit WHERE id_credit = (SELECT MAX(id_credit) FROM credit)";// Get the last inserted montant_credit
 
         try (PreparedStatement statement = cnx2.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();

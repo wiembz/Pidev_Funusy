@@ -87,7 +87,7 @@ public class AjouterCredit {
 
         // Vérifier si le crédit existe déjà
         if (creditServices.EntiteExists(c)) {
-            showErrorDialog("Crédit Existant", "Ce crédit existe déjà.");
+            showErrorDialog("Error", "Credit already exists.");
             return;
         }
 
@@ -99,7 +99,7 @@ public class AjouterCredit {
         table.refresh();
 
         // Afficher un message de confirmation à l'utilisateur
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Crédit ajouté", ButtonType.OK);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Added Credit", ButtonType.OK);
         alert.show();
 
         suivre(null);
@@ -111,11 +111,11 @@ public class AjouterCredit {
         try {
             double montant = Double.parseDouble(tf_montant.getText());
             if (montant < 0) {
-                showErrorDialog("Erreur de saisie", "Le montant doit être positif.");
+                showErrorDialog("Error","amount must be positive");
                 return false;
             }
         } catch (NumberFormatException e) {
-            showErrorDialog("Erreur de saisie", "Veuillez saisir un montant valide.");
+            showErrorDialog("Error", "Please enter a valid amount.");
             return false;
         }
 
@@ -123,11 +123,11 @@ public class AjouterCredit {
         try {
             int duree = Integer.parseInt(tf_duree.getText());
             if (duree < 0) {
-                showErrorDialog("Erreur de saisie", "La durée doit être positive.");
+                showErrorDialog("Error", "Duration must be positive");
                 return false;
             }
         } catch (NumberFormatException e) {
-            showErrorDialog("Erreur de saisie", "Veuillez saisir une durée valide.");
+            showErrorDialog("Error", "Please enter a valid duration.");
             return false;
         }
 
@@ -135,11 +135,11 @@ public class AjouterCredit {
         try {
             double taux = Double.parseDouble(tf_taux.getText());
             if (taux < 0) {
-                showErrorDialog("Erreur de saisie", "Le taux doit être positif.");
+                showErrorDialog("Error", "Taux must be positive.");
                 return false;
             }
         } catch (NumberFormatException e) {
-            showErrorDialog("Erreur de saisie", "Veuillez saisir un taux valide.");
+            showErrorDialog("Error", "Please enter a valid taux.");
             return false;
         }
 
@@ -147,11 +147,11 @@ public class AjouterCredit {
         try {
             int Id_user = Integer.parseInt(tf_user.getText());
             if (Id_user < 0) {
-                showErrorDialog("Erreur de saisie", "L'ID utilisateur doit être positif.");
+                showErrorDialog("Error", "ID utilisateur doit être positif.");
                 return false;
             }
         } catch (NumberFormatException e) {
-            showErrorDialog("Erreur de saisie", "Veuillez saisir un ID utilisateur valide.");
+            showErrorDialog("Error","Please enter a valid User ID.");
             return false;
         }
 
@@ -167,18 +167,18 @@ public class AjouterCredit {
         if (selectedCredit == null) {
             // Aucun élément sélectionné, afficher un message d'avertissement
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Aucune sélection");
+            alert.setTitle("No Selection");
             alert.setHeaderText(null);
-            alert.setContentText("Veuillez sélectionner un crédit à supprimer.");
+            alert.setContentText("Please select a credit to delete.");
             alert.showAndWait();
             return;
         }
 
         // Afficher une boîte de dialogue de confirmation
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmationAlert.setTitle("Confirmation de suppression");
+        confirmationAlert.setTitle("Deletion confirmation");
         confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText("Êtes-vous sûr de vouloir supprimer ce crédit ?");
+        confirmationAlert.setContentText("Are you sure you want to delete this credit?");
 
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -196,9 +196,9 @@ public class AjouterCredit {
 
             // Afficher un message de confirmation
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-            successAlert.setTitle("Suppression réussie");
+            successAlert.setTitle("Deletion successful");
             successAlert.setHeaderText(null);
-            successAlert.setContentText("Le crédit et les garanties associées ont été supprimés avec succès.");
+            successAlert.setContentText("The credit and associated collateral have been successfully removed.");
             successAlert.showAndWait();
         }
     }
@@ -221,8 +221,8 @@ public class AjouterCredit {
 
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationAlert.setTitle("Confirmation");
-            confirmationAlert.setHeaderText("Modifier le crédit");
-            confirmationAlert.setContentText("Êtes-vous sûr de vouloir modifier ce crédit ?");
+            confirmationAlert.setHeaderText("Change credit");
+            confirmationAlert.setContentText("Are you sure you want to change this credit ?");
 
             confirmationAlert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
@@ -243,8 +243,8 @@ public class AjouterCredit {
 
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationAlert.setTitle("Confirmation");
-            confirmationAlert.setHeaderText("Modifier le crédit");
-            confirmationAlert.setContentText("Êtes-vous sûr de vouloir modifier ce crédit ?");
+            confirmationAlert.setHeaderText("Change credit");
+            confirmationAlert.setContentText("Are you sure you want to change this credit ?");
 
             confirmationAlert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
@@ -265,8 +265,8 @@ public class AjouterCredit {
 
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationAlert.setTitle("Confirmation");
-            confirmationAlert.setHeaderText("Modifier le crédit");
-            confirmationAlert.setContentText("Êtes-vous sûr de vouloir modifier ce crédit ?");
+            confirmationAlert.setHeaderText("Change credit");
+            confirmationAlert.setContentText("Are you sure you want to change this credit ?");
 
             confirmationAlert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
@@ -355,7 +355,7 @@ public class AjouterCredit {
         CreditCrud cc = new CreditCrud();
         int lastInsertedCreditId = cc.getLastInsertedCreditId();
         // Pass the last inserted credit ID to the GarantieController
-       loadGarantie("GarantieController.fxml", "Insert Guarantee", lastInsertedCreditId);
+        loadGarantie("GarantieController.fxml", "Insert Guarantee", lastInsertedCreditId);
 
 
     }
