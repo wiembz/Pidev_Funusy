@@ -3,6 +3,7 @@ package pidev.esprit.Tools;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 
 public class MyConnection {
     public String url="jdbc:mysql://localhost:3306/funusy";
@@ -17,6 +18,7 @@ public class MyConnection {
             System.out.println("connexion etablie!");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+            System.out.println("no connection");
         }
     }
 

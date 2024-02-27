@@ -10,30 +10,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GestionTransaction implements IGestionTransaction<Transaction> {
-    private Connection connection;
+    Connection             connection = MyConnection.getInstance().getCnx();
 
-    public void ServiceTransaction(){
-        connection = MyConnection.getInstance().getCnx();
+
+
+
+    public void ServiceTransaction() throws SQLException{
+        try(Connection connection = MyConnection.getInstance().getCnx()){
+            this.connection = connection;
+        }
     }
     @Override
     public void ajouter(Transaction T) throws SQLException {
         try {
-            String sql = "INSERT INTO produit (nomProduit, prixProduit, tailleProduit, QauntiteProduit) VALUES (?, ?, ?, ?)";
+
+            connection = MyConnection.getInstance().getCnx();
+
+
+            String sql = "INSERT INTO transaction (`id_transaction`, `rib`, `destination`, `montant_transaction`, `type_transaction`, `date_transaction`) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = connection.prepareStatement(sql);
+
+            statement.setInt(1, T.getId());
+            statement.setString(2, T.getSource());
+            statement.setString(3, T.getDestination());
+            statement.setDouble(4, T.getMontant());
+            statement.setString(5,"VIREMENT");
+            statement.setDate(6,new Date(java.util.Calendar.getInstance().getTimeInMillis()));
 
             statement.executeUpdate();
             statement.close();
 
-            System.out.println("Produit inséré avec succès.");
+            System.out.println("Transaction insérée avec succès.");
         } catch (SQLException e) {
-            System.out.println("Erreur lors de l'insertion du produit : " + e.getMessage());
+            System.out.println("Erreur lors de l'insertion de la transaction : " + e.getMessage());
         }
-
     }
+
 
     @Override
     public void modifier(Transaction t) throws SQLException {
-        String sql = "Update produit set nomProduit = ?, prixProduit= ? , tailleProduit= ? , QauntiteProduit= ? where IdProduit = ?";
+        String sql = "";
         PreparedStatement preparedStatement= connection.prepareStatement(sql);
         preparedStatement.executeUpdate();
 
@@ -48,16 +64,26 @@ public class GestionTransaction implements IGestionTransaction<Transaction> {
 
     }
 
+
     @Override
-    public List<Transaction> afficher() throws SQLException {
-        List<Transaction> produits= new ArrayList<>();
-        String sql = "select * from produit";
-        Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery(sql);
-        while (rs.next()){
-            Transaction t = new Transaction();
-            produits.add(t);
+    public List<Transaction> afficher() {
+        List<Transaction> transactions = new ArrayList<>();
+        String req3 = "SELECT * FROM transaction";
+        try {
+            Statement stm = connection.createStatement();
+            ResultSet rs = stm.executeQuery(req3);
+            while (rs.next()) {
+                Transaction tran = new Transaction();
+                tran.setId(rs.getInt("id_transaction"));
+                tran.setSource(rs.getString("rib"));
+                tran.setDestination(rs.getString("destination"));
+                tran.setMontant(rs.getDouble("montant_transaction"));
+
+                 transactions.add(tran);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
-        return produits;
+        return transactions;
     }
 }
