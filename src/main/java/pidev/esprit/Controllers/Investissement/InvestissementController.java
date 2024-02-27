@@ -7,6 +7,7 @@ import javafx.scene.web.WebView;
 import javafx.util.converter.FloatStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import pidev.esprit.Entities.Investissement;
+import pidev.esprit.Entities.Projet;
 import pidev.esprit.Services.InvestissementServices;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +16,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.StringConverter;
+import pidev.esprit.Services.ProjetServices;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -22,6 +24,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 public class InvestissementController {
     @FXML
@@ -45,11 +48,15 @@ public class InvestissementController {
     @FXML
     private TableColumn<Investissement, Integer> periode;
     @FXML
+    private TableColumn<Investissement, Integer> id_projet;
+    @FXML
     private WebView gifWebView;
+    private ProjetServices projetServices;
     private InvestissementServices investissementServices;
 
     public InvestissementController() {
         investissementServices = new InvestissementServices();
+        projetServices = new ProjetServices();
     }
 
     @FXML
@@ -136,11 +143,67 @@ public class InvestissementController {
         montant.setCellValueFactory(new PropertyValueFactory<>("montant"));
         date_investissement.setCellValueFactory(new PropertyValueFactory<>("date_investissement"));
         periode.setCellValueFactory(new PropertyValueFactory<>("periode"));
+        id_projet.setCellValueFactory(new PropertyValueFactory<>("id_projet"));
+
 
         table.setItems(investissementData);
     }
+    private void openProjectSelectionDialog() {
+        // Fetch the list of projects
+        List<Projet> projects = projetServices.afficherEntite();
+        ObservableList<Projet> projectList = FXCollections.observableArrayList(projects);
+
+        // Create a dialog to display the list of projects
+        Dialog<Projet> dialog = new Dialog<>();
+        dialog.setTitle("Select a Project");
+        dialog.setHeaderText("Choose a project to invest in:");
+
+        // Set the buttons
+        ButtonType selectButtonType = new ButtonType("Select", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(selectButtonType, ButtonType.CANCEL);
+
+        // Create a TableView to display projects
+        TableView<Projet> projectTableView = new TableView<>();
+        projectTableView.setItems(projectList);
+
+        // Define columns for the TableView
+        TableColumn<Projet, Integer> id_projetCol = new TableColumn<>("ID");
+        id_projetCol.setCellValueFactory(new PropertyValueFactory<>("id_projet"));
+
+        TableColumn<Projet, String> nom_projetCol = new TableColumn<>("Name");
+        nom_projetCol.setCellValueFactory(new PropertyValueFactory<>("nom_projet"));
+
+        TableColumn<Projet, Float> montant_reqCol = new TableColumn<>("Required Amount");
+        montant_reqCol.setCellValueFactory(new PropertyValueFactory<>("montant_req"));
+
+        projectTableView.getColumns().addAll(id_projetCol, nom_projetCol, montant_reqCol);
+
+        // Enable selecting a single row
+        projectTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+        // Set the dialog content
+        dialog.getDialogPane().setContent(projectTableView);
+
+        // Convert the result to a project object when the select button is clicked
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == selectButtonType) {
+                return projectTableView.getSelectionModel().getSelectedItem();
+            }
+            return null;
+        });
+
+        // Show the dialog and wait for user action
+        Optional<Projet> result = dialog.showAndWait();
+
+        // If the user selects a project, proceed with adding the investment
+        result.ifPresent(selectedProject -> {
+            addInvestment(selectedProject);
+        });
+    }
+
     @FXML
-    private void handleAddButtonAction() {
+    private void addInvestment(Projet selectedProject) {
+        // Get input values
         // Get input values
         String id_userText = id_userField.getText().trim();
         String montantText = montantField.getText().trim();
@@ -152,6 +215,7 @@ public class InvestissementController {
             showErrorDialog("Empty fields", "Please fill all the fields.");
             return;
         }
+
         int id_user;
         float montant;
         int periode;
@@ -163,30 +227,36 @@ public class InvestissementController {
             showErrorDialog("Invalid input", "Please enter valid numeric values");
             return;
         }
+
         if (montant < 0) {
             showErrorDialog("Invalid montant", "Montant cannot be negative.");
             return;
         }
+
         LocalDate currentDate = LocalDate.now(); // Get the current date
         if (selectedDate.isBefore(currentDate)) {
             showErrorDialog("Invalid date", "Investissement date cannot be in the past.");
             return;
         }
+
         if (periode < 0) {
             showErrorDialog("Invalid periode", "Periode cannot be negative.");
             return;
         }
+
         Date date_inv = java.sql.Date.valueOf(selectedDate);
         Investissement investissement = new Investissement();
         investissement.setId_user(id_user);
         investissement.setMontant(montant);
         investissement.setPeriode(periode);
         investissement.setDate_investissement(date_inv);
+        investissement.setId_projet(selectedProject.getId_projet());
 
         if (investissementServices.EntiteExists(investissement)) {
             showErrorDialog("Investment exists", "An investment with the same attributes already exists.");
             return;
         }
+
         investissementServices.ajouterEntite(investissement);
         clearFields();
         populateInvestissementTable();
@@ -194,6 +264,10 @@ public class InvestissementController {
 //        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Investissement added successfully!", ButtonType.OK);
 //        alert.showAndWait();
 
+    }
+    @FXML
+    private void handleAddButtonAction() {
+        openProjectSelectionDialog();
     }
     @FXML
     private void handleDeleteButtonAction() {
@@ -253,7 +327,7 @@ public class InvestissementController {
                     + "var gif = document.getElementById('gif');"
                     + "setTimeout(function() { gif.style.display = 'none'; }, 3000);"
                     + "</script>"
-                    + "</body></html>";;
+                    + "</body></html>";
 
             WebEngine webEngine = gifWebView.getEngine();
             webEngine.loadContent(htmlContent);

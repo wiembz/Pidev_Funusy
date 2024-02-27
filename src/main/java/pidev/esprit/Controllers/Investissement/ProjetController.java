@@ -4,26 +4,28 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.StringConverter;
 import javafx.util.converter.FloatStringConverter;
-import javafx.util.converter.IntegerStringConverter;
-import pidev.esprit.Entities.Investissement;
 import pidev.esprit.Entities.Projet;
 import pidev.esprit.Services.ProjetServices;
 import pidev.esprit.Entities.ProjectType;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class ProjetController {
 
+    public Button Addbtn;
     @FXML
     private TextField id_userField;
     @FXML
+    private TextField searchField;
+    @FXML
     private TextField montant_reqField;
+    @FXML
+    private TextField descriptionField;
     @FXML
     private TextField nom_projetField;
     @FXML
@@ -48,8 +50,12 @@ public class ProjetController {
     private TableColumn<Projet, String> nom_projet;
     @FXML
     private TableColumn<Projet, String> type_projet;
+    @FXML
+    private TableColumn<Projet, String> description;
+
 
     private ProjetServices projetServices;
+    private Object ComboBoxTableCell;
 
     public ProjetController() {
         projetServices = new ProjetServices();
@@ -60,7 +66,27 @@ public class ProjetController {
         setupCellFactories();
         populateProjetTable();
         type_projetField.setItems(FXCollections.observableArrayList(ProjectType.values()));
+
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                populateProjetTable(); // If the search field is empty, show all projects
+                table.refresh();
+            } else {
+                search(newValue); // Otherwise, perform dynamic search by amount
+            }
+        });
     }
+    private void search(String amountText) {
+        try {
+            float amount = Float.parseFloat(amountText);
+            List<Projet> filteredProjetList = projetServices.search(amount);
+            ObservableList<Projet> observableList = FXCollections.observableArrayList(filteredProjetList);
+            table.setItems(observableList);
+        } catch (NumberFormatException e) {
+            showErrorDialog("Invalid Input", "Please enter a valid numeric value for amount.");
+        }
+    }
+
     private void populateProjetTable() {
         List<Projet> projets = projetServices.afficherEntite();
         ObservableList<Projet> observableList = FXCollections.observableArrayList(projets);
@@ -71,8 +97,10 @@ public class ProjetController {
         latitude.setCellValueFactory(new PropertyValueFactory<>("latitude"));
         nom_projet.setCellValueFactory(new PropertyValueFactory<>("nom_projet"));
         type_projet.setCellValueFactory(new PropertyValueFactory<>("type_projet"));
+        description.setCellValueFactory(new PropertyValueFactory<>("description"));
         table.setItems(observableList);
     }
+
     @FXML
     private void handleAddButtonAction() {
         // Get input values
@@ -82,12 +110,13 @@ public class ProjetController {
         String longitudeText = longitudeField.getText().trim();
         String latitudeText = latitudeField.getText().trim();
         ProjectType id_type_projet = type_projetField.getValue();
+        String descriptionText = descriptionField.getText().trim();
 
-        if (id_userText.isEmpty() || montant_reqText.isEmpty() || nom_projetText.isEmpty() || longitudeText.isEmpty() || latitudeText.isEmpty() || id_type_projet == null) {
+        if (id_userText.isEmpty() || montant_reqText.isEmpty() || nom_projetText.isEmpty() ||
+                longitudeText.isEmpty() || latitudeText.isEmpty() || id_type_projet == null || descriptionText.isEmpty()) {
             showErrorDialog("Empty fields", "Please fill all the fields.");
             return;
         }
-
         int id_user;
         float montant_req;
         try {
@@ -105,6 +134,7 @@ public class ProjetController {
         projet.setLongitude(longitudeText);
         projet.setLatitude(latitudeText);
         projet.setType_projet(id_type_projet.toString());
+        projet.setDescription(descriptionText);
 
         if (projetServices.EntiteExists(projet)) {
             showErrorDialog("Project Exists", "This project already exists.");
@@ -150,6 +180,7 @@ public class ProjetController {
         longitudeField.clear();
         latitudeField.clear();
         type_projetField.getSelectionModel().clearSelection();
+        descriptionField.clear();
     }
 
     private void showErrorDialog(String title, String content) {
@@ -159,28 +190,77 @@ public class ProjetController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
     @FXML
     private void setupCellFactories() {
         montant_req.setCellFactory(TextFieldTableCell.forTableColumn(new FloatStringConverter()));
         longitude.setCellFactory(TextFieldTableCell.forTableColumn());
         latitude.setCellFactory(TextFieldTableCell.forTableColumn());
         nom_projet.setCellFactory(TextFieldTableCell.forTableColumn());
-        type_projet.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        // Custom cell factory for type_projet column
+        type_projet.setCellFactory(column -> {
+            return new TableCell<Projet, String>() {
+                private final ComboBox<ProjectType> comboBox = new ComboBox<>(FXCollections.observableArrayList(ProjectType.values()));
+
+                {
+                    comboBox.setVisible(false);
+                    comboBox.setOnAction(event -> {
+                        commitEdit(comboBox.getSelectionModel().getSelectedItem().getTypeName());
+                    });
+                }
+
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setText(item);
+                        setGraphic(null);
+                    }
+                }
+
+                @Override
+                public void startEdit() {
+                    if (!isEmpty()) {
+                        super.startEdit();
+                        comboBox.getSelectionModel().select(ProjectType.valueOf(getItem()));
+                        setGraphic(comboBox);
+                        comboBox.setVisible(true);
+                        comboBox.requestFocus();
+                    }
+                }
+
+                @Override
+                public void cancelEdit() {
+                    super.cancelEdit();
+                    comboBox.setVisible(false);
+                    setGraphic(null);
+                    setText(getItem());
+                }
+            };
+        });
+
+        description.setCellFactory(TextFieldTableCell.forTableColumn());
 
         montant_req.setCellValueFactory(new PropertyValueFactory<>("montant_req"));
         longitude.setCellValueFactory(new PropertyValueFactory<>("longitude"));
         latitude.setCellValueFactory(new PropertyValueFactory<>("latitude"));
         nom_projet.setCellValueFactory(new PropertyValueFactory<>("nom_projet"));
-        type_projet.setCellValueFactory(new PropertyValueFactory<>("type_projet"));    }
+        type_projet.setCellValueFactory(new PropertyValueFactory<>("type_projet"));
+        description.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+
+    }
+
+
     @FXML
     public void handleCellEditCommit(TableColumn.CellEditEvent<Projet, ?> event) {
         Projet selectedProject = event.getRowValue();
         String columnName = event.getTableColumn().getText();
 
-        if ("type_projet".equals(columnName)) {
-            // If the edited column is type_projet, update the ComboBox items
-            type_projetField.setItems(FXCollections.observableArrayList(ProjectType.values()));
-        }
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText("Edit Record");
@@ -190,28 +270,41 @@ public class ProjetController {
             if (response == ButtonType.OK) {
                 // Update the entity in the database
                 try {
+                    Object newValue = event.getNewValue();
+
                     switch (columnName) {
-                        case "Id_projet":
-                            selectedProject.setId_projet((Integer) event.getNewValue());
+                        case "Project_Id":
+                            selectedProject.setId_projet((Integer) newValue);
                             break;
-                        case "id_user":
-                            selectedProject.setId_user((Integer) event.getNewValue());
+                        case "User_Id":
+                            selectedProject.setId_user((Integer) newValue);
                             break;
-                        case "montant_req":
-                            selectedProject.setMontant_req((Float) event.getNewValue());
+                        case "Montant_Requis":
+                            if (newValue instanceof Float) {
+                                selectedProject.setMontant_req((Float) newValue);
+                            } else if (newValue instanceof String) {
+                                selectedProject.setMontant_req(Float.parseFloat((String) newValue));
+                            }
                             break;
                         case "longitude":
-                            selectedProject.setLongitude((String) event.getNewValue());
+                            selectedProject.setLongitude((String) newValue);
                             break;
                         case "latitude":
-                            selectedProject.setLatitude((String) event.getNewValue());
+                            selectedProject.setLatitude((String) newValue);
                             break;
-                        case "type_projet":
-                            selectedProject.setType_projet((String) event.getNewValue());
+                        case "Project_Type":
+                            selectedProject.setType_projet((String) newValue);
                             break;
-                        case "Nom Projet":
-                            selectedProject.setNom_projet((String) event.getNewValue());
+                        case "Project Name":
+                            selectedProject.setNom_projet((String) newValue);
                             break;
+                        case "description":
+                            selectedProject.setDescription((String) newValue);
+                            break;
+                        default:
+                            showErrorDialog("Invalid Column", "Cannot edit this column.");
+                            table.refresh();
+                            return;
                     }
                     projetServices.updateEntite(selectedProject); // Call update method
                 } catch (Exception e) {
@@ -223,6 +316,5 @@ public class ProjetController {
             }
         });
     }
-
 
 }

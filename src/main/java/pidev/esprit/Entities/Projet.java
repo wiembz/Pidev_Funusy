@@ -11,10 +11,12 @@ public class Projet {
     private String longitude;
     private String latitude;
 
+    private String description;
+
     public Projet() {
     }
 
-    public Projet(int id_projet, int id_user, String nom_projet, float montant_req, String type_projet, String longitude, String latitude) {
+    public Projet(int id_projet, int id_user, String nom_projet, float montant_req, String type_projet, String longitude, String latitude , String description) {
         this.id_projet = id_projet;
         this.id_user = id_user;
         this.nom_projet = nom_projet;
@@ -22,15 +24,17 @@ public class Projet {
         this.type_projet = type_projet;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.description = description;
     }
 
-    public Projet(int id_user, String nom_projet, float montant_req, String id_type_projet, String longitude, String latitude) {
+    public Projet(int id_user, String nom_projet, float montant_req, String type_projet, String longitude, String latitude , String description) {
         this.id_user = id_user;
         this.nom_projet = nom_projet;
         this.montant_req = montant_req;
         this.type_projet = type_projet;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.description = description;
     }
 
     public int getId_projet() {
@@ -89,6 +93,14 @@ public class Projet {
         this.latitude = latitude;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Projet{" +
@@ -96,10 +108,10 @@ public class Projet {
                 ", id_user=" + id_user +
                 ", nom_projet='" + nom_projet + '\'' +
                 ", montant_req=" + montant_req +
-                ", id_type_projet=" + type_projet  +
+                ", type_projet=" + type_projet +
                 ", longitude='" + longitude + '\'' +
                 ", latitude='" + latitude + '\'' +
+                ", Description='" + description + '\'' +
                 '}';
     }
-
 }

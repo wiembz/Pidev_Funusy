@@ -14,22 +14,25 @@ public class Investissement {
     private  float montant;
     private  Date date_investissement;
     private  int periode;
+    private int id_projet;
     public Investissement() {
     }
 
-    public Investissement(int id_investissement, int id_user, float montant, Date date_investissement, int periode) {
+    public Investissement(int id_investissement, int id_user, float montant, Date date_investissement, int periode , int id_projet) {
         this.id_investissement = id_investissement;
         this.id_user = id_user;
         this.montant = montant;
         this.date_investissement = date_investissement;
         this.periode = periode;
+        this.id_projet = id_projet;
     }
 
-    public Investissement(int id_user, float montant, Date date_investissement, int periode) {
+    public Investissement(int id_user, float montant, Date date_investissement, int periode , int id_projet) {
         this.id_user = id_user;
         this.montant = montant;
         this.date_investissement = date_investissement;
         this.periode = periode;
+        this.id_projet = id_projet;
     }
 
 
@@ -74,6 +77,14 @@ public class Investissement {
         this.periode = periode;
     }
 
+    public int getId_projet() {
+        return id_projet;
+    }
+
+    public void setId_projet(int id_projet) {
+        this.id_projet = id_projet;
+    }
+
     @Override
     public String toString() {
         return "Investissement{" +
@@ -82,6 +93,7 @@ public class Investissement {
                 ", montant=" + montant +
                 ", date_investissement=" + date_investissement +
                 ", periode=" + periode +
+                ", id_projet=" + id_projet +
                 '}';
     }
 }
