@@ -17,19 +17,19 @@
                     </cellValueFactory>
                 </TableColumn>
 
-                <TableColumn fx:id="idProjetColumn" prefWidth="121.60003662109375" text="date_commentaire">
+                <TableColumn fx:id="idProjetColumn" prefWidth="121.60003662109375" text="Id_project">
                     <cellValueFactory>
                         <PropertyValueFactory property="id_projet" />
                     </cellValueFactory>
                 </TableColumn>
 
-                <TableColumn fx:id="contentColumn" prefWidth="132.79998779296875" text="contenue">
+                <TableColumn fx:id="contentColumn" prefWidth="132.79998779296875" text="Content">
                     <cellValueFactory>
                         <PropertyValueFactory property="contenue" />
                     </cellValueFactory>
                 </TableColumn>
 
-                <TableColumn fx:id="dateColumn" prefWidth="150" text="id_projet">
+                <TableColumn fx:id="dateColumn" prefWidth="150" text="Date">
                     <cellValueFactory>
                         <PropertyValueFactory property="date_commentaire" />
                     </cellValueFactory>

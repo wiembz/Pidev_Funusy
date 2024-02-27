@@ -57,6 +57,7 @@ public class CrudCommentaire {
     private Button commentbtn;
 
     private ProjetServices projetServices;
+    private String lastCommentContent = "";
 
     public CrudCommentaire() {
         projetServices = new ProjetServices();
@@ -108,6 +109,22 @@ public class CrudCommentaire {
         String commentContent = commentTextArea.getText().trim();
         Projet selectedProject = projetTableView.getSelectionModel().getSelectedItem();
 
+        // Check if the comment field is empty
+        if (commentContent.isEmpty()) {
+            // Show an error message if the comment field is empty
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please fill the comment field!", ButtonType.OK);
+            alert.show();
+            return; // Exit the method without submitting the comment
+        }
+
+        // Check if the comment is identical to the previous comment
+        if (commentContent.equals(lastCommentContent)) {
+            // Show an error message for potential spam
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please avoid spamming the same comment!", ButtonType.OK);
+            alert.show();
+            return; // Exit the method without submitting the comment
+        }
+
         // Create a Commentaire object and add it to the database
         Commentaire commentaire = new Commentaire();
         commentaire.setContenue(commentContent);
@@ -117,6 +134,9 @@ public class CrudCommentaire {
         // Call the service to add the Commentaire to the database
         CommentaireCrud commentaireCrud = new CommentaireCrud();
         commentaireCrud.ajouterEntite(commentaire);
+
+        // Store the current comment content as the last comment content
+        lastCommentContent = commentContent;
 
         // Clear the comment text area
         commentTextArea.clear();
@@ -154,6 +174,7 @@ public class CrudCommentaire {
             e.printStackTrace();
         }
     }
+
     @FXML
     private void clearSelection(MouseEvent event) {
         projetTableView.getSelectionModel().clearSelection();
