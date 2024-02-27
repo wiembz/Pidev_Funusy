@@ -37,11 +37,9 @@ public class AddTransactionController {
 
     @FXML
     private TextField tf_amount;
-    @FXML
-    private TableView<Transaction> transactions_tablefx;
 
-    @FXML
-    private TableView<Transaction> table;
+
+
     @FXML
     private TableView<Transaction> transactionsTable;
 
@@ -60,6 +58,8 @@ public class AddTransactionController {
 
     private GestionTransaction gestionTransaction;
 
+
+
     @FXML
     void save_transaction(ActionEvent event) throws SQLException {
         //sauvgarder de personne dans la BD
@@ -73,23 +73,30 @@ public class AddTransactionController {
 
 
 
-    private void populateTransactionsTable() {
-        List<Transaction> transactions = gestionTransaction.afficher();
-        ObservableList<Transaction> transactionsData = FXCollections.observableArrayList(transactions);
+    /*
+    private void populateTransactionsTable() throws Error{
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id")); // Assuming "id" is the ID field in Transaction
-        sourceColumn.setCellValueFactory(new PropertyValueFactory<>("source")); // Assuming "source" exists in Transaction
-        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateTransaction"));
 
-        transactionsTable.setItems(transactionsData);
+        try {
+            List<Transaction> transactions = gestionTransaction.afficher();
+            ObservableList<Transaction> transactionsData = FXCollections.observableArrayList(transactions);
+
+            idColumn.setCellValueFactory(new PropertyValueFactory<>("id")); // Assuming "id" is the ID field in Transaction
+            sourceColumn.setCellValueFactory(new PropertyValueFactory<>("source")); // Assuming "source" exists in Transaction
+            amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+            dateColumn.setCellValueFactory(new PropertyValueFactory<>("dateTransaction"));
+
+            transactionsTable.setItems(transactionsData);
+        }catch (Error e){
+            System.out.println(e);
+        }
     }
 
-
+*/
 
     @FXML
     void initialize() {
 
-        populateTransactionsTable();
+        //populateTransactionsTable();
      }
 }
