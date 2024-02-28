@@ -18,7 +18,11 @@ import pidev.esprit.Services.CommentaireCrud;
 import pidev.esprit.Services.ProjetServices;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CrudCommentaire {
@@ -59,13 +63,14 @@ public class CrudCommentaire {
     private ProjetServices projetServices;
     private String lastCommentContent = "";
 
+    //Constructeur : Initialisation du service ProjetServices.
     public CrudCommentaire() {
         projetServices = new ProjetServices();
     }
 
     @FXML
     private void initialize() {
-        // Initialize table columns
+        // Initialize ,configuration table columns
         id_projetColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId_projet()).asObject());
         nom_projetColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getNom_projet()));
         montant_reqColumn.setCellValueFactory(cellData -> new SimpleFloatProperty(cellData.getValue().getMontant_req()).asObject());
@@ -73,13 +78,14 @@ public class CrudCommentaire {
         longitudeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLongitude()));
         latitudeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getLatitude()));
 
-        // Populate the TableView with project data
+        // Appel à la méthode afficherProjets
         afficherProjets();
 
         // Add event handler to the comment section AnchorPane
         commentSection.setOnMouseClicked(event -> projetTableView.getSelectionModel().clearSelection());
     }
 
+    // Cette méthode récupère la liste des projets à partir du service ProjetServices et les ajoute à la TableView.
     private void afficherProjets() {
         List<Projet> projetList = projetServices.afficherEntite();
         projetTableView.getItems().addAll(projetList);
@@ -96,13 +102,32 @@ public class CrudCommentaire {
         }
     }
 
+    //Cette méthode est appelée pour afficher la zone de commentaire
     private void displayCommentAreaFor(Projet projet) {
         commentSection.setVisible(true);
         commentTextArea.setVisible(true);
         submitCommentButton.setVisible(true);
         commentTextArea.requestFocus(); // Set focus to the text area
-        submitCommentButton.setOnAction(event -> submitComment()); // Set action handler for the submit button
+
+        // Set prompt text to the text area
+        commentTextArea.setPromptText("Write your comment here");
+
+        // Définir le style CSS directement dans le code Java
+        commentTextArea.setStyle("-fx-font-size: 14px; " +
+                "-fx-font-family: Arial, sans-serif; " +
+                "-fx-padding: 10px; " +
+                "-fx-pref-width: 300px; " +
+                "-fx-pref-height: 100px; " +
+                "-fx-border-color: #333; " + // Dark border color
+                "-fx-border-width: 2px; " + // Thicker border
+                "-fx-border-radius: 5px; " +
+                "-fx-background-color:  #77B5FE ; " +
+                "-fx-background-insets: 10; " +
+                "-fx-effect: innershadow(gaussian, #eaeaea, 2, 0, 0, 0); " +
+                "-fx-text-alignment: center; " + // Alignement horizontal du texte
+                "-fx-alignment: center;"); // Alignement vertical et horizontal du contenu
     }
+
 
     @FXML
     public void submitComment() {
@@ -179,4 +204,5 @@ public class CrudCommentaire {
     private void clearSelection(MouseEvent event) {
         projetTableView.getSelectionModel().clearSelection();
     }
+
 }

@@ -20,16 +20,16 @@
                   <TableColumn fx:id="latitudeColumn" prefWidth="66.39996337890625" text="latitude" />
                </columns>
             </TableView>
-            <Button fx:id="commentbtn" layoutX="520.0" layoutY="95.0" mnemonicParsing="false" onAction="#commenter" text="Comment" />
+            <Button fx:id="commentbtn" layoutX="520.0" layoutY="95.0" mnemonicParsing="false" onAction="#commenter" stylesheets="@Stylesheet/Style.css" text="Comment" />
          </children>
       </AnchorPane>
 
       <!-- Comment section (initially hidden) -->
-      <AnchorPane fx:id="commentSection" layoutX="25.0" layoutY="208.0" prefHeight="192.0" prefWidth="514.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="86.0" AnchorPane.topAnchor="208.0">
-         <TextArea fx:id="commentTextArea" layoutX="38.0" layoutY="13.0" prefHeight="146.0" prefWidth="318.0" />
+      <AnchorPane fx:id="commentSection" layoutX="25.0" layoutY="208.0" prefHeight="192.0" prefWidth="514.0" styleClass="commentSection" stylesheets="@Stylesheet/Style.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="86.0" AnchorPane.topAnchor="208.0">
+         <TextArea fx:id="commentTextArea" layoutX="38.0" layoutY="13.0" prefHeight="146.0" prefWidth="318.0" promptText="write your comment here" />
          <Button fx:id="submitCommentButton" layoutX="376.0" layoutY="82.0" onAction="#submitComment" prefHeight="43.0" prefWidth="119.0" text="Submit" />
 
       </AnchorPane>
-      <Button fx:id="listCommentButton" layoutX="505.0" layoutY="289.0" onAction="#listComments" prefHeight="43.0" prefWidth="94.0" text="List Comment" />
+      <Button fx:id="listCommentButton" layoutX="486.0" layoutY="293.0" onAction="#listComments" prefHeight="42.0" prefWidth="153.0" stylesheets="@Stylesheet/Style.css" text="List Comment" />
    </children>
 </AnchorPane>

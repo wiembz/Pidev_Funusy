@@ -89,12 +89,34 @@ public class CrudSignal {
             alert.show();
         }
     }
-
     private void displaySignalAreaFor(Commentaire commentaire) {
         signalSection.setVisible(true);
         signalTextArea.clear(); // Clear text area when showing
+        signalTextArea.setVisible(true);
         signalTextArea.requestFocus(); // Set focus to the text area
+
+        // Définir le style CSS directement dans le code Java
+        signalTextArea.setStyle("-fx-font-size: 14px; " +
+                "-fx-font-family: Arial, sans-serif; " +
+                "-fx-padding: 10px; " +
+                "-fx-pref-width: 300px; " +
+                "-fx-pref-height: 100px; " +
+                "-fx-border-color: #333; " + // Dark border color
+                "-fx-border-width: 2px; " + // Thicker border
+                "-fx-border-radius: 5px; " +
+                "-fx-background-color: #f9f9f9; " +
+                "-fx-background-insets: 0; " +
+                "-fx-effect: innershadow(gaussian, #eaeaea, 2, 0, 0, 0); " +
+                "-fx-text-alignment: center; " + // Alignement horizontal du texte
+                "-fx-alignment: center;"); // Alignement vertical et horizontal du contenu
     }
+
+
+    /*private void displaySignalAreaFor(Commentaire commentaire) {
+        signalSection.setVisible(true);
+        signalTextArea.clear(); // Clear text area when showing
+        signalTextArea.requestFocus(); // Set focus to the text area
+    }*/
 
     @FXML
     public void submitSignal() {

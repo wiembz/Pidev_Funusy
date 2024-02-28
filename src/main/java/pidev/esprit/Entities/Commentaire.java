@@ -13,6 +13,7 @@ public class Commentaire {
         this.id_projet = id_projet;
         this.contenue = contenue;
         this.date_commentaire = date_commentaire;
+
     }
 
     public Commentaire(int id_projet, String contenue) {
@@ -56,6 +57,7 @@ public class Commentaire {
         this.date_commentaire = date_commentaire;
     }
 
+
     @Override
     public String toString() {
         return "Commentaire{" +
@@ -65,8 +67,6 @@ public class Commentaire {
                 ", date_commentaire=" + date_commentaire +
                 '}';
     }
-
-
 }
 
 

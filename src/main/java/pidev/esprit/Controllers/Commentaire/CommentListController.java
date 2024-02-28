@@ -37,10 +37,9 @@ public class CommentListController {
     public void initialize() {
         // Set up cell value factories
         idCommentColumn.setCellValueFactory(new PropertyValueFactory<>("id_commentaire"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date_commentaire"));
-        contentColumn.setCellValueFactory(new PropertyValueFactory<>("contenue"));
         idProjetColumn.setCellValueFactory(new PropertyValueFactory<>("id_projet"));
-
+        contentColumn.setCellValueFactory(new PropertyValueFactory<>("contenue"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date_commentaire"));
 
         // Make idProjetColumn editable
         idProjetColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
