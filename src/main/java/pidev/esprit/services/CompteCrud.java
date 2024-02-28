@@ -115,7 +115,7 @@ public class CompteCrud implements CRUD<Compte> {
         return comptes;
     }
 
-    @Override
+
     public void updateCompte(Compte c) {
         String sql = "UPDATE compte SET solde = ?, date_ouverture = ?, type_compte = ? WHERE rib = ?";
 
@@ -228,10 +228,34 @@ public class CompteCrud implements CRUD<Compte> {
         return user;
     }
 
+    public static User retrieveUserByRIB(String rib) {
+        String query = "SELECT * FROM user WHERE id_user IN (SELECT id_user FROM compte WHERE rib = ?)";
+        User user = null;
 
+        try (PreparedStatement pstmt = cnx2.prepareStatement(query)) {
+            pstmt.setString(1, rib);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                user = new User();
+                user.setId_user(rs.getInt("id_user"));
+                user.setNom_user(rs.getString("nom_user"));
+                user.setPrenom_user(rs.getString("prenom_user"));
+                user.setTel(rs.getInt("tel"));
+                // Populate other user fields as needed
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
+}
 
-    // Other methods and fields...
+
+
+
+
 
 
 

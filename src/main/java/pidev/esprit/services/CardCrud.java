@@ -18,31 +18,35 @@ public class CardCrud implements CRUDC<CarteBancaire> {
     }
 
 
-    public void addCard(CarteBancaire c) {
-        this.c = c;
-        this.rib = rib;
-        String sql = "INSERT INTO carte_bancaire (num_carte, code, CVV2, date_exp, rib) VALUES (?, ?, ?, ?, ?) WHERE rib=?";
+    public void addCard(CarteBancaire c, String rib) {
+        c.setNum_carte(CarteBancaire.generateNum());
+        c.setCode(CarteBancaire.generateCode());
+        c.setCVV2(CarteBancaire.generateCVV2());
+
+        String sql = "INSERT INTO carte_bancaire (num_carte, code, CVV2, date_exp, rib) VALUES (?, ?, ?, ?, ?)";
 
         try {
             PreparedStatement pstmt = cnx2.prepareStatement(sql);
             pstmt.setString(1, c.getNum_carte());
             pstmt.setInt(2, c.getCode());
             pstmt.setInt(3, c.getCVV2());
-            pstmt.setDate(4, c.getDate_exp());
+            pstmt.setDate(4, new java.sql.Date(c.getDate_exp().getTime()));
             pstmt.setString(5, rib);
 
-            pstmt.executeUpdate();
-            System.out.println("Carte bancaire ajoutée pour le compte avec RIB " + rib);
+            int rowsInserted = pstmt.executeUpdate(); // Check number of rows inserted
+
+            if (rowsInserted > 0) {
+                System.out.println("Carte bancaire ajoutée pour le compte avec RIB " + rib);
+            } else {
+                System.out.println("Aucune carte bancaire ajoutée pour le compte avec RIB " + rib);
+            }
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println("Erreur lors de l'ajout de la carte bancaire : " + e.getMessage());
         }
-
     }
 
-    @Override
-    public void addCard(CarteBancaire c, String rib) {
 
-    }
+
 
     @Override
     public List<CarteBancaire> displayCard() {
@@ -83,7 +87,7 @@ card.setRib(rs.getString("rib"));
             PreparedStatement pstmt = cnx2.prepareStatement(sql);
             pstmt.setInt(1, c.getCode());
             pstmt.setInt(2, c.getCVV2());
-            pstmt.setDate(3, c.getDate_exp());
+            //pstmt.setDate(3, c.getDate_exp());
 
             pstmt.setString(4, c.getNum_carte());
 
@@ -99,11 +103,12 @@ card.setRib(rs.getString("rib"));
 
     }
 
-    public void deleteCard(String num)
-    {String sql = "DELETE FROM carte_bancaire WHERE num_carte = ?";
+    public static void deleteCard(String num) {
+        String sql = "DELETE FROM carte_bancaire WHERE num_carte = ?";
 
         try {
-            PreparedStatement pstmt = cnx2.prepareStatement(sql);
+            Connection connection = MyConnection.getInstance().getCnx();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, num);
             int rowsDeleted = pstmt.executeUpdate();
             if (rowsDeleted > 0) {
@@ -114,6 +119,40 @@ card.setRib(rs.getString("rib"));
         } catch (SQLException e) {
             System.err.println("Erreur lors de la suppression de la carte bancaire : " + e.getMessage());
         }
-
     }
+
+    public boolean cardExistsForUser(String rib) {
+
+
+        boolean cardExists = false;
+
+
+        try {
+
+            String sql = "SELECT COUNT(*) AS count FROM Card WHERE rib = ?";
+            Connection connection = MyConnection.getInstance().getCnx();
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            // Execute query
+            ResultSet rs = pstmt.executeQuery();
+
+            // Check if any card exists for the given RIB
+            if (rs.next()) {
+                int count = rs.getInt("count");
+                cardExists = count > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle database errors
+
+        }
+
+        return cardExists;
+    }
+
+
+
+
+
+
+
 }

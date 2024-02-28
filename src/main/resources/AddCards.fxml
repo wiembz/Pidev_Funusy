@@ -4,52 +4,71 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"  prefHeight="566.0" prefWidth="783.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Account.AddCardsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="566.0" prefWidth="783.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Account.AddCardsController">
    <children>
-      <Label layoutX="392.0" layoutY="258.0" prefHeight="18.0" prefWidth="101.0" text="Card Number">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font></Label>
       <ImageView fitHeight="46.0" fitWidth="111.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Assets/1.png" />
          </image>
       </ImageView>
-      <Label layoutX="58.0" layoutY="315.0" text="Code">
+      <Label layoutX="72.0" layoutY="248.0" text="Code">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
-      <Label layoutX="409.0" layoutY="315.0" text="CVV2">
+      <Label layoutX="414.0" layoutY="248.0" text="CVV2">
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
-      <Label layoutX="223.0" layoutY="390.0" text="Date">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font></Label>
-      <TextField fx:id="tf_card" layoutX="491.0" layoutY="253.0" prefHeight="26.0" prefWidth="175.0" />
-      <TextField fx:id="tf_code" layoutX="125.0" layoutY="311.0" prefHeight="26.0" prefWidth="175.0" />
-      <TextField fx:id="tf_CVV2" layoutX="491.0" layoutY="311.0" prefHeight="26.0" prefWidth="175.0" />
-      <DatePicker fx:id="tf_date" layoutX="284.0" layoutY="387.0" />
-      <Button layoutX="55.0" layoutY="462.0" mnemonicParsing="false" onAction="#Add_Card" onMouseClicked="#Add_Card" prefHeight="48.0" prefWidth="111.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="ADD" />
-      <Button layoutX="300.0" layoutY="462.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="UPDATE" />
-      <Button layoutX="549.0" layoutY="471.0" mnemonicParsing="false" onAction="#Delete_Card" onMouseClicked="#Delete_Card" prefHeight="43.0" prefWidth="102.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="DELETE" />
-      <ListView fx:id="CB" layoutX="89.0" layoutY="85.0" prefHeight="109.0" prefWidth="572.0"  />
-      <Label layoutX="213.0" prefHeight="75.0" prefWidth="336.0" text="Card List " textAlignment="CENTER" textFill="#e1a729">
+      <TextField fx:id="tf_tel" layoutX="491.0" layoutY="192.0" prefHeight="26.0" prefWidth="175.0" />
+      <TextField fx:id="tf_CVV2" layoutX="491.0" layoutY="244.0" prefHeight="26.0" prefWidth="175.0" />
+      <Button layoutX="55.0" layoutY="495.0" mnemonicParsing="false" onAction="#Add_Card" prefHeight="48.0" prefWidth="111.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="ADD" />
+      <Button layoutX="288.0" layoutY="495.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="UPDATE" />
+      <Button layoutX="548.0" layoutY="495.0" mnemonicParsing="false" onAction="#Delete_Card" onMouseClicked="#Delete_Card" prefHeight="43.0" prefWidth="102.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="DELETE" />
+      <ListView fx:id="CB" editable="true" layoutX="64.0" layoutY="69.0" onKeyPressed="#handleDelete" prefHeight="110.0" prefWidth="629.0" />
+      <Label layoutX="264.0" layoutY="7.0" prefHeight="61.0" prefWidth="300.0" text="Card List " textAlignment="CENTER" textFill="#e1a729">
          <font>
             <Font name="System Bold Italic" size="40.0" />
          </font>
       </Label>
-      <Label layoutX="64.0" layoutY="257.0" text="rib">
+      <Label layoutX="79.0" layoutY="194.0" text="rib">
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Label>
-      <TextField fx:id="tf_rib" layoutX="125.0" layoutY="253.0" prefHeight="26.0" prefWidth="175.0" />
+      <TextField fx:id="tf_rib" layoutX="135.0" layoutY="192.0" prefHeight="26.0" prefWidth="175.0" />
+      <TextField fx:id="tf_code" layoutX="135.0" layoutY="244.0" prefHeight="26.0" prefWidth="175.0" />
+      <Label layoutX="386.0" layoutY="195.0" text="Phone number">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="77.0" layoutY="347.0" text="Set credit card expiration">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="tf_3y" layoutX="290.0" layoutY="348.0" mnemonicParsing="false" text="3 years" onAction="#handleRadioButtonAction">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="tf_5y" layoutX="414.0" layoutY="348.0" mnemonicParsing="false" text="5 years" onAction="#handleRadioButtonAction">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font>
+      </RadioButton>
+      <TextField fx:id="tf_card" layoutX="324.0" layoutY="291.0" />
+      <DatePicker fx:id="date" layoutX="530.0" layoutY="344.0" />
+      <Label layoutX="217.0" layoutY="294.0" text="Card number ">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="229.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Account.CardsController">
+    <Rectangle arcHeight="15.0" arcWidth="15.0" fill="linear-gradient(to right, #777B8E, #8086A5)" height="192.0" layoutX="34.0" layoutY="19.0" width="359.0" />
+
+    <ImageView fitHeight="45.0" fitWidth="148.0" layoutX="39.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@Assets/1.png"/>
+    </ImageView>
+    <TextField fx:id="cardholderNameField" layoutX="64.0" layoutY="82.0" prefHeight="26.0" prefWidth="246.0" />
+    <TextField fx:id="cardNumberField" layoutX="62.0" layoutY="168.0" prefHeight="26.0" prefWidth="181.0" />
+
+          <Label layoutX="160.0" layoutY="125.0" text="Expiry " textFill="#191970">
+        <font>
+            <Font name="Arial" size="14.0" />
+        </font>
+    </Label>
+    <TextField fx:id="expiryDateField" layoutX="208.0" layoutY="129.0" prefWidth="70.0" />
+   <Label layoutX="166.0" layoutY="140.0" text="Date" textFill="#191970">
+      <font>
+         <Font name="Arial" size="14.0" />
+      </font>
+   </Label>
+    <ImageView fitHeight="72.0" fitWidth="96.0" layoutX="301.0" layoutY="152.0" pickOnBounds="true"
+               preserveRatio="true">
+        <Image url="@Assets/visa.png"/>
+    </ImageView>
+    <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="33.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@Assets/triangle.png"/>
+    </ImageView>
+</AnchorPane>

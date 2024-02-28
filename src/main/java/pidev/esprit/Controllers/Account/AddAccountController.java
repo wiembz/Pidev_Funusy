@@ -40,6 +40,8 @@ public class AddAccountController {
 
     @FXML
     private TextField tf_adr;
+    @FXML
+    private TextField tf_search;
 
     @FXML
     private TextField tf_cin;
@@ -93,17 +95,12 @@ public class AddAccountController {
                 alert.showAndWait();
                 return;
             }
-
-
-
             double solde = Double.parseDouble(tf_solde.getText());
             validateSolde(solde); // Validate solde range
 
             // Get selected account type
             String selectedType = getSelectedType();
-
             // Create a new Compte object
-
 
             Compte compte = new Compte(Compte.generateRib(), solde, selectedType,id_user);
             // Add the compte to the database
@@ -113,14 +110,11 @@ public class AddAccountController {
             ObservableList<Compte> items = accountListView.getItems();
             items.add(compte);
 
-
             // Show success message
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Account added :) !!", ButtonType.OK);
             alert.showAndWait();
 
-            // Clear input fields
-
-            // Assuming this sets a default account type
+            // Clear input fields    // Assuming this sets a default account type
 
         } catch (NumberFormatException e) {
             // Handle invalid solde input
@@ -224,43 +218,79 @@ public class AddAccountController {
     }
 
 
+    private void searchListView(String query) {
+        ObservableList<Compte> items = accountListView.getItems();
 
+        // Clear previous selection
+        accountListView.getSelectionModel().clearSelection();
 
+        // Create a new list to hold the filtered items
+        ObservableList<Compte> filteredItems = FXCollections.observableArrayList();
+
+        // Iterate through all accounts to find matches
+        for (Compte item : items) {
+            // Perform search based on the query
+            if (item.getRib().startsWith(query)) {
+                // Add matching items to the filtered list
+                filteredItems.add(item);
+            }
+        }
+
+        // Clear the ListView and add the filtered items
+        accountListView.getItems().setAll(filteredItems);
+    }
+
+    private void handleSearchInput(KeyEvent event) {
+        // Get the search query from the text field or other input
+        String query = tf_search.getText(); // Adjust this to match your actual text field
+
+        // Call the search method with the current query
+        searchListView(query);
+    }
 
     @FXML
     private void initialize() throws SQLException {
 
-epargne.setSelected(true);
-      handleRadioButtonAction();
+        epargne.setSelected(true);
+        handleRadioButtonAction();
         refreshListView();
-        accountListView.setEditable(true);
+        // Assuming your ListView is named accountListView and your data model is a list of Compte objects
+        accountListView.setEditable(true); // Enable editing for the ListView
+
+// Set a custom cell factory to allow editing of the ListView cells
         accountListView.setCellFactory(TextFieldListCell.forListView(new StringConverter<Compte>() {
             @Override
             public String toString(Compte compte) {
-                return compte.toString();
+                return compte.toString(); // Convert Compte object to string representation
             }
 
             @Override
             public Compte fromString(String string) {
-                // Not needed for ListView
+                // Implement conversion from string to Compte if needed (not necessary for basic editing)
                 return null;
             }
         }));
 
-
-        // Handle edit commit events
+// Handle the edit commit event to update the edited Compte object
+        // Handle the edit commit event to update the edited Compte object
         accountListView.setOnEditCommit(event -> {
-            Compte editedCompte = event.getNewValue();
-            try {
-                CompteCrud.getInstance().updateCompte(editedCompte);
-                // Optionally, refresh the ListView to reflect the changes
-                refreshListView();
-            } catch (SQLException e) {
-                // Handle database update error
-                e.printStackTrace();
-                // Optionally, display an error message to the user
-            }
+            // Get the edited item
+            Compte editedItem = event.getNewValue();
+
+            // Get the index of the edited item
+            int editedIndex = event.getIndex();
+
+            // Update the item in the ListView
+            accountListView.getItems().set(editedIndex, editedItem);
+
+            // Update the item in the database
+
         });
+
+// Handle the edit commit event to update the edited Compte object
+
+
+
         tf_user.textProperty().addListener((observableValue, s, t1) -> {
             try {
                 int userId = Integer.parseInt(t1);
@@ -272,8 +302,7 @@ epargne.setSelected(true);
                     tf_cin.setText(String.valueOf(user.getCIN()));
                     tf_tel.setText(String.valueOf(user.getTel()));
                     tf_adr.setText(user.getAdresse_user());
-                    // Optionally, you can also set the date of birth if available
-                    // tf_date_naissance.setText(user.getDateNaissance());
+
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR, "User not found!! The entered ID does not exist.", ButtonType.OK);
                     alert.showAndWait();
@@ -283,8 +312,21 @@ epargne.setSelected(true);
 
             }
         });
+
         tf_date.setValue(LocalDate.parse(LocalDate.now().toString()));
+
+        tf_search.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                // If the search field is empty, refresh the list
+                refreshListView();
+            } else {
+                // Otherwise, perform the search
+                searchListView(newValue);
             }
+        });
+    }
+
+
 
 
 
@@ -426,7 +468,7 @@ epargne.setSelected(true);
         if (result.isPresent() && result.get() == ButtonType.OK) {
             deleteCompte(rib);
             showAlert(Alert.AlertType.INFORMATION, "Succès", null, "Compte supprimé avec succès !");
-            tf_rib.clear();
+            refreshListView();
         } else {
             showAlert(Alert.AlertType.INFORMATION, null, null, "Suppression annulée.");
         }
@@ -451,12 +493,10 @@ epargne.setSelected(true);
         Compte selectedAccount = accountListView.getSelectionModel().getSelectedItem();
         if (selectedAccount != null) {
             // Perform delete operation using CompteCrud
-            try {
+
                 CompteCrud.getInstance().deleteCompte(selectedAccount.getRib());
                 refreshListView(); // Refresh ListView after deletion
-            } catch (SQLException e) {
-                e.printStackTrace(); // Handle the exception appropriately
-            }
+
         }
     }
 
@@ -471,7 +511,7 @@ epargne.setSelected(true);
 //        // Populate the ListView with the fetched accounts
 //        accountListView.getItems().addAll(accounts);
 //    }
-@FXML private void refreshListView() throws SQLException {
+@FXML private void refreshListView() {
     // Fetch accounts from the database using CompteCrud singleton instance
     List<Compte> accounts = CompteCrud.getInstance().displayCompte();
 
@@ -491,7 +531,8 @@ epargne.setSelected(true);
                 accountListView.getItems().remove(selectedCompte);
 
                 // Update your data source (e.g., database) to reflect the deletion
-                compteCrud.deleteCompte(selectedCompte.getRib());
+                CompteCrud.deleteCompte(selectedCompte.getRib());
+
             }
         }
     }
@@ -507,11 +548,6 @@ epargne.setSelected(true);
 
 
     }
-
-
-
-
-
 
 }
 

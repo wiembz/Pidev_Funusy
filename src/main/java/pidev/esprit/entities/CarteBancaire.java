@@ -1,6 +1,7 @@
 package pidev.esprit.entities;
 
 import java.util.Date;
+import java.util.Random;
 
 public class CarteBancaire {
     private String num_carte;
@@ -8,6 +9,7 @@ public class CarteBancaire {
     private int code;
     private Date date_exp;
     private String rib;
+
 
     public CarteBancaire(String num_carte, int CVV2, int code, Date date_exp, String rib) {
         this.num_carte = num_carte;
@@ -59,6 +61,31 @@ public class CarteBancaire {
     public void setDate_exp(Date date_exp) {
         this.date_exp = date_exp;
     }
+
+    public static String generateNum() {
+        StringBuilder ribBuilder = new StringBuilder();
+        for (int i = 0; i < 16; i++) {
+            int digit = (int) (Math.random() * 10); // Generate a random digit (0-9)
+            ribBuilder.append(digit);
+        }
+        return ribBuilder.toString();
+    }
+
+
+
+    public static int generateCode() {
+        Random random = new Random();
+        return 1000 + random.nextInt(9000); // Génère un nombre aléatoire entre 1000 et 9999
+    }
+
+    // Méthode pour générer un CVV2 aléatoire à 3 chiffres
+    public static int generateCVV2() {
+        Random random = new Random();
+        return 100 + random.nextInt(900); // Génère un nombre aléatoire entre 100 et 999
+    }
+
+
+
 
     @Override
     public String toString() {

@@ -14,7 +14,7 @@ public class User {
     String prenom_user ;
     String email_user;
     int CIN;
-    int tel;
+    static int tel;
     String mdp;
     public enum Role {
         CLIENT, ADMIN
@@ -124,7 +124,7 @@ public class User {
         this.CIN = CIN;
     }
 
-    public int getTel() {
+    public static int getTel() {
         return tel;
     }
 
