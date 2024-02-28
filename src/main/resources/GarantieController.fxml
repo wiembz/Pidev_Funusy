@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Credit.GarantieController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Credit.GarantieController">
 
     <!-- Titre -->
     <Label alignment="TOP_CENTER" prefWidth="600.0" styleClass="background" stylesheets="@Stylesheet/Style.css" text="Add guarantee " textAlignment="CENTER" textFill="#e1a729">
@@ -19,31 +19,31 @@
     </Label>
 
     <!-- Champ de sélection de la nature de la garantie -->
-    <Label layoutX="35.0" layoutY="77.0" prefHeight="18.0" prefWidth="46.0" text="Nature" />
-    <ComboBox fx:id="tf_nature" layoutX="35.0" layoutY="109.0" prefWidth="150.0" promptText="Select" />
+    <Label layoutX="38.0" layoutY="65.0" prefHeight="18.0" prefWidth="46.0" text="Nature" />
+    <ComboBox fx:id="tf_nature" layoutX="37.0" layoutY="94.0" prefWidth="150.0" promptText="Select" stylesheets="@Stylesheet/Style.css" />
 
     <!-- Champ de saisie de la valeur de la garantie -->
-    <Label layoutX="233.0" layoutY="77.0" prefHeight="18.0" prefWidth="46.0" text="Value" />
-    <TextField fx:id="tf_valeur" layoutX="233.0" layoutY="109.0" promptText="Warranty value" />
+    <Label layoutX="232.0" layoutY="65.0" prefHeight="18.0" prefWidth="46.0" text="Value" />
+    <TextField fx:id="tf_valeur" layoutX="230.0" layoutY="88.0" prefHeight="11.0" prefWidth="175.0" promptText="Warranty value" />
 
     <!-- Bouton pour choisir un fichier -->
-    <Button fx:id="btnChoose" layoutX="426.0" layoutY="107.0" onAction="#ChooseFile" text="Choose a file" />
+    <Button fx:id="btnChoose" layoutX="461.0" layoutY="94.0" onAction="#ChooseFile" text="Choose a file" />
 
     <!-- Bouton pour ajouter la garantie -->
-    <Button fx:id="btnAjout" layoutX="222.0" layoutY="153.0" onAction="#InsertGarantie" stylesheets="@Stylesheet/Style.css" text="ADD" />
+    <Button fx:id="btnAjout" layoutX="228.0" layoutY="148.0" onAction="#InsertGarantie" prefHeight="18.0" prefWidth="71.0" styleClass="my-button2" stylesheets="@Stylesheet/Style.css" text="ADD" />
 
     <!-- Label pour afficher le statut -->
-    <Label layoutX="426.0" layoutY="77.0" text="Data" />
-   <TableView fx:id="table_garantie" editable="true" layoutX="17.0" layoutY="194.0" prefHeight="200.0" prefWidth="580.0">
+    <Label layoutX="461.0" layoutY="66.0" text="Data" />
+   <TableView fx:id="table_garantie" editable="true" layoutX="-3.0" layoutY="194.0" prefHeight="200.0" prefWidth="607.0">
      <columns>
        <TableColumn fx:id="id_garantie" prefWidth="51.20001220703125" text="Id" />
-       <TableColumn fx:id="id_credit" prefWidth="67.20001220703125" text="IdCredit" />
-         <TableColumn fx:id="nature_garantie" prefWidth="136.0" text="Nature" />
-         <TableColumn fx:id="Valeur_Garantie" prefWidth="94.4000244140625" text="Value" />
-         <TableColumn fx:id="preuve" prefWidth="229.5999755859375" text="Data" />
+       <TableColumn fx:id="id_credit" prefWidth="58.399967193603516" text="IdCredit" />
+         <TableColumn fx:id="nature_garantie" prefWidth="145.6000213623047" text="Nature" />
+         <TableColumn fx:id="Valeur_Garantie" prefWidth="87.20001220703125" text="Value" />
+         <TableColumn fx:id="preuve" prefWidth="255.199951171875" text="Data" />
      </columns>
    </TableView>
-   <Button fx:id="btndelete" layoutX="312.0" layoutY="152.0" mnemonicParsing="false" onAction="#deleteGarantie" stylesheets="@Stylesheet/Style.css" text="DELETE" />
-   <Label layoutX="389.0" layoutY="113.0" text="DT" />
+   <Button fx:id="btndelete" layoutX="338.0" layoutY="148.0" mnemonicParsing="false" onAction="#deleteGarantie" prefHeight="36.0" prefWidth="66.0" styleClass="clicked" text="DELETE" textFill="#0d0d0d" />
+   <Label layoutX="413.0" layoutY="98.0" text="DT" />
 
 </AnchorPane>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Credit.AdminCreditController">
+   <children>
+      <TableView fx:id="tableAdmin" layoutY="86.0" prefHeight="200.0" prefWidth="814.0">
+        <columns>
+          <TableColumn fx:id="id_credit" prefWidth="75.0" text="Credit ID" />
+          <TableColumn fx:id="id_garantie" prefWidth="75.0" text="Warranty ID" />
+            <TableColumn fx:id="montant_credit" prefWidth="75.0" text="Amount" />
+            <TableColumn fx:id="duree_credit" prefWidth="83.99998474121094" text="Duration" />
+            <TableColumn fx:id="taux_credit" prefWidth="87.20001220703125" text="InterestRate" />
+            <TableColumn fx:id="nature_garantie" prefWidth="65.5999755859375" text="Nature" />
+            <TableColumn fx:id="Valeur_Garantie" prefWidth="66.4000244140625" text="Value" />
+            <TableColumn fx:id="preuve" prefWidth="204.800048828125" text="Data" />
+            <TableColumn fx:id="Status" prefWidth="77.5999755859375" text="Status" />
+        </columns>
+      </TableView>
+      <Button fx:id="acceptedCredit" layoutX="214.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleAcceptedCredit" text="Accepted" />
+      <Button fx:id="rejectedCredit" layoutX="469.0" layoutY="323.0" mnemonicParsing="false" onAction="#handleRejectedCredit" text="Rejected" />
+   </children>
+</AnchorPane>

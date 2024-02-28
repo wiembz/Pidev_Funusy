@@ -8,15 +8,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreditCrud implements ICrud <Credit> {
+public class CreditCrud implements ICrud<Credit> {
     Connection cnx2;
+
     public CreditCrud() {
         cnx2 = MyConnection.getInstance().getCnx();
     }
 
     @Override
     public void ajouterEntite(Credit p) {
-     String req1 = "INSERT INTO credit (montant_credit, duree_credit, taux_credit,date_credit,id_user) VALUES ('"+p.getMontant_credit()+"', '"+p.getDuree_credit()+"', '"+p.getTaux_credit()+"',NOW(),'"+p.getId_user()+"')";
+        String req1 = "INSERT INTO credit (montant_credit, duree_credit, taux_credit,date_credit,id_user) VALUES ('" + p.getMontant_credit() + "', '" + p.getDuree_credit() + "', '" + p.getTaux_credit() + "',NOW(),'" + p.getId_user() + "')";
         try {
             Statement st = cnx2.createStatement();
             st.executeUpdate(req1);
@@ -90,7 +91,7 @@ public class CreditCrud implements ICrud <Credit> {
         try {
             Statement st = cnx2.createStatement();
             ResultSet rs = st.executeQuery(req4);
-            while (rs.next()){
+            while (rs.next()) {
                 Credit p = new Credit();
                 p.setId_credit(rs.getInt("id_credit"));
                 p.setMontant_credit(rs.getDouble("montant_credit"));
@@ -106,7 +107,6 @@ public class CreditCrud implements ICrud <Credit> {
 
         return list;
     }
-
 
 
     public int getLastInsertedCreditId() {
@@ -125,6 +125,7 @@ public class CreditCrud implements ICrud <Credit> {
 
         return lastInsertedId;
     }
+
     public double getLastInsertedMontantCredit() {
         double lastInsertedMontantCredit = 0;
         String query = "SELECT montant_credit FROM credit WHERE id_credit = (SELECT MAX(id_credit) FROM credit)";// Get the last inserted montant_credit
@@ -140,5 +141,40 @@ public class CreditCrud implements ICrud <Credit> {
         }
 
         return lastInsertedMontantCredit;
+    }
+
+    public List<Credit> getAllCredits() {
+        List<Credit> credits = new ArrayList<>();
+        String query = "SELECT * FROM credit";
+
+        try (PreparedStatement statement = cnx2.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id_credit");
+                double montant = resultSet.getDouble("montant_credit");
+                int duree = resultSet.getInt("duree_credit");
+                double taux = resultSet.getDouble("taux_credit");
+                int id_user = resultSet.getInt("id_user");
+
+                Credit credit = new Credit(id, montant, duree, taux, id_user, "");
+                credits.add(credit);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return credits;
+    }
+
+    public void updateCreditStatus(int idCredit, String accepted) {
+        String query = "UPDATE credit SET Status = ? WHERE id_credit = ?";
+
+        try (PreparedStatement statement = cnx2.prepareStatement(query)) {
+            statement.setString(1, accepted);
+            statement.setInt(2, idCredit);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -16,7 +16,7 @@ public class GestionCreditController {
     private AnchorPane contentPlaceholder;
     @FXML
     private void loadCredits() {
-        loadFXML("AjouterCredit.fxml");
+        loadFXML("AdminCredit.fxml");
     }
 
 
@@ -37,7 +37,7 @@ public class GestionCreditController {
     }
     public void handleCreditsButtonClick(ActionEvent mouseEvent) {
         try {
-            Parent GestionCredit = FXMLLoader.load(getClass().getResource("/AjouterCredit.fxml"));
+            Parent GestionCredit = FXMLLoader.load(getClass().getResource("/AdminCredit.fxml"));
             mainBorderPane.setCenter(GestionCredit);
         } catch (IOException e) {
             e.printStackTrace();

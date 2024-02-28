@@ -125,4 +125,26 @@ public class GarantieCrud implements ICrud<Garantie> {
             System.err.println(e.getMessage());
         }
     }
+
+    public List<Garantie> getGarantiesByCreditId(int idCredit) {
+        List<Garantie> list = new ArrayList<>();
+        String req4 = "SELECT * FROM garantie WHERE id_credit = '" + idCredit + "'";
+        try {
+            Statement st = cnx2.createStatement();
+            ResultSet rs = st.executeQuery(req4);
+            while (rs.next()) {
+                Garantie G = new Garantie();
+                G.setId_garantie(rs.getInt("Id_garantie"));
+                G.setId_credit(rs.getInt("id_credit"));
+                // Convertir la valeur de la colonne nature_garantie en objet Garantie.Nature
+                G.setNature_garantie(rs.getString("nature_garantie"));
+                G.setValeur_Garantie(rs.getDouble("valeur_garantie"));
+                G.setPreuve(rs.getString("preuve"));
+                list.add(G);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return list;
+    }
 }

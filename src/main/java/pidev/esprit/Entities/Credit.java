@@ -1,6 +1,7 @@
 package pidev.esprit.Entities;
 
 import java.util.Date;
+import java.util.List;
 
 public class Credit {
     private int Id_credit;
@@ -9,6 +10,9 @@ public class Credit {
     private int Duree_credit;
     private Date date_credit;
     private int id_user;
+    private String Status;
+    private List<Garantie> garanties;
+    private String garantiesInfo;
 
     public Credit() {
     }
@@ -36,6 +40,15 @@ public class Credit {
         this.Duree_credit = Duree;
         this.Taux_credit = Taux;
 
+    }
+
+    public Credit(int Id, double Montant, int Duree, double Taux, int Id_user, String Status) {
+        this.Id_credit = Id;
+        this.Montant_credit = Montant;
+        this.Duree_credit = Duree;
+        this.Taux_credit = Taux;
+        this.id_user = Id_user;
+        this.Status = Status;
     }
 
     public int getId_credit() {
@@ -86,14 +99,24 @@ public class Credit {
         this.id_user = id_user;
     }
 
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
     @Override
     public String toString() {
         return "Credit{" +
                 "Id_credit=" + Id_credit +
-                ", Montant_credit=" + Montant_credit + "DT"+
-                ", Taux_credit=" + Taux_credit + "% "+
+                ", Montant_credit=" + Montant_credit +
+                ", Taux_credit=" + Taux_credit +
                 ", Duree_credit=" + Duree_credit +
                 ", date_credit=" + date_credit +
+                ", id_user=" + id_user +
+                ", Status='" + Status + '\'' +
                 '}';
     }
 }

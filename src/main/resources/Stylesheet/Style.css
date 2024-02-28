@@ -25,12 +25,20 @@
 
 
 .background{
-    -fx-background-color: #E6E5E5;
+    -fx-background-color: #F1F1F1;
     -fx-background-radius:8px;
 }
 
 .My-background{
-    -fx-background-color: #eee8e8;
+    -fx-background-color: #e6e5e5;
+    -fx-background-radius:8px;
+
+
+}
+.My-background1{
+    -fx-background-color: #E6E5E5;
+    -fx-background-radius:8px;
+
 
 }
 
@@ -68,31 +76,38 @@
     -fx-effect: dropshadow(gaussian, rgba(87, 84, 84, 0.5), 10, 0, 0, 2); /* Shadow effect */
     /*button content */
 
-
+}
+.my-button.clicked {
+    -fx-background-color: rgb(206, 206, 206); /* Change background color when clicked */
+    -fx-text-fill: #030303; /* Change text color when clicked */
+    -fx-font-size: 12pt;
+    -fx-font-family: "Arial";
+    -fx-border-width: 0 2 0 0; /* Only bottom border */
+    -fx-border-color: #5c7080; /* Bottom border color on hover */
 
 }
 
 
-/* Style for the buttons */
-.button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #8b8585;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-padding: 10px 20px;
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
-}
+/*!* Style for the buttons *!*/
+/*.button {*/
+/*    -fx-background-color: transparent;*/
+/*    -fx-text-fill: #8b8585;*/
+/*    -fx-font-size: 14px;*/
+/*    -fx-font-weight: bold;*/
+/*    -fx-padding: 10px 20px;*/
+/*    -fx-background-radius: 20px;*/
+/*    -fx-border-radius: 20px;*/
+/*    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);*/
+/*}*/
 
-.button:hover {
-    -fx-background-color: #5C7080;
-    -fx-text-fill: #ffffff;
-}
+/*.button:hover {*/
+/*    -fx-background-color: rgba(92, 112, 128, 0.18);*/
+/*    -fx-text-fill: #ffffff;*/
+/*}*/
 
-.button:pressed {
-    -fx-background-color: linear-gradient(#7E8BBA, white);
-}
+/*.button:pressed {*/
+/*    -fx-background-color: linear-gradient(#7E8BBA, white);*/
+/*}*/
 
 /* Style for the triangle */
 .triangle {
@@ -110,26 +125,283 @@
     -fx-background-color:#E6E5E5;
     -fx-background-radius:8px;
 }
-.backgroundAccount{
-    -fx-background-color: #eceaea;
-    -fx-background-radius: 5px; /*round shape*/
+/* TableView Styling */
+.table-view {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-border-color: transparent; /* Transparent border */
+    -fx-border-radius: 18; /* No rounded corners */
 
 }
 
-.buttonAccount {
-  -fx-background-color: linear-gradient(#f5f5f5, #5C7080); /* Fond dégradé orange/gris clair */
-  -fx-text-fill: #000000; /* Couleur du texte noire */
-  -fx-font-size: 18px; /* Taille de police */
-  -fx-font-weight: bold; /* Poids de la police */
-  -fx-padding: 10px 20px; /* Rembourrage */
-  -fx-border-radius: 5px; /* Bordure arrondie */
- 
-  -fx-border-width: 1px; /* Largeur de la bordure */
-  -fx-transition: all 0.2s ease-in-out;}
+.table-view .column-header-background {
+    -fx-background-color: rgba(169, 187, 204, 0.5); /* Background color */
+    -fx-background-insets: 0, 0 0 1 0; /* Add a bottom border */
+    -fx-background-radius: 15; /* No rounded corners */
+}
 
- .buttonAccount:hover {
-    -fx-background-color: #D5A12B; /* Couleur de fond orange au survol */
-    -fx-text-fill: #ffffff; /* Couleur du texte blanche au survol */
-    -fx-transform: scale(1.1); /* Zoom au survol */
-  }
+/* Table Column Headers */
+.table-view .column-header {
+    -fx-background-color: rgba(128, 128, 128, 0); /* Transparent background */
+    -fx-text-fill: white; /* Text color */
+    -fx-font-size: 14px; /* Font size */
+    -fx-font-weight: bold; /* Bold font weight */
 
+}
+
+/* Add Hover Effect to Column Headers */
+.table-view .column-header:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white on hover */
+}
+
+/* Table Rows */
+.table-row-cell {
+    -fx-background-color: transparent; /* Transparent row background */
+}
+
+/* Alternating Rows */
+.table-row-cell:odd {
+    -fx-background-color: #f5f5f5; /* Alternating row background color */
+}
+
+/* Selected Row */
+.table-row-cell:selected {
+    -fx-background-color: #93a8d0; /* Selected row background color */
+    -fx-text-fill: white; /* Text color for selected row */
+}
+
+/* Cell Padding */
+.table-cell {
+    -fx-padding: 10px; /* Padding for table cells */
+}
+
+/* Horizontal Scrollbar */
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: transparent; /* Transparent scrollbar background */
+}
+
+/* Vertical Scrollbar */
+.table-view .scroll-bar:vertical {
+    -fx-background-color: transparent; /* Transparent scrollbar background */
+}
+
+
+/* Normal button style */
+.my-button1 {
+    -fx-background-color: #ffffff; /* Default background color */
+    -fx-text-fill: #8b8585; /* Default text color */
+    -fx-font-size: 14px; /* Default font size */
+}
+
+.my-button2.clicked {
+    -fx-background-color: rgb(92, 112, 128); /* Change background color when clicked */
+    -fx-text-fill: #ffffff; /* Change text color when clicked */
+}
+
+
+/* Button Styling */
+.my-button2 {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff; /* White text color */
+    -fx-background-color: rgb(92, 112, 128); /* Blue background */
+    -fx-background-radius: 5px; /* Rounded corners */
+    -fx-padding: 10px 20px;
+}
+
+.my-button2:hover {
+    -fx-background-color: rgb(92, 112, 128); /* Darker blue on hover */
+}
+
+/* TabPane Styling */
+.tab-pane {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-padding: 0; /* Remove default padding */
+}
+
+.tab-header-area {
+    -fx-background-color: transparent; /* Transparent background for tab headers */
+}
+
+.tab {
+    -fx-background-color: transparent; /* Transparent background for tabs */
+    -fx-padding: 10px 20px; /* Padding for tab content */
+    -fx-text-fill: #5c7080; /* Text color for tabs */
+    -fx-cursor: hand; /* Cursor on hover */
+}
+
+.tab:selected {
+    -fx-border-color: transparent transparent #5c7080 transparent; /* Bottom border color for selected tab */
+    -fx-border-width: 0 0 2 0; /* Bottom border width */
+}
+
+.tab:hover {
+    -fx-background-color: rgba(92, 112, 128, 0.1); /* Light background color on hover */
+}
+
+.tab:selected:hover {
+    -fx-background-color: transparent; /* Transparent background for selected tab on hover */
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: transparent; /* Transparent background for tab header area */
+}
+
+.tab-pane .tab {
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2; /* Adjust insets for lined effect */
+    -fx-background-radius: 0; /* No rounded corners */
+}
+
+/* Button Styling */
+.my-buttontab {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff; /* White text color */
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-border-width: 0 0 2 0; /* Only bottom border */
+    -fx-border-color: transparent; /* Transparent border color */
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand; /* Cursor on hover */
+}
+
+.my-buttontab:hover {
+    -fx-border-color: #5c7080; /* Bottom border color on hover */
+}
+
+.my-buttontab:selected {
+    -fx-border-color: #5c7080; /* Bottom border color when selected */
+}
+.anchor-pane {
+    -fx-background-color: #E6E5E5;
+    -fx-background-radius: 20px;
+}
+#deleteButton {
+    -fx-background-color: #ff6347; /* Red */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px 8px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+}
+
+/* Hover effect */
+#deleteButton:hover {
+    -fx-background-color: #dc143c; /* Darker Red on hover */
+}
+
+/* Pressed effect */
+#deleteButton:pressed {
+    -fx-background-color: #b22222; /* Even darker Red when pressed */
+}
+/* Style for the add button */
+#btncontinue {
+    -fx-background-color: #5C7080FF; /* Blue-grey */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+}
+
+/* Hover effect */
+#btncontinue:hover {
+    -fx-background-color: #4b5f70; /* Darker blue-grey on hover */
+}
+
+/* Pressed effect */
+#btncontinue:pressed {
+    -fx-background-color: #3a4a5a; /* Even darker blue-grey when pressed */
+}
+/* Style for the text field */
+.text-field {
+    -fx-background-color: #F4F4F4; /* Light grey background */
+    -fx-border-color: #BDBDBD; /* Grey border */
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+    -fx-font-size: 14px;
+}
+
+/* Hover effect */
+.text-field:hover {
+    -fx-border-color: #5C7080FF; /* Blue-grey border on hover */
+}
+
+/* Focused effect */
+.text-field:focused {
+    -fx-border-color: #5C7080FF; /* Blue-grey border when focused */
+}
+
+/* Disabled effect */
+.text-field:disabled {
+    -fx-opacity: 0.7; /* Reduce opacity when disabled */
+}
+.button0 {
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 16; /* Padding */
+    -fx-cursor: hand; /* Cursor on hover */
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
+
+.button0.clicked {
+    -fx-background-color: linear-gradient(to right, rgba(255, 255, 255, 0.57), rgba(126, 139, 186, 0.7), rgba(126, 139, 186, 0.77));
+    -fx-font-size: 13pt;
+    -fx-font-family: "Arial";
+    -fx-border-color: #5c7080; /* Bottom border color on hover */
+    -fx-border-width: 0.5; /* Only bottom border */
+    -fx-text-fill: #ffffff; /* Text color */
+
+}
+/* Hover style */
+.button0:hover {
+    -fx-font-size: 13pt;
+    -fx-font-family: "Arial";
+    /*-fx-font-weight: regular;*/
+    -fx-background-color: rgba(227, 234, 255, 0.5);
+    -fx-effect: dropshadow(gaussian, rgba(87, 84, 84, 0.5), 10, 0, 0, 2); /* Shadow effect */
+    /*button content */
+
+}
+#btnAjout{
+    -fx-background-color: #5C7080FF; /* Blue-grey */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+}
+#btnAjout:hover {
+    -fx-background-color: #4b5f70; /* Darker blue-grey on hover */
+}
+
+/* Pressed effect */
+#btnAjout:pressed {
+    -fx-background-color: #3a4a5a;} /* Even darker blue-grey when pressed */
+#btndelete {
+    -fx-background-color: #ff6347; /* Red */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 2px 8px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+}
+
+/* Hover effect */
+#btndelete:hover {
+    -fx-background-color: #dc143c; /* Darker Red on hover */
+}
+
+/* Pressed effect */
+#btndelete:pressed {
+    -fx-background-color: #b22222; /* Even darker Red when pressed */
+}
