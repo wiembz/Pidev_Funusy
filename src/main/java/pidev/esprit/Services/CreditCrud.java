@@ -99,6 +99,7 @@ public class CreditCrud implements ICrud<Credit> {
                 p.setTaux_credit(rs.getDouble("taux_credit"));
                 p.setDate_credit(rs.getDate("date_credit"));
                 p.setId_user(rs.getInt("id_user"));
+                p.setStatus(rs.getString("Status"));
                 list.add(p);
             }
         } catch (SQLException e) {
@@ -156,8 +157,8 @@ public class CreditCrud implements ICrud<Credit> {
                 int duree = resultSet.getInt("duree_credit");
                 double taux = resultSet.getDouble("taux_credit");
                 int id_user = resultSet.getInt("id_user");
-
-                Credit credit = new Credit(id, montant, duree, taux, id_user, "");
+                String Status = resultSet.getString("Status");
+                Credit credit = new Credit(id, montant, duree, taux, id_user, Status);
                 credits.add(credit);
             }
         } catch (SQLException e) {

@@ -56,6 +56,8 @@ public class AjouterCredit {
     @FXML
     private TableColumn<Credit, Double> taux_credit;
     @FXML
+    private TableColumn<Credit, String> Status;
+    @FXML
     private Button deleteButton;
     @FXML
     private Button btncontinue;
@@ -290,6 +292,7 @@ public class AjouterCredit {
         taux_credit.setCellValueFactory(new PropertyValueFactory<Credit, Double>("taux_credit"));
         date_credit.setCellValueFactory(new PropertyValueFactory<Credit, Date>("date_credit"));
         id_user.setCellValueFactory(new PropertyValueFactory<Credit, Integer>("id_user"));
+        Status.setCellValueFactory(new PropertyValueFactory<Credit, String>("Status"));
         CreditCrud cc = new CreditCrud();
         creditList.clear();
         creditList.addAll(cc.afficherEntite());

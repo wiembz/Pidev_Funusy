@@ -36,9 +36,8 @@ public class AdminCreditController {
 
     @FXML
     private TableColumn<Credit, Double> taux_credit;
+    @FXML
     private TableColumn<Credit, String> Status;
-
-
     @FXML
     private TableColumn<Garantie, String> nature_garantie;
 
@@ -92,6 +91,7 @@ public class AdminCreditController {
             selectedCredit.setStatus("Accepted"); // Mettre à jour le statut localement
             CreditCrud creditCrud = new CreditCrud();
             creditCrud.updateCreditStatus(selectedCredit.getId_credit(), "Accepted"); // Mettre à jour dans la base de données
+
 
             // Rafraîchir la TableView pour refléter les changements
             refreshTableView();

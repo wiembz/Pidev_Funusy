@@ -36,8 +36,9 @@
                         <TableColumn fx:id="montant_credit" prefWidth="86.4" text="Amount" />
                         <TableColumn fx:id="duree_credit" prefWidth="85.6" text="Duration" />
                         <TableColumn fx:id="taux_credit" prefWidth="107.20001220703125" text="InterestRate" />
-                        <TableColumn fx:id="date_credit" prefWidth="67.99993896484375" text="Date" />
-                        <TableColumn fx:id="id_user" prefWidth="85.6" text="Id_User" />
+                        <TableColumn fx:id="date_credit" prefWidth="135.199951171875" text="Date" />
+                        <TableColumn fx:id="id_user" prefWidth="99.20001220703125" text="User ID" />
+                  <TableColumn fx:id="Status" prefWidth="93.5999755859375" text="Status" />
                     </columns>
                 </TableView>
             </children>
