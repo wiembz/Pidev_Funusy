@@ -17,7 +17,6 @@
         @FXML
         private AnchorPane contentPlaceholder;
 
-        // Keep track of the currently selected button
         private Button selectedButton;
 
         @FXML

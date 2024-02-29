@@ -23,7 +23,7 @@ public class ProjetServices implements ICrud<Projet> {
             pst.setFloat(3, p.getMontant_req());
             pst.setString(4, p.getLongitude());
             pst.setString(5, p.getLatitude());
-            pst.setString(6, p.getType_projet()); // Use the type_projet field directly
+            pst.setString(6, p.getType_projet());
             pst.setString(7, p.getDescription());
             pst.executeUpdate();
         } catch (SQLException e) {
@@ -32,18 +32,16 @@ public class ProjetServices implements ICrud<Projet> {
     }
 
     private int getIdTypeProjet(ProjectType projectType) {
-        // Implement a method to get the ID of the ProjectType enum
-        // This method will return the corresponding ID based on the ProjectType enum
-        // You can implement this method by iterating through the enum values and matching the given projectType
+
         switch (projectType) {
             case AGRICULTURE:
-                return 1; // Assuming 1 is the ID for Agriculture in your database
+                return 1;
             case TECHNOLOGIQUE:
-                return 2; // Assuming 2 is the ID for Technologique in your database
+                return 2;
             case BOURSE:
-                return 3; // Assuming 3 is the ID for Bourse in your database
+                return 3;
             case IMMOBILIER:
-                return 4; // Assuming 4 is the ID for Immobilier in your database
+                return 4;
             default:
                 throw new IllegalArgumentException("Unknown ProjectType: " + projectType);
         }

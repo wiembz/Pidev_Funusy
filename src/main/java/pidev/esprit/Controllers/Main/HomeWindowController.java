@@ -39,6 +39,10 @@ public class HomeWindowController {
         loadFXML("GestionInvestissement.fxml");
     }
     @FXML
+    private void loadInvestmentsAdmin() {
+        loadFXML("GestionInvestissementAdmin.fxml");
+    }
+    @FXML
     private void loadCommentaire() {
         loadFXML("GestionCommentaire.fxml");
     }
@@ -78,6 +82,16 @@ public class HomeWindowController {
         updateButtonStyle((Button) actionEvent.getSource());
 
     }
+//    public void handleInvestmentsButtonClick(ActionEvent actionEvent) {
+//        try {
+//            Parent gestionInvestissementAdmin = FXMLLoader.load(getClass().getResource("/GestionInvestissementAdmin.fxml"));
+//            mainBorderPane.setCenter(gestionInvestissementAdmin);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        updateButtonStyle((Button) actionEvent.getSource());
+//
+//    }
     public void handleTransactionsButtonClick(ActionEvent actionEvent) {
         try {
             Parent GestionTransaction = FXMLLoader.load(getClass().getResource("/GestionTransaction.fxml"));

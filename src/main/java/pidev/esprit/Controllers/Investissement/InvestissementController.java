@@ -1,9 +1,14 @@
 package pidev.esprit.Controllers.Investissement;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.converter.FloatStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import pidev.esprit.Entities.Investissement;
@@ -19,6 +24,7 @@ import javafx.util.StringConverter;
 import pidev.esprit.Services.ProjetServices;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -49,6 +55,8 @@ public class InvestissementController {
     private TableColumn<Investissement, Integer> periode;
     @FXML
     private TableColumn<Investissement, Integer> id_projet;
+    private Projet selectedProject;
+
     @FXML
     private WebView gifWebView;
     private ProjetServices projetServices;
@@ -148,72 +156,44 @@ public class InvestissementController {
 
         table.setItems(investissementData);
     }
-    private void openProjectSelectionDialog() {
-        // Fetch the list of projects
-        List<Projet> projects = projetServices.afficherEntite();
-        ObservableList<Projet> projectList = FXCollections.observableArrayList(projects);
-
-        // Create a dialog to display the list of projects
-        Dialog<Projet> dialog = new Dialog<>();
-        dialog.setTitle("Select a Project");
-        dialog.setHeaderText("Choose a project to invest in:");
-
-        // Set the buttons
-        ButtonType selectButtonType = new ButtonType("Select", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(selectButtonType, ButtonType.CANCEL);
-
-        // Create a TableView to display projects
-        TableView<Projet> projectTableView = new TableView<>();
-        projectTableView.setItems(projectList);
-
-        // Define columns for the TableView
-        TableColumn<Projet, Integer> id_projetCol = new TableColumn<>("ID");
-        id_projetCol.setCellValueFactory(new PropertyValueFactory<>("id_projet"));
-
-        TableColumn<Projet, String> nom_projetCol = new TableColumn<>("Name");
-        nom_projetCol.setCellValueFactory(new PropertyValueFactory<>("nom_projet"));
-
-        TableColumn<Projet, Float> montant_reqCol = new TableColumn<>("Required Amount");
-        montant_reqCol.setCellValueFactory(new PropertyValueFactory<>("montant_req"));
-
-        projectTableView.getColumns().addAll(id_projetCol, nom_projetCol, montant_reqCol);
-
-        // Enable selecting a single row
-        projectTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-
-        // Set the dialog content
-        dialog.getDialogPane().setContent(projectTableView);
-
-        // Convert the result to a project object when the select button is clicked
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == selectButtonType) {
-                return projectTableView.getSelectionModel().getSelectedItem();
-            }
-            return null;
-        });
-
-        // Show the dialog and wait for user action
-        Optional<Projet> result = dialog.showAndWait();
-
-        // If the user selects a project, proceed with adding the investment
-        result.ifPresent(selectedProject -> {
-            addInvestment(selectedProject);
-        });
-    }
 
     @FXML
-    private void addInvestment(Projet selectedProject) {
-        // Get input values
-        // Get input values
+    private void handleAddButtonAction() {
+        if (!validateInput()) {
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ProjectList.fxml"));
+            Parent root = loader.load();
+
+            ProjectListController controller = loader.getController();
+            controller.setParentController(this); // Pass a reference to this controller
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Select a Project");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setSelectedProject(Projet project) {
+        this.selectedProject = project;
+        addInvestment();
+    }
+
+    private boolean validateInput() {
         String id_userText = id_userField.getText().trim();
         String montantText = montantField.getText().trim();
         String periodeText = periodeField.getText().trim();
         LocalDate selectedDate = datePicker.getValue();
 
-        // Check for empty fields
         if (id_userText.isEmpty() || montantText.isEmpty() || periodeText.isEmpty() || selectedDate == null) {
             showErrorDialog("Empty fields", "Please fill all the fields.");
-            return;
+            return false;
         }
 
         int id_user;
@@ -225,26 +205,36 @@ public class InvestissementController {
             periode = Integer.parseInt(periodeText);
         } catch (NumberFormatException e) {
             showErrorDialog("Invalid input", "Please enter valid numeric values");
-            return;
+            return false;
         }
 
         if (montant < 0) {
             showErrorDialog("Invalid montant", "Montant cannot be negative.");
-            return;
+            return false;
         }
 
         LocalDate currentDate = LocalDate.now(); // Get the current date
         if (selectedDate.isBefore(currentDate)) {
             showErrorDialog("Invalid date", "Investissement date cannot be in the past.");
-            return;
+            return false;
         }
 
         if (periode < 0) {
             showErrorDialog("Invalid periode", "Periode cannot be negative.");
-            return;
+            return false;
         }
 
-        Date date_inv = java.sql.Date.valueOf(selectedDate);
+        return true;
+    }
+
+    private void addInvestment() {
+        int id_user = Integer.parseInt(id_userField.getText().trim());
+        float montant = Float.parseFloat(montantField.getText().trim());
+        int periode = Integer.parseInt(periodeField.getText().trim());
+        LocalDate selectedDate = datePicker.getValue();
+        Date date_inv = Date.valueOf(selectedDate);
+
+        // Create investment object
         Investissement investissement = new Investissement();
         investissement.setId_user(id_user);
         investissement.setMontant(montant);
@@ -252,49 +242,38 @@ public class InvestissementController {
         investissement.setDate_investissement(date_inv);
         investissement.setId_projet(selectedProject.getId_projet());
 
-        if (investissementServices.EntiteExists(investissement)) {
-            showErrorDialog("Investment exists", "An investment with the same attributes already exists.");
-            return;
-        }
-
+        // Add investment
         investissementServices.ajouterEntite(investissement);
         clearFields();
-        populateInvestissementTable();
         showSuccessGif();
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Investissement added successfully!", ButtonType.OK);
-//        alert.showAndWait();
+        populateInvestissementTable();
+    }
 
-    }
-    @FXML
-    private void handleAddButtonAction() {
-        openProjectSelectionDialog();
-    }
     @FXML
     private void handleDeleteButtonAction() {
-        // Get the selected item from the table
         Investissement selectedInvestissement = table.getSelectionModel().getSelectedItem();
 
         if (selectedInvestissement == null) {
-            // If no item is selected, show an error message
             showErrorDialog("No Selection", "Please select an investment to delete.");
             return;
         }
 
-        // Show confirmation dialog
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText("Delete Record");
         confirmationAlert.setContentText("Are you sure you want to delete this record?");
 
-        // Show the confirmation dialog and wait for the user's response
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                // User confirmed the delet
-                // ion
-                int idToDelete = selectedInvestissement.getId_investissement();
-                investissementServices.deleteEntite(idToDelete);
 
-                // Remove the item from the table
+                int idToDelete = selectedInvestissement.getId_investissement();
+                List<Investissement> relatedInvestments = investissementServices.findInvestmentsByProjectId(selectedInvestissement.getId_projet());
+
+                for (Investissement investment : relatedInvestments) {
+                    investissementServices.deleteEntite(investment.getId_investissement());
+                    table.getItems().remove(investment);
+                }
+
                 table.getItems().remove(selectedInvestissement);
             }
         });
@@ -303,7 +282,7 @@ public class InvestissementController {
         montantField.clear();
         periodeField.clear();
         id_userField.clear();
-        datePicker.getEditor().clear(); // Clear the DatePicker
+        datePicker.getEditor().clear();
     }
     private void showErrorDialog(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -317,10 +296,8 @@ public class InvestissementController {
         String gifPath = "src/main/resources/Assets/giphyy.gif";
 
         try {
-            // Convert the local file path to a URL
             String fileUrl = new File(gifPath).toURI().toURL().toString();
 
-            // Load the GIF from the local file into the WebView
             String htmlContent ="<html><body style=\"margin:0;overflow:hidden;\">"
                     + "<img id=\"gif\" src=\"" + fileUrl + "\" style=\"width:100%;height:100%;object-fit:contain;\">"
                     + "<script>"
@@ -332,7 +309,6 @@ public class InvestissementController {
             WebEngine webEngine = gifWebView.getEngine();
             webEngine.loadContent(htmlContent);
 
-            // Make the WebView visible
             gifWebView.setVisible(true);
         } catch (MalformedURLException e) {
             e.printStackTrace();

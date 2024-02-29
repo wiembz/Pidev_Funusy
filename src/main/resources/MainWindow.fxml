@@ -2,6 +2,7 @@
 
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,9 +19,9 @@
             <AnchorPane prefHeight="76.0" prefWidth="600.0">
               <children>
                 <!-- Top Content -->
-                <ImageView fitHeight="67.0" fitWidth="208.0" layoutX="14.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="60.0" fitWidth="66.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@Assets/1.png" />
+                    <Image url="@Assets/Asset.png" />
                   </image>
                 </ImageView>
                 <Button fx:id="profilebtn" alignment="CENTER" contentDisplay="RIGHT" layoutX="1033.0" layoutY="-2.0" mnemonicParsing="false" nodeOrientation="RIGHT_TO_LEFT" onAction="#handleProfilesButtonClick" onMouseClicked="#handleProfilesButtonClick" prefHeight="71.0" prefWidth="68.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" textAlignment="RIGHT" AnchorPane.rightAnchor="0.599999999999909">
@@ -41,6 +42,11 @@
                     </ImageView>
                   </graphic>
                 </Button>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="88.0" layoutY="15.0" prefHeight="50.0" prefWidth="110.0" stylesheets="@Stylesheet/ADMIN.css" text="FUNUSY" textFill="#e1a729">
+                           <font>
+                              <Font name="Bell MT Bold" size="26.0" />
+                           </font>
+                        </Label>
               </children>
             </AnchorPane>
           </top>

@@ -3,26 +3,29 @@ package pidev.esprit.Controllers.Investissement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.converter.FloatStringConverter;
 import pidev.esprit.Entities.Investissement;
-import pidev.esprit.Entities.Projet;
-import pidev.esprit.Services.ProjetServices;
-import pidev.esprit.Services.InvestissementServices;
 import pidev.esprit.Entities.ProjectType;
+import pidev.esprit.Entities.Projet;
+import pidev.esprit.Services.InvestissementServices;
+import pidev.esprit.Services.ProjetServices;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
-import java.util.Optional;
 
-public class ProjetController {
-
+public class ProjetAdminController {
     public Button Addbtn;
     @FXML
     private TextField id_userField;
@@ -59,14 +62,13 @@ public class ProjetController {
     @FXML
     private TableColumn<Projet, String> description;
 
-    @FXML
-    private WebView gifWebView;
+
 
     private InvestissementServices investissementServices;
     private ProjetServices projetServices;
     private Object ComboBoxTableCell;
 
-    public ProjetController() {
+    public ProjetAdminController() {
         projetServices = new ProjetServices();
         this.investissementServices = new InvestissementServices();
 
@@ -74,10 +76,11 @@ public class ProjetController {
 
     @FXML
     private void initialize() {
-       // setupCellFactories();
+        //table.setEditable(true);
+        setupCellFactories();
         populateProjetTable();
-       // type_projetField.setItems(FXCollections.observableArrayList(ProjectType.values()));
-
+        // type_projetField.setItems(FXCollections.observableArrayList(ProjectType.values()));
+//
 //        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
 //            if (newValue.isEmpty()) {
 //                populateProjetTable(); // If the search field is empty, show all projects
@@ -98,7 +101,7 @@ public class ProjetController {
 //        }
 //    }
 
-    private void populateProjetTable() {
+    protected  void populateProjetTable() {
         List<Projet> projets = projetServices.afficherEntite();
         ObservableList<Projet> observableList = FXCollections.observableArrayList(projets);
         id_projet.setCellValueFactory(new PropertyValueFactory<>("id_projet"));
@@ -112,82 +115,27 @@ public class ProjetController {
         table.setItems(observableList);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    @FXML
-//    private void handleAddButtonAction() {
-//        // Get input values
-//        String id_userText = id_userField.getText().trim();
-//        String montant_reqText = montant_reqField.getText().trim();
-//        String nom_projetText = nom_projetField.getText().trim();
-//        String longitudeText = longitudeField.getText().trim();
-//        String latitudeText = latitudeField.getText().trim();
-//        ProjectType id_type_projet = type_projetField.getValue();
-//        String descriptionText = descriptionField.getText().trim();
-//
-//        if (id_userText.isEmpty() || montant_reqText.isEmpty() || nom_projetText.isEmpty() ||
-//                longitudeText.isEmpty() || latitudeText.isEmpty() || id_type_projet == null || descriptionText.isEmpty()) {
-//            showErrorDialog("Empty fields", "Please fill all the fields.");
-//            return;
-//        }
-//        int id_user;
-//        float montant_req;
-//        try {
-//            id_user = Integer.parseInt(id_userText);
-//            montant_req = Float.parseFloat(montant_reqText);
-//        } catch (NumberFormatException e) {
-//            showErrorDialog("Invalid Input", "Please enter valid numeric values for 'ID User' and 'Montant Req'.");
-//            return;
-//        }
-//
-//        Projet projet = new Projet();
-//        projet.setId_user(id_user);
-//        projet.setMontant_req(montant_req);
-//        projet.setNom_projet(nom_projetText);
-//        projet.setLongitude(longitudeText);
-//        projet.setLatitude(latitudeText);
-//        projet.setType_projet(id_type_projet.toString());
-//        projet.setDescription(descriptionText);
-//
-//        if (projetServices.EntiteExists(projet)) {
-//            showErrorDialog("Project Exists", "This project already exists.");
-//            return;
-//        }
-//
-//        projetServices.ajouterEntite(projet);
-//        populateProjetTable();
-//        clearFields();
-//        showSuccessGif();
-//    }
     @FXML
-    private void handleDeleteButtonAction() {
+    private void handleAddButtonAction() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AddProjectAdmin.fxml"));
+            Parent root = loader.load();
+            AddProjectAdminController controller = loader.getController();
+            controller.setParentController(this);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Add Project");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @FXML
+    private void DeleteButtonAction() {
         Projet selectedProject = table.getSelectionModel().getSelectedItem();
         if (selectedProject == null) {
             showErrorDialog("No Selection", "Please select a project to delete.");
@@ -218,15 +166,16 @@ public class ProjetController {
             }
         });
     }
-//    private void clearFields() {
-//        id_userField.clear();
-//        montant_reqField.clear();
-//        nom_projetField.clear();
-//        longitudeField.clear();
-//        latitudeField.clear();
-//        type_projetField.getSelectionModel().clearSelection();
-//        descriptionField.clear();
-//    }
+
+    private void clearFields() {
+        id_userField.clear();
+        montant_reqField.clear();
+        nom_projetField.clear();
+        longitudeField.clear();
+        latitudeField.clear();
+        type_projetField.getSelectionModel().clearSelection();
+        descriptionField.clear();
+    }
 
     private void showErrorDialog(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -362,29 +311,4 @@ public class ProjetController {
         });
     }
 
-    private void showSuccessGif() {
-        String gifPath = "src/main/resources/Assets/giphyy.gif";
-
-        try {
-            // Convert the local file path to a URL
-            String fileUrl = new File(gifPath).toURI().toURL().toString();
-
-            // Load the GIF from the local file into the WebView
-            String htmlContent = "<html><body style=\"margin:0;overflow:hidden;\">"
-                    + "<img id=\"gif\" src=\"" + fileUrl + "\" style=\"width:100%;height:100%;object-fit:contain;\">"
-                    + "<script>"
-                    + "var gif = document.getElementById('gif');"
-                    + "setTimeout(function() { gif.style.display = 'none'; }, 3000);"
-                    + "</script>"
-                    + "</body></html>";
-
-            WebEngine webEngine = gifWebView.getEngine();
-            webEngine.loadContent(htmlContent);
-
-            // Make the WebView visible
-            gifWebView.setVisible(true);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -23,11 +23,33 @@ public class InvestissementServices implements ICrud<Investissement> {
             pst.setFloat(2, i.getMontant());
             pst.setDate(3, new java.sql.Date(i.getDate_investissement().getTime()));
             pst.setInt(4, i.getPeriode());
-            pst.setInt(5, i.getId_projet()); // Set the id_projet
+            pst.setInt(5, i.getId_projet());
             pst.executeUpdate();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+    }
+    public List<Investissement> findInvestmentsByProjectId(int projectId) {
+        List<Investissement> investments = new ArrayList<>();
+        String query = "SELECT * FROM investissement WHERE id_projet = ?";
+        try {
+            PreparedStatement pst = cnx2.prepareStatement(query);
+            pst.setInt(1, projectId);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Investissement inv = new Investissement();
+                inv.setId_investissement(rs.getInt("id_investissement"));
+                inv.setId_user(rs.getInt("id_user"));
+                inv.setMontant(rs.getFloat("montant"));
+                inv.setDate_investissement(rs.getDate("date_inv"));
+                inv.setPeriode(rs.getInt("periode"));
+                inv.setId_projet(rs.getInt("id_projet"));
+                investments.add(inv);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return investments;
     }
     public boolean EntiteExists(Investissement i) {
         String query = "SELECT COUNT(*) FROM investissement WHERE id_user = ? AND montant = ? AND date_inv = ? AND periode = ? AND id_projet = ?";
@@ -37,7 +59,7 @@ public class InvestissementServices implements ICrud<Investissement> {
             pst.setFloat(2, i.getMontant());
             pst.setDate(3, new java.sql.Date(i.getDate_investissement().getTime()));
             pst.setInt(4, i.getPeriode());
-            pst.setInt(5, i.getId_projet()); // Set the id_projet
+            pst.setInt(5, i.getId_projet());
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 int count = rs.getInt(1);
@@ -64,7 +86,7 @@ public class InvestissementServices implements ICrud<Investissement> {
                 inv.setMontant(rs.getFloat("montant"));
                 inv.setDate_investissement(rs.getDate("date_inv"));
                 inv.setPeriode(rs.getInt("periode"));
-                inv.setId_projet(rs.getInt("id_projet")); // Set the id_projet
+                inv.setId_projet(rs.getInt("id_projet"));
                 investissements.add(inv);
             }
         } catch (SQLException e) {
@@ -83,7 +105,7 @@ public class InvestissementServices implements ICrud<Investissement> {
             pst.setDate(3, new java.sql.Date(i.getDate_investissement().getTime()));
             pst.setInt(4, i.getPeriode());
             pst.setInt(5, i.getId_investissement());
-            pst.setInt(6, i.getId_projet()); // Set the id_projet
+            pst.setInt(6, i.getId_projet());
             pst.executeUpdate();
             System.out.println("Update successful");
         } catch (SQLException e) {
