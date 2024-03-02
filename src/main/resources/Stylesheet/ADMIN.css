@@ -1,0 +1,313 @@
+.anchor-pane {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 2px;
+    -fx-border-radius: 20px; /* Set border radius for curved corners */
+
+}
+.body {
+    -fx-background-color: linear-gradient(to bottom, #cccdce, #6f7da6);/* Use your preferred colors */
+    -fx-background-size: cover;
+    -fx-background-attachment: fixed;
+    -fx-color: #fff; /* Set text color for better contrast */
+}
+/* styles.css */
+
+/* Sidebar button style */
+.sidebar-button {
+    -fx-background-color: transparent; /* Set background color */
+    -fx-text-fill: #ffffff; /* Set text color */
+    -fx-font-family: "Arial";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 10px; /* Set padding */
+    -fx-background-radius: 5px; /* Set border radius */
+    -fx-border-radius: 5px; /* Set border radius */
+    -fx-border-color: transparent; /* Set border color */
+
+}
+/* Hover effect for sidebar buttons */
+.sidebar-button:hover {
+    -fx-background-color: #8f8d8d; /* Set background color on hover */
+    -fx-effect: dropshadow(gaussian, rgba(87, 84, 84, 0.5), 10, 0, 0, 2); /* Shadow effect */
+    -fx-font-family: "Arial";
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+.sidebar-button.clicked {
+    -fx-background-color: rgba(143, 143, 143, 0.49); /* Set background color on hover */
+    -fx-effect: dropshadow(gaussian, rgba(87, 84, 84, 0.5), 10, 0, 0, 2); /* Shadow effect */
+    -fx-font-family: "Arial";
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+/* Pressed effect for sidebar buttons */
+.sidebar-button:pressed {
+    -fx-background-color: #666666; /* Set background color when pressed */
+}
+.button0 {
+    -fx-background-color: rgba(126, 139, 186, 0.39);
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand; /* Cursor on hover */
+    -fx-border-radius: 1px;
+    -fx-background-radius: 10px;
+}
+
+.button0.clicked {
+    -fx-background-color: linear-gradient(to right, rgba(255, 255, 255, 0.57), rgba(126, 139, 186, 0.7), rgba(126, 139, 186, 0.77));
+    -fx-font-size: 13pt;
+    -fx-font-family: "Arial";
+    -fx-border-color: #5c7080; /* Bottom border color on hover */
+    -fx-border-width: 0.5; /* Only bottom border */
+    -fx-text-fill: #ffffff; /* Text color */
+
+}
+/* Hover style */
+.button0:hover {
+    -fx-font-size: 13pt;
+    -fx-font-family: "Arial";
+    /*-fx-font-weight: regular;*/
+    -fx-background-color: rgba(227, 234, 255, 0.5);
+    -fx-effect: dropshadow(gaussian, rgba(87, 84, 84, 0.5), 10, 0, 0, 2); /* Shadow effect */
+    /*button content */
+
+}
+.button1 {
+    -fx-background-color:transparent;
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand; /* Cursor on hover */
+    -fx-border-radius: 9px;
+    -fx-border-color: rgba(128, 92, 92, 0.38); /* Bottom border color on hover */
+    -fx-background-radius: 10px;
+}
+
+.button1.clicked {
+    -fx-background-color: linear-gradient(to right, rgba(255, 255, 255, 0.57), rgba(126, 139, 186, 0.7), rgba(126, 139, 186, 0.77));
+    -fx-font-size: 13pt;
+    -fx-font-family: "Arial";
+    -fx-border-color: #5c7080; /* Bottom border color on hover */
+    -fx-border-width: 0.5; /* Only bottom border */
+    -fx-text-fill: #ffffff; /* Text color */
+
+}
+/* Hover style */
+.button1:hover {
+    -fx-font-size: 13pt;
+    -fx-font-family: "Arial";
+    /*-fx-font-weight: regular;*/
+    -fx-background-color: rgba(227, 234, 255, 0.5);
+    -fx-effect: dropshadow(gaussian, rgba(87, 84, 84, 0.5), 10, 0, 0, 2); /* Shadow effect */
+    /*button content */
+
+}
+.title {
+    -fx-font-family: "Segoe UI", sans-serif; /* Set font family */
+    -fx-font-size: 22px; /* Set font size */
+    -fx-font-weight: bold; /* Set font weight to bold */
+    -fx-text-fill: #333333; /* Set text color */
+    -fx-padding: 10px; /* Set padding */
+}
+
+
+
+
+
+
+
+
+
+
+.sidebar-button1 {
+    -fx-background-color: transparent; /* Set background color */
+    -fx-text-fill: #2a2929; /* Set text color */
+    -fx-font-family: "Arial";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 10px; /* Set padding */
+    -fx-background-radius: 5px; /* Set border radius */
+    -fx-border-radius: 5px; /* Set border radius */
+    -fx-border-color: transparent; /* Set border color */
+
+}
+.btn:hover{
+    -fx-cursor:hand ;
+}
+.table-view {
+    -fx-background-color:transparent;
+    -fx-background-radius:14 ;
+    -fx-border-radius:14 ;
+    -fx-border-color: #919090; /* Set border color */
+    -fx-font-family: "Segoe UI", sans-serif; /* Set font family */
+    -fx-font-size: 14px; /* Set font size */
+
+}
+.table-view .column-header-background{
+    -fx-background-color: rgba(89, 88, 88, 0.47);
+    -fx-background-radius:12;
+    -fx-background-insets: 0 0 0 0;
+
+    -fx-font-weight: regular; /* Set header font weight to bold */
+
+
+
+}
+.table-view .column-header, .table-view .filler{
+    -fx-size:50px;
+    -fx-border-width: 0 0 10 0;
+    -fx-background-color:transparent;
+    -fx-font-weight: regular; /* Set header font weight to bold */
+
+
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white ;
+}
+/* Table row style */
+.table-row-cell {
+    -fx-background-color: #f0f0f0; /* Set row background color */
+    -fx-border-radius: 0; /* Remove border radius for cells */
+}
+
+/* Alternating row style */
+.table-row-cell:odd {
+    -fx-background-color: #e0e0e0; /* Set alternating row background color */
+}
+
+/* Selected row style */
+.table-row-cell:selected {
+    -fx-background-color: rgba(126, 139, 186, 0.39); /* Set selected row background color */
+    -fx-text-fill: #ffffff; /* Set selected row text color */
+}
+
+
+
+
+
+
+
+.sidebar-button1:hover {
+    -fx-background-color: #8f8d8d; /* Set background color on hover */
+    -fx-effect: dropshadow(gaussian, rgba(87, 84, 84, 0.5), 10, 0, 0, 2); /* Shadow effect */
+    -fx-font-family: "Arial";
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+.sidebar-button1.clicked {
+    -fx-background-color: rgba(156, 159, 168, 0.35); /* Set background color on hover */
+    -fx-effect: dropshadow(gaussian, rgba(87, 84, 84, 0.5), 10, 0, 0, 2); /* Shadow effect */
+    -fx-font-family: "Arial";
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+/* Pressed effect for sidebar buttons */
+.sidebar-button1:pressed {
+    -fx-background-color: #666666; /* Set background color when pressed */
+}
+
+
+
+
+
+/* styles.css */
+
+/* Label style */
+.label1 {
+    -fx-font-family: "Segoe UI", sans-serif; /* Set font family */
+    -fx-font-size: 14px; /* Set font size */
+    -fx-text-fill: #333333; /* Set text color */
+}
+
+/* Text field style */
+.text-field {
+    -fx-font-family: "Segoe UI", sans-serif; /* Set font family */
+    -fx-font-size: 14px; /* Set font size */
+    -fx-prompt-text-fill: #aaaaaa; /* Set prompt text color */
+    -fx-text-fill: #333333; /* Set text color */
+    -fx-background-color: #f0f0f0; /* Set background color */
+    -fx-border-color: #cccccc; /* Set border color */
+    -fx-border-radius: 5px; /* Set border radius */
+    -fx-padding: 5px; /* Set padding */
+}
+
+/* Text field focus style */
+.text-field:focused {
+    -fx-border-color: #5c7080; /* Set border color when focused */
+}
+
+/* Text field hover style */
+.text-field:hover {
+    -fx-background-color: #e0e0e0; /* Set background color on hover */
+}
+
+/* Text area style */
+.text-area {
+    -fx-font-family: "Segoe UI", sans-serif; /* Set font family */
+    -fx-font-size: 14px; /* Set font size */
+    -fx-prompt-text-fill: #aaaaaa; /* Set prompt text color */
+    -fx-text-fill: #333333; /* Set text color */
+    -fx-background-color: #f0f0f0; /* Set background color */
+    -fx-border-color: #cccccc; /* Set border color */
+    -fx-border-radius: 5px; /* Set border radius */
+    -fx-padding: 5px; /* Set padding */
+}
+
+/* Text area focus style */
+.text-area:focused {
+    -fx-border-color: #5c7080; /* Set border color when focused */
+}
+
+/* Text area hover style */
+.text-area:hover {
+    -fx-background-color: #e0e0e0; /* Set background color on hover */
+}
+
+
+/* styles.css */
+
+/* ComboBox style */
+.combo-box {
+    -fx-font-family: "Segoe UI", sans-serif; /* Set font family */
+    -fx-font-size: 14px; /* Set font size */
+    -fx-text-fill: #333333; /* Set text color */
+    -fx-background-color: #f0f0f0; /* Set background color */
+    -fx-border-color: #cccccc; /* Set border color */
+    -fx-border-radius: 5px; /* Set border radius */
+    -fx-padding: 5px; /* Set padding */
+}
+
+/* ComboBox arrow button style */
+.combo-box .arrow-button {
+    -fx-background-color: transparent; /* Set arrow button background color */
+}
+
+/* ComboBox arrow button hover style */
+.combo-box .arrow-button:hover {
+    -fx-background-color: #e0e0e0; /* Set arrow button background color on hover */
+}
+
+/* ComboBox popup style */
+.combo-box .list-view {
+    -fx-font-family: "Segoe UI", sans-serif; /* Set font family */
+    -fx-font-size: 14px; /* Set font size */
+    -fx-text-fill: #333333; /* Set text color */
+    -fx-background-color: #ffffff; /* Set popup background color */
+    -fx-border-color: #cccccc; /* Set popup border color */
+    -fx-border-radius: 5px; /* Set popup border radius */
+}
+
+/* ComboBox popup item style */
+.combo-box .list-view .list-cell {
+    -fx-padding: 5px; /* Set popup item padding */
+}
+
+/* ComboBox popup item hover style */
+.combo-box .list-view .list-cell:hover {
+    -fx-background-color: #e0e0e0; /* Set popup item background color on hover */
+}

@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="587.0" prefWidth="719.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Credit.AjouterCredit">
+<AnchorPane prefHeight="587.0" prefWidth="719.0" styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Credit.AjouterCredit">
     <children>
-        <Label alignment="TOP_CENTER" layoutX="240.0" layoutY="40.0" prefHeight="28.0" prefWidth="239.20000000000005" styleClass="scroll-bar" text="Add Credit" textAlignment="CENTER" textFill="#e1a729">
+        <Label alignment="TOP_CENTER" layoutX="240.0" layoutY="40.0" prefHeight="28.0" prefWidth="239.20000000000005" styleClass="scroll-bar" stylesheets="@Stylesheet/Style.css" text="Add Credit" textAlignment="CENTER" textFill="#e1a729">
             <font>
                 <Font name="System Bold Italic" size="21.0" />
             </font>
@@ -19,18 +19,18 @@
         <Label alignment="CENTER_RIGHT" layoutX="59.0" layoutY="105.0" text="AmountCredit" />
         <Label alignment="CENTER_RIGHT" layoutX="230.0" layoutY="105.0" text="DurationCredit" />
         <Label alignment="CENTER_RIGHT" layoutX="413.0" layoutY="105.0" text="InterestRateCredit" />
-        <Label alignment="CENTER_RIGHT" layoutX="578.0" layoutY="105.0" text="Id_User" />
+        <Label alignment="CENTER_RIGHT" layoutX="578.0" layoutY="105.0" text="User ID" />
         <TextField fx:id="tf_montant" layoutX="57.0" layoutY="135.0" prefWidth="122.0" />
         <TextField fx:id="tf_duree" layoutX="228.0" layoutY="135.0" prefWidth="122.0" />
         <TextField fx:id="tf_taux" layoutX="412.0" layoutY="135.0" prefWidth="122.0" />
         <TextField fx:id="tf_user" layoutX="576.0" layoutY="135.0" prefWidth="122.0" />
-        <Button fx:id="deleteButton" layoutX="385.0" layoutY="195.0" mnemonicParsing="false" onAction="#deleteRow" prefHeight="42.0" prefWidth="102.0" text="DELETE" />
+        <Button fx:id="deleteButton" layoutX="385.0" layoutY="195.0" mnemonicParsing="false" onAction="#deleteRow" prefHeight="42.0" prefWidth="102.0" stylesheets="@Stylesheet/Style.css" text="DELETE" />
         <Label alignment="CENTER_RIGHT" layoutX="187.0" layoutY="140.0" text="DT" />
         <Label alignment="CENTER_RIGHT" layoutX="360.0" layoutY="141.0" text="Month" />
         <Label alignment="CENTER_RIGHT" layoutX="545.0" layoutY="141.0" text="\%" />
         <AnchorPane layoutY="255.0" prefHeight="287.0" prefWidth="719.0">
             <children>
-                <TableView fx:id="table" editable="true" layoutX="38.0" prefHeight="287.0" prefWidth="670.0">
+                <TableView fx:id="table" editable="true" layoutX="38.0" prefHeight="287.0" prefWidth="670.0" stylesheets="@Stylesheet/Style.css">
                     <columns>
                         <TableColumn fx:id="id_credit" prefWidth="56.0" text="Id" />
                         <TableColumn fx:id="montant_credit" prefWidth="86.4" text="Amount" />

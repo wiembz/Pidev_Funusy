@@ -204,7 +204,7 @@ public class AjouterCredit {
             successAlert.showAndWait();
         }
     }
-
+    // Méthode pour afficher une boîte de dialogue d'erreur
     private void showErrorDialog(String noSelection, String s) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
@@ -216,7 +216,7 @@ public class AjouterCredit {
 
     private void setupEditableCells() {
         // Montant_credit
-        montant_credit.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        montant_credit.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));// Créez une cellule éditable pour les montants de crédit
         montant_credit.setOnEditCommit(event -> {
             Double newValue = event.getNewValue();
             Credit selectedCredit = event.getTableView().getItems().get(event.getTablePosition().getRow());
@@ -225,7 +225,6 @@ public class AjouterCredit {
             confirmationAlert.setTitle("Confirmation");
             confirmationAlert.setHeaderText("Change credit");
             confirmationAlert.setContentText("Are you sure you want to change this credit ?");
-
             confirmationAlert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     selectedCredit.setMontant_credit(newValue);
@@ -306,7 +305,7 @@ public class AjouterCredit {
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
                     Credit selectedItem = row.getItem();
-                    // Sélectionner la ligne et mettre à jour les boutons
+                    // Activer le bouton de suppression si une ligne est sélectionnée
                     deleteButton.setDisable(false);
                 }
             });
@@ -326,34 +325,15 @@ public class AjouterCredit {
             // Pass id_credit to the controller
             controller.setId_credit(id_credit);
 
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
+            Scene scene = new Scene(root);// Créez une nouvelle scène avec la disposition de la racine
+            Stage stage = new Stage();// Créez une nouvelle étape
+            stage.setScene(scene);// Définir la scène créée ci-dessus
             stage.setTitle(windowTitle);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    private void loadFXML(String s, String windowTitle) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/" + s));
-            Parent root = loader.load();
-
-            // Access the controller
-
-
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle(windowTitle);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void suivre(MouseEvent event) {
         CreditCrud cc = new CreditCrud();
         int lastInsertedCreditId = cc.getLastInsertedCreditId();

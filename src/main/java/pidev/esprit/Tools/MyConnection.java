@@ -9,9 +9,9 @@ public class MyConnection {
     public String login="root";
     public String pwd="";
     Connection cnx;
-    public static MyConnection instance;
+    public static MyConnection instance;//2eme etape
 
-    private MyConnection() {
+    private MyConnection() {//1er etape
         try {
             cnx = DriverManager.getConnection(url,login,pwd);
             System.out.println("connexion etablie!");
@@ -24,7 +24,7 @@ public class MyConnection {
         return cnx;
     }
     //3eme etape
-    public static MyConnection getInstance(){
+    public static MyConnection getInstance(){//3eme etape
         if(instance == null){
             instance = new MyConnection();
         }

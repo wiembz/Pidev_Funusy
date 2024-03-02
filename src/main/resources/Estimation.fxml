@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="pidev.esprit.Controllers.Credit.Estimation">
+   <Label text="Montant:"/>
+   <TextField fx:id="textFieldMontant"/>
+
+   <Label text="Durée (en mois):"/>
+   <TextField fx:id="textFieldDuree"/>
+
+   <Label text="Taux (%):"/>
+   <TextField fx:id="textFieldTaux"/>
+
+   <Button text="Valider" fx:id="buttonValider"/>
+
+   <TableView fx:id="tableView">
+      <columns>
+         <TableColumn text="N°"/>
+         <TableColumn text="ÉCHÉANCE"/>
+         <TableColumn text="PRINCIPAL"/>
+         <TableColumn text="VAL.RÉS."/>
+         <TableColumn text="INTÉRÊTS"/>
+         <TableColumn text="MENSUALITÉ"/>
+      </columns>
+   </TableView>
+</VBox>

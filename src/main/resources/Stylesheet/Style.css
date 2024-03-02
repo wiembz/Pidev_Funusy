@@ -25,7 +25,7 @@
 
 
 .background{
-    -fx-background-color: #F1F1F1;
+    -fx-background-color: #cecece;
     -fx-background-radius:8px;
 }
 
@@ -404,4 +404,99 @@
 /* Pressed effect */
 #btndelete:pressed {
     -fx-background-color: #b22222; /* Even darker Red when pressed */
+}
+#Creditbtn{
+    -fx-background-color: rgb(90, 98, 126); /* Blue-grey */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+}
+#Creditbtn:hover {
+    -fx-background-color: #b3b8de; /* Darker blue-grey on hover */
+}
+
+/* Pressed effect */
+#Creditbtn:pressed {
+    -fx-background-color: #595981;} /* Even darker blue-grey when pressed */
+#estimbtn{
+    -fx-background-color: #5a627e; /* Blue-grey */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+}
+#estimbtn:hover {
+    -fx-background-color: #b3b8de; /* Darker blue-grey on hover */
+}
+#estimbtn:pressed {
+    -fx-background-color: #595981;} /* Even darker blue-grey when pressed */
+#backgroundbtn{
+    -fx-background-color: #e1e3ea; /* Blue-grey */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+
+}
+#Main{
+    -fx-background-color: #efeff3; /* Blue-grey */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+
+}
+#acceptedCredit{
+    -fx-background-color: #159131; /* Blue-grey */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+}
+#acceptedCredit:hover {
+    -fx-background-color: #b3b8de; /* Darker blue-grey on hover */
+}
+#acceptedCredit:pressed {
+    -fx-background-color: #595981;} /* Even darker blue-grey when pressed */
+#rejectedCredit{
+    -fx-background-color: #ff0000; /* Blue-grey */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+}
+#rejectedCredit:hover {
+    -fx-background-color: #b3b8de; /* Darker blue-grey on hover */
+}
+#rejectedCredit:pressed {
+    -fx-background-color: #595981;} /* Even darker blue-grey when pressed */
+#backAdmin{
+    -fx-background-color: #dcdcdc; /* Blue-grey */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+
 }

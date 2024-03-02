@@ -9,10 +9,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Credit.GarantieController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Credit.GarantieController">
 
     <!-- Titre -->
-    <Label alignment="TOP_CENTER" prefWidth="600.0" styleClass="background" stylesheets="@Stylesheet/Style.css" text="Add guarantee " textAlignment="CENTER" textFill="#e1a729">
+    <Label alignment="TOP_CENTER" prefWidth="600.0" styleClass="background" text="Add guarantee " textAlignment="CENTER" textFill="#e1a729">
         <font>
             <Font name="System Bold Italic" size="21.0" />
         </font>
@@ -24,7 +24,7 @@
 
     <!-- Champ de saisie de la valeur de la garantie -->
     <Label layoutX="232.0" layoutY="65.0" prefHeight="18.0" prefWidth="46.0" text="Value" />
-    <TextField fx:id="tf_valeur" layoutX="230.0" layoutY="88.0" prefHeight="11.0" prefWidth="175.0" promptText="Warranty value" />
+    <TextField fx:id="tf_valeur" layoutX="230.0" layoutY="94.0" prefHeight="11.0" prefWidth="175.0" promptText="Warranty value" />
 
     <!-- Bouton pour choisir un fichier -->
     <Button fx:id="btnChoose" layoutX="461.0" layoutY="94.0" onAction="#ChooseFile" text="Choose a file" />
@@ -34,16 +34,16 @@
 
     <!-- Label pour afficher le statut -->
     <Label layoutX="461.0" layoutY="66.0" text="Data" />
-   <TableView fx:id="table_garantie" editable="true" layoutX="-3.0" layoutY="194.0" prefHeight="200.0" prefWidth="607.0">
+   <TableView fx:id="table_garantie" editable="true" layoutX="-2.0" layoutY="206.0" prefHeight="218.0" prefWidth="643.0" stylesheets="@Stylesheet/Style.css">
      <columns>
        <TableColumn fx:id="id_garantie" prefWidth="51.20001220703125" text="Id" />
        <TableColumn fx:id="id_credit" prefWidth="58.399967193603516" text="IdCredit" />
          <TableColumn fx:id="nature_garantie" prefWidth="145.6000213623047" text="Nature" />
          <TableColumn fx:id="Valeur_Garantie" prefWidth="87.20001220703125" text="Value" />
-         <TableColumn fx:id="preuve" prefWidth="255.199951171875" text="Data" />
+         <TableColumn fx:id="preuve" prefWidth="292.8000183105469" text="Data" />
      </columns>
    </TableView>
-   <Button fx:id="btndelete" layoutX="338.0" layoutY="148.0" mnemonicParsing="false" onAction="#deleteGarantie" prefHeight="36.0" prefWidth="66.0" styleClass="clicked" text="DELETE" textFill="#0d0d0d" />
+   <Button fx:id="btndelete" layoutX="338.0" layoutY="148.0" mnemonicParsing="false" onAction="#deleteGarantie" prefHeight="36.0" prefWidth="66.0" styleClass="clicked" stylesheets="@Stylesheet/Style.css" text="DELETE" textFill="#0d0d0d" />
    <Label layoutX="413.0" layoutY="98.0" text="DT" />
 
 </AnchorPane>
