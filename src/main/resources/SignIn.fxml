@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="645.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.User.SignInController">
+    <children>
+        <StackPane layoutX="-3.0" layoutY="2.0" prefHeight="384.0" prefWidth="645.0" style="-fx-background-color: #673ab7;">
+            <children>
+                <VBox alignment="CENTER" spacing="10">
+                    <Label style="-fx-text-fill: #a69b13;" text="Connectez-vous" />
+                    <Label style="-fx-text-fill: #a69b13;" text="Nom d'utilisateur" />
+                    <TextField fx:id="emailField" prefHeight="25.0" prefWidth="200.0" />
+                    <Label style="-fx-text-fill: #a69b13;" text="Mot de passe" />
+                    <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="200.0" />
+                    <Button mnemonicParsing="false" onAction="#signIn" style="-fx-background-color: #a69b13; -fx-text-fill: #673ab7;" text="Connexion" />
+                </VBox>
+            </children>
+        </StackPane>
+    </children>
+</AnchorPane>
