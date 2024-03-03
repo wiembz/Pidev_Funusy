@@ -1,12 +1,15 @@
 
 package pidev.esprit.Controllers.User;
+import javafx.scene.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
-import java.io.IOException;
+import pidev.esprit.User.Entities.*;
+import pidev.esprit.User.Tools.QRCodeGenerator;
+
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -16,31 +19,38 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+import pidev.esprit.User.Services.GestionUser;
+
+
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 import javafx.util.StringConverter;
-import javafx.util.converter.DateStringConverter;
 import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.FloatStringConverter;
 import javafx.util.converter.IntegerStringConverter;
-import pidev.esprit.User.Entities.AdresseUser;
-import pidev.esprit.User.Entities.Role;
 import pidev.esprit.User.Entities.User;
-import pidev.esprit.User.Services.GestionUser;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 
 public class DashboardAdminController {
 
     private final GestionUser userGestion;
+    @FXML
+    private Button btn_generate_qr_code;
     @FXML
     private ResourceBundle resources;
 
@@ -179,6 +189,8 @@ public class DashboardAdminController {
 
     @FXML
     void initialize() {
+        btn_generate_qr_code.setOnAction(this::handleGenerateQRCodeButtonClick);
+
         adresse_choicebox.setItems(FXCollections.observableArrayList(
                 "ARIANA", "BEJA", "BEN_AROUS", "BIZERTE", "GABES", "GAFSA",
                 "JENDOUBA", "KAIROUAN", "KASSERINE", "KEBILI", "KEF", "MAHDIA",
@@ -601,6 +613,75 @@ public class DashboardAdminController {
             }
         }
     };
+
+    private String generateQRContent(List<User> users) {
+        StringBuilder content = new StringBuilder();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String formattedDate = now.format(formatter);
+
+        content.append("Sign-in time: ").append(formattedDate).append("\n");
+
+        for (User user : users) {
+            content.append("ID: ").append(user.getId_user()).append("\n");
+            content.append("Name: ").append(user.getNom_user()).append("\n");
+            content.append("Surname: ").append(user.getPrenom_user()).append("\n");
+            content.append("Date of Birth: ").append(user.getDate_naissance()).append("\n");
+            // Add other user details as needed
+            content.append("\n");
+        }
+
+        return content.toString();
+    }
+
+    private String generateQRCode(String content) {
+        // Generate the QR code logic here
+        // Combine the time of sign-in and user details into a single string
+        StringBuilder qrCodeData = new StringBuilder();
+        qrCodeData.append(content);
+
+        // Generate the QR code and return the path to the generated image
+        String qrCodePath = "path_to_save_qr_code_image";
+        QRCodeGenerator.generateQRCode(qrCodeData.toString(), 500, 500, qrCodePath);
+        return qrCodePath;
+    }
+    @FXML
+    void handleGenerateQRCodeButtonClick(ActionEvent event) {
+        // Generate QR code content
+        List<User> users = tableUsers.getItems();
+        String qrCodeContent = generateQRContent(users);
+
+        // Generate QR code and save it
+        String qrCodePath = generateQRCode(qrCodeContent);
+
+        // Load the generated QR code image
+        Image qrCodeImage = new Image("file:" + qrCodePath);
+
+        // Display the QR code image in a new window
+        ImageView imageView = new ImageView(qrCodeImage);
+        Group root = new Group(imageView);
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.setTitle("Generated QR Code");
+        stage.show();
+
+        // Show success message
+        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+        successAlert.setTitle("QR Code Generated");
+        successAlert.setHeaderText(null);
+        successAlert.setContentText("QR code generated successfully. Path: " + qrCodePath);
+        successAlert.showAndWait();
+
+        // Print scanned data to the console
+        String scannedData = "Your scanned data here";
+        System.out.println("Scanned Data: " + scannedData);
+
+        // Log scanned data
+        Logger.getLogger(getClass().getName()).log(Level.INFO, "Scanned Data: " + scannedData);
+
+    }
 
 
 }

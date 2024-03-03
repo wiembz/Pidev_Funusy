@@ -5,8 +5,10 @@ import pidev.esprit.User.Entities.User;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import pidev.esprit.User.Tools.MyConnection;
+import pidev.esprit.User.Tools.EmailSender;
+import pidev.esprit.Tools.MyConnection;
 public class GestionUser implements IGestionUser<User> {
     private Connection cnx2;
 
@@ -155,6 +157,34 @@ try
         }
 
     }
+    public User selectUserByEmail(String email) {
+        String query = "SELECT * FROM user WHERE email_user = ?";
+        try {
+            PreparedStatement pst = cnx2.prepareStatement(query);
+            pst.setString(1, email);
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id_user");
+                String nom = rs.getString("nom_user");
+                String prenom = rs.getString("prenom_user");
+                String emailUser = rs.getString("email_user");
+                String mdp = rs.getString("mdp");
+                double salaire = rs.getDouble("salaire");
+                Date dateNaissance = rs.getDate("date_naissance");
+                int cin = rs.getInt("CIN");
+                int tel = rs.getInt("tel");
+                String adresse = rs.getString("adresse_user");
+                String role = rs.getString("role_user");
+
+                return new User(id, nom, prenom, emailUser, mdp, salaire, dateNaissance, cin, tel, adresse, role);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null; // Return null if no user found or an error occurs
+    }
+
     public boolean userExists(User p) {
         String query = "SELECT COUNT(*) FROM user WHERE email=?";
         try {
@@ -199,6 +229,120 @@ try
         }
         return null; // Return null if no user found or an error occurs
     }
+    public void sendForgotPasswordEmail(User user) {
+        String numericCode = generateNumericCode();
+        storeNumericCodeInDatabase(user, numericCode);
 
+        String subject = "Password Reset";
+        String body = "Dear " + user.getNom_user() + ",\n\n"
+                + "To reset your password, please use the following numeric code: " + numericCode;
 
+        // Send the email using JavaMail API
+        // Implement the email sending logic here
+        EmailSender.sendEmail(user.getEmail_user(), subject, body);
+    }
+
+    public boolean resetPasswordWithCode(String email, String numericCode, String newPassword) {
+        // Verify the numeric code and check its validity
+        if (isNumericCodeValid(email, numericCode)) {
+            // Reset the password in the database
+            updateUserPassword(email, newPassword);
+
+            // Optionally, invalidate or remove the numeric code from the database
+            invalidateNumericCode(email, numericCode);
+
+            return true; // Password reset successful
+        }
+
+        return false; // Invalid numeric code or expired
+    }
+
+    private String generateNumericCode() {
+        // Implement the logic to generate a random numeric code
+        // Return the generated code as a string
+        Random random = new Random();
+        return String.format("%06d", random.nextInt(1000000)); // 6-digit numeric code
+    }
+
+    private void storeNumericCodeInDatabase(User user, String numericCode) {
+        // Implement the logic to store the numeric code in the database
+        // You can use the user's email as an identifier and store the numeric code in the database
+        String query = "UPDATE user SET numeric_code = ? WHERE email_user = ?";
+        try (PreparedStatement pst = cnx2.prepareStatement(query)) {
+            pst.setString(1, numericCode);
+            pst.setString(2, user.getEmail_user());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    private boolean isNumericCodeValid(String email, String numericCode) {
+        // Implement the logic to check if the numeric code is valid for the given email
+        // Verify the code against the stored code in the database and check its expiration
+
+        String query = "SELECT numeric_code FROM user WHERE email_user = ?";
+        try (PreparedStatement pst = cnx2.prepareStatement(query)) {
+            pst.setString(1, email);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                String storedCode = rs.getString("numeric_code");
+                return storedCode != null && storedCode.equals(numericCode); // Check if the stored code matches the provided code
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
+
+    private void updateUserPassword(String email, String newPassword) {
+        // Implement the logic to update the user's password in the database
+        String query = "UPDATE user SET mdp = ? WHERE email_user = ?";
+        try (PreparedStatement pst = cnx2.prepareStatement(query)) {
+            pst.setString(1, newPassword);
+            pst.setString(2, email);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    private void invalidateNumericCode(String email, String numericCode) {
+        // Optionally, implement the logic to invalidate or remove the numeric code from the database
+        String query = "UPDATE user SET numeric_code = NULL WHERE email_user = ?";
+        try (PreparedStatement pst = cnx2.prepareStatement(query)) {
+            pst.setString(1, email);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public User getUserByEmail(String email) {
+        String query = "SELECT * FROM user WHERE email_user = ?";
+        try {
+            PreparedStatement pst = cnx2.prepareStatement(query);
+            pst.setString(1, email);
+
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("id_user");
+                String nom = rs.getString("nom_user");
+                String prenom = rs.getString("prenom_user");
+                String emailUser = rs.getString("email_user");
+                String mdp = rs.getString("mdp");
+                double salaire = rs.getDouble("salaire");
+                Date dateNaissance = rs.getDate("date_naissance");
+                int cin = rs.getInt("CIN");
+                int tel = rs.getInt("tel");
+                String adresse = rs.getString("adresse_user");
+                String role = rs.getString("role_user");
+
+                return new User(id, nom, prenom, emailUser, mdp, salaire, dateNaissance, cin, tel, adresse, role);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return null; // Return null if no user found or an error occurs
+    }
 }

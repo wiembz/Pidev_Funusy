@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Hyperlink?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="645.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.User.SignInController">
     <children>
         <StackPane layoutX="-3.0" layoutY="2.0" prefHeight="384.0" prefWidth="645.0" style="-fx-background-color: #673ab7;">
@@ -19,6 +20,9 @@
                     <Label style="-fx-text-fill: #a69b13;" text="Mot de passe" />
                     <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="200.0" />
                     <Button mnemonicParsing="false" onAction="#signIn" style="-fx-background-color: #a69b13; -fx-text-fill: #673ab7;" text="Connexion" />
+                    <Hyperlink fx:id="forgotPasswordLink" text="Forgot Password?" onAction="#forgotPassword" />
+                    <Hyperlink fx:id="signUpLink" text="Don't have an account? Sign up" onAction="#goToSignUp"/>
+
                 </VBox>
             </children>
         </StackPane>

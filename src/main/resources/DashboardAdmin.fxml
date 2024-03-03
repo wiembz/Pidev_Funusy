@@ -46,6 +46,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <Button fx:id="btn_generate_qr_code" layoutX="1157.0" text="Generate QR Code" layoutY="3.0" mnemonicParsing="false" prefHeight="71.0" onAction="#handleGenerateQRCodeButtonClick" prefWidth="93.0" />
                      </children>
                   </AnchorPane>
                </top>

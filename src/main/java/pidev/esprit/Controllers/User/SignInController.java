@@ -65,6 +65,19 @@ public class SignInController {
         }
     }
 
+    @FXML
+    void forgotPassword(ActionEvent event) {
+        // Handle the "Forgot Password" action
+        String email = emailField.getText();
+        User user = gestionUser.getUserByEmail(email);
+
+        if (user != null) {
+            gestionUser.sendForgotPasswordEmail(user);
+            showAlert(Alert.AlertType.INFORMATION, "Forgot Password", "A password reset email has been sent to your registered email address.");
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Forgot Password", "No user found with the provided email address.");
+        }
+    }
 
     // ... (existing code)
 

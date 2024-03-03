@@ -3,13 +3,16 @@ import pidev.esprit.User.Entities.Role;
 import pidev.esprit.User.Entities.User;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 public class UserController {
     private static final Map<String, User> userDatabase = new HashMap<>();
+
+
+
 
     public static boolean authenticateUser(String username, String password) {
         if (userDatabase.containsKey(username)) {
