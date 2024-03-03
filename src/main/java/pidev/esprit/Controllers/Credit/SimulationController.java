@@ -4,12 +4,12 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPTable;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.collections.ObservableList;
 import javafx.collections.FXCollections;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 import pidev.esprit.Entities.Echeance;
 import pidev.esprit.Services.SimulateurCrud;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -20,6 +20,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 
 
@@ -114,12 +115,76 @@ public class SimulationController {
         valeurResiduelle.setCellValueFactory(cellData -> cellData.getValue().valeurResiduelleProperty());
         interets.setCellValueFactory(cellData -> cellData.getValue().interetsProperty());
         mensualite.setCellValueFactory(cellData -> cellData.getValue().mensualiteProperty());
+        StringConverter<Number> numberStringConverter = new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                // Formater la valeur avec trois chiffres après la virgule
+                return String.format("%.3f", number.doubleValue());
+            }
+
+            @Override
+            public Number fromString(String string) {
+                // Conversion de la chaîne en nombre (non utilisée dans ce cas)
+                return null;
+            }
+        };
+
+// Appliquer le StringConverter à chaque colonne numérique
+        principal.setCellFactory(tc -> new TableCell<Echeance, Number>() {
+            @Override
+            protected void updateItem(Number item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(numberStringConverter.toString(item));
+                }
+            }
+        });
+
+        valeurResiduelle.setCellFactory(tc -> new TableCell<Echeance, Number>() {
+            @Override
+            protected void updateItem(Number item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(numberStringConverter.toString(item));
+                }
+            }
+        });
+
+        interets.setCellFactory(tc -> new TableCell<Echeance, Number>() {
+            @Override
+            protected void updateItem(Number item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(numberStringConverter.toString(item));
+                }
+            }
+        });
+
+        mensualite.setCellFactory(tc -> new TableCell<Echeance, Number>() {
+            @Override
+            protected void updateItem(Number item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(numberStringConverter.toString(item));
+                }
+            }
+        });
     }
 
     public class PDFGenerator {
 
         public static void generatePDF(ObservableList<Echeance> echeances) {
             Document document = new Document(PageSize.A4);
+            DecimalFormat decimalFormat = new DecimalFormat("#0.000");
+
             try {
                 PdfWriter.getInstance(document, new FileOutputStream("echeances.pdf"));
                 document.open();
@@ -151,10 +216,10 @@ public class SimulationController {
                     } else {
                         table.addCell("");
                     }
-                    table.addCell(String.valueOf(echeance.getPrincipal()));
-                    table.addCell(String.valueOf(echeance.getValeurResiduelle()));
-                    table.addCell(String.valueOf(echeance.getInterets()));
-                    table.addCell(String.valueOf(echeance.getMensualite()));
+                    table.addCell(decimalFormat.format(echeance.getPrincipal()));
+                    table.addCell(decimalFormat.format(echeance.getValeurResiduelle()));
+                    table.addCell(decimalFormat.format(echeance.getInterets()));
+                    table.addCell(decimalFormat.format(echeance.getMensualite()));
                 }
 
                 // Ajouter la table au document
@@ -169,7 +234,6 @@ public class SimulationController {
             }
         }
     }
-
     @FXML
     public void ClickValider() {
         try {

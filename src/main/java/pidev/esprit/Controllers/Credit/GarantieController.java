@@ -82,9 +82,13 @@ public class GarantieController {
     void ChooseFile(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a file");
-        // Filtre pour les fichiers de type texte (txt)
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers texte (*.txt)", "*.txt");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        // Ajouter un filtre pour les fichiers PDF
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf");
         fileChooser.getExtensionFilters().add(extFilter);
+        // Désactiver les autres filtres pour afficher tous les fichiers
+        fileChooser.setSelectedExtensionFilter(extFilter);
+
         File selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             try {
