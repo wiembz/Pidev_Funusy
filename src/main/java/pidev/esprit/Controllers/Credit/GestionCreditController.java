@@ -45,7 +45,7 @@ public class GestionCreditController {
     }
     public void handleEstimationButtonClick(ActionEvent mouseEvent) {
         try {
-            Parent GestionCredit = FXMLLoader.load(getClass().getResource("/Estimation.fxml"));
+            Parent GestionCredit = FXMLLoader.load(getClass().getResource("/Simulateur.fxml"));
             mainBorderPane.setCenter(GestionCredit);
         } catch (IOException e) {
             e.printStackTrace();

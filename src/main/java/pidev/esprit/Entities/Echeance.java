@@ -1,20 +1,21 @@
 package pidev.esprit.Entities;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+
+import javafx.beans.property.*;
+import javafx.beans.value.ObservableValue;
+
+import java.time.LocalDate;
 
 public class Echeance {
     private final IntegerProperty numero;
-    private final IntegerProperty echeance;
+    private final ObjectProperty<LocalDate> echeance;
     private final DoubleProperty principal;
     private final DoubleProperty valeurResiduelle;
     private final DoubleProperty interets;
     private final DoubleProperty mensualite;
 
-    public Echeance(int numero, double principal, double valeurResiduelle, double interets, double mensualite) {
+    public Echeance(int numero, LocalDate echeance, double principal, double valeurResiduelle, double interets, double mensualite) {
         this.numero = new SimpleIntegerProperty(numero);
-        this.echeance = new SimpleIntegerProperty(numero - 1);
+        this.echeance = new SimpleObjectProperty<>(echeance);
         this.principal = new SimpleDoubleProperty(principal);
         this.valeurResiduelle = new SimpleDoubleProperty(valeurResiduelle);
         this.interets = new SimpleDoubleProperty(interets);
@@ -25,7 +26,7 @@ public class Echeance {
         return numero;
     }
 
-    public IntegerProperty echeanceProperty() {
+    public ObjectProperty<LocalDate> echeanceProperty() {
         return echeance;
     }
 
@@ -43,5 +44,69 @@ public class Echeance {
 
     public DoubleProperty mensualiteProperty() {
         return mensualite;
+    }
+
+    public int getNumero() {
+        return numero.get();
+    }
+
+    public void setNumero(int numero) {
+        this.numero.set(numero);
+    }
+
+    public LocalDate getEcheance() {
+        return echeance.get();
+    }
+
+    public void setEcheance(LocalDate echeance) {
+        this.echeance.set(echeance);
+    }
+
+    public double getPrincipal() {
+        return principal.get();
+    }
+
+    public void setPrincipal(double principal) {
+        this.principal.set(principal);
+    }
+
+    public double getValeurResiduelle() {
+        return valeurResiduelle.get();
+    }
+
+    public void setValeurResiduelle(double valeurResiduelle) {
+        this.valeurResiduelle.set(valeurResiduelle);
+    }
+
+    public double getInterets() {
+        return interets.get();
+    }
+
+    public void setInterets(double interets) {
+        this.interets.set(interets);
+    }
+
+    public double getMensualite() {
+        return mensualite.get();
+    }
+
+    public void setMensualite(double mensualite) {
+        this.mensualite.set(mensualite);
+    }
+
+    @Override
+    public String toString() {
+        return "Echeance{" +
+                "numero=" + numero +
+                ", echeance=" + echeance +
+                ", principal=" + principal +
+                ", valeurResiduelle=" + valeurResiduelle +
+                ", interets=" + interets +
+                ", mensualite=" + mensualite +
+                '}';
+    }
+
+    public ObservableValue<Number> totalProperty() {
+        return new SimpleDoubleProperty(principal.get() + interets.get() + mensualite.get());
     }
 }
