@@ -1,12 +1,17 @@
 package pidev.esprit.Controllers.Investissement;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import pidev.esprit.Entities.Projet;
 import pidev.esprit.Services.ProjetServices;
 
@@ -19,6 +24,10 @@ public class ProjectListController {
 
     private InvestissementController parentController;
     private ProjetServices projetServices;
+    private Stage blurStage;
+    @FXML
+    private Button selectButton;
+
 
     public ProjectListController() {
         projetServices = new ProjetServices();
@@ -54,9 +63,16 @@ public class ProjectListController {
             return;
         }
 
-        parentController.setSelectedProject(selectedProject);
-        closeWindow();
+        if (parentController != null) {
+            parentController.setSelectedProject(selectedProject);
+        } else {
+            // Handle the case when parentController is null
+            System.err.println("Parent controller is not set!");
+        }
+        closeWindow(); // Close project list window
+
     }
+
 
     @FXML
     private void handleCancelButtonAction() {

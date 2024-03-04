@@ -101,7 +101,8 @@ public class ProjetAdminController {
 //        }
 //    }
 
-    protected  void populateProjetTable() {
+
+    protected void populateProjetTable() {
         List<Projet> projets = projetServices.afficherEntite();
         ObservableList<Projet> observableList = FXCollections.observableArrayList(projets);
         id_projet.setCellValueFactory(new PropertyValueFactory<>("id_projet"));
@@ -191,62 +192,8 @@ public class ProjetAdminController {
         longitude.setCellFactory(TextFieldTableCell.forTableColumn());
         latitude.setCellFactory(TextFieldTableCell.forTableColumn());
         nom_projet.setCellFactory(TextFieldTableCell.forTableColumn());
-
-        // Custom cell factory for type_projet column
-        type_projet.setCellFactory(column -> {
-            return new TableCell<Projet, String>() {
-                private final ComboBox<ProjectType> comboBox = new ComboBox<>(FXCollections.observableArrayList(ProjectType.values()));
-
-                {
-                    comboBox.setVisible(false);
-                    comboBox.setOnAction(event -> {
-                        commitEdit(comboBox.getSelectionModel().getSelectedItem().getTypeName());
-                    });
-                }
-
-                @Override
-                protected void updateItem(String item, boolean empty) {
-                    super.updateItem(item, empty);
-
-                    if (empty) {
-                        setGraphic(null);
-                    } else {
-                        setText(item);
-                        setGraphic(null);
-                    }
-                }
-
-                @Override
-                public void startEdit() {
-                    if (!isEmpty()) {
-                        super.startEdit();
-                        comboBox.getSelectionModel().select(ProjectType.valueOf(getItem()));
-                        setGraphic(comboBox);
-                        comboBox.setVisible(true);
-                        comboBox.requestFocus();
-                    }
-                }
-
-                @Override
-                public void cancelEdit() {
-                    super.cancelEdit();
-                    comboBox.setVisible(false);
-                    setGraphic(null);
-                    setText(getItem());
-                }
-            };
-        });
-
+        type_projet.setCellFactory(TextFieldTableCell.forTableColumn());
         description.setCellFactory(TextFieldTableCell.forTableColumn());
-
-        montant_req.setCellValueFactory(new PropertyValueFactory<>("montant_req"));
-        longitude.setCellValueFactory(new PropertyValueFactory<>("longitude"));
-        latitude.setCellValueFactory(new PropertyValueFactory<>("latitude"));
-        nom_projet.setCellValueFactory(new PropertyValueFactory<>("nom_projet"));
-        type_projet.setCellValueFactory(new PropertyValueFactory<>("type_projet"));
-        description.setCellValueFactory(new PropertyValueFactory<>("description"));
-
-
     }
 
 

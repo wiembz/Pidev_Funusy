@@ -23,12 +23,12 @@
                                         <TableView fx:id="table" editable="true" layoutX="25.0" layoutY="60.0" prefHeight="277.0" prefWidth="550.0" stylesheets="@Stylesheet/ADMIN.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="60.0">
                                             <columns>
                                                 <TableColumn fx:id="id_projet" prefWidth="75.0" text="Project_Id" />
-                                                <TableColumn fx:id="nom_projet" onEditCommit="#handleCellEditCommit" prefWidth="75.0" text="Project Name" />
-                                                <TableColumn fx:id="montant_req" onEditCommit="#handleCellEditCommit" prefWidth="75.0" text="Amount_Required" />
-                                                <TableColumn fx:id="longitude" onEditCommit="#handleCellEditCommit" prefWidth="78.4000244140625" text="longitude" />
-                                                <TableColumn fx:id="latitude" onEditCommit="#handleCellEditCommit" prefWidth="66.39996337890625" text="latitude" />
-                                                <TableColumn fx:id="type_projet" onEditCommit="#handleCellEditCommit" prefWidth="96.0" text="Project_Type" />
-                                                <TableColumn fx:id="description" onEditCommit="#handleCellEditCommit" prefWidth="96.0" text="description" />
+                                                <TableColumn fx:id="nom_projet" prefWidth="75.0" text="Project Name" />
+                                                <TableColumn fx:id="montant_req"  prefWidth="75.0" text="Amount_Required" />
+                                                <TableColumn fx:id="longitude"  prefWidth="78.4000244140625" text="longitude" />
+                                                <TableColumn fx:id="latitude" prefWidth="66.39996337890625" text="latitude" />
+                                                <TableColumn fx:id="type_projet"  prefWidth="96.0" text="Project_Type" />
+                                                <TableColumn fx:id="description"  prefWidth="96.0" text="description" />
                                                 <TableColumn fx:id="id_user" prefWidth="77.0" text="User_Id" />
 
                                             </columns>
@@ -39,10 +39,11 @@
                                         <Button fx:id="deleteButton" layoutX="472.0" layoutY="11.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" prefHeight="35.0" prefWidth="95.0" text="Delete" visible="false" AnchorPane.leftAnchor="472.0" />
                               <Pane layoutX="34.400001525878906" layoutY="14.0">
                                  <children>
-                                              <TextField fx:id="searchField" alignment="CENTER" prefHeight="30.0" prefWidth="175.0" promptText="Search Projects" />
+                                              <TextField fx:id="searchField" alignment="CENTER" prefHeight="31.0" prefWidth="175.0" promptText="Search Projects" />
                                     <FontAwesomeIconView fill="#5e5c5c" glyphName="SEARCH" layoutX="4.0" layoutY="24.0" size="15.0" translateX="7.0" translateY="-0.75" wrappingWidth="19.942845344543457" />
                                  </children>
                               </Pane>
+                              <Button fx:id="QrCodebtn" layoutX="423.0" layoutY="13.0" mnemonicParsing="false" onAction="#QrCodeAction" styleClass="button0" stylesheets="@Stylesheet/ADMIN.css" text="Generate Qr Code" />
                                     </children>
                                 </AnchorPane>
                             </children>
