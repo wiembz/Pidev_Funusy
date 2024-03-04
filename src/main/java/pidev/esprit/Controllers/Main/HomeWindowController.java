@@ -18,7 +18,7 @@ public class HomeWindowController {
 
     @FXML
     private void loadUser() {
-        loadFXML("GestionProfile.fxml");
+        loadFXML("Overview.fxml");
     }
     @FXML
     private void loadAccounts() {
@@ -74,7 +74,7 @@ public class HomeWindowController {
     }
     public void handleTransactionsButtonClick(ActionEvent mouseEvent) {
         try {
-            Parent GestionTransaction = FXMLLoader.load(getClass().getResource("/GestionTransaction.fxml"));
+            Parent GestionTransaction = FXMLLoader. load(getClass().getResource("/GestionTransaction.fxml"));
             mainBorderPane.setCenter(GestionTransaction);
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,7 +99,7 @@ public class HomeWindowController {
 
     public void handleProfilesButtonClick(ActionEvent actionEvent) {
         try {
-            Parent gestionProfile = FXMLLoader.load(getClass().getResource("/GestionProfile.fxml"));
+            Parent gestionProfile = FXMLLoader.load(getClass().getResource("/Overview.fxml"));
             mainBorderPane.setCenter(gestionProfile);
         } catch (IOException e) {
             e.printStackTrace();

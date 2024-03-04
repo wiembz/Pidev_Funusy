@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Transaction.GestionTransactionController">
+   <children>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Transaction.GestionTransactionController">
+      <BorderPane fx:id="mainBorderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
+         <left>
+            <AnchorPane maxWidth="180.0" minHeight="150.0" minWidth="150.0" prefHeight="400.0" prefWidth="162.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="CENTER" maxWidth="180.0" minWidth="180.0" prefHeight="400.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Button fx:id="load_transactions" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#open_transaction_window" prefHeight="88.0" prefWidth="134.0" text="Transactions" />
+                        <Button fx:id="load_Admin" alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" onAction="#load_Admin" prefHeight="82.0" prefWidth="134.0" text="Admin(Temp)" />
+                     </children>
+                     <effect>
+                        <ColorAdjust brightness="-0.22" contrast="-0.3" hue="0.45" saturation="-0.43" />
+                     </effect>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </left>
+         <center>
+            <AnchorPane minWidth="400.0" prefHeight="200.0" prefWidth="438.0" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </children>
 </AnchorPane>

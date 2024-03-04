@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="552.0" prefWidth="909.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Investissement.GestionInvestissementAdminController">
+   <children>
+      <BorderPane fx:id="mainPane" prefHeight="552.0" prefWidth="931.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <AnchorPane prefHeight="552.0" prefWidth="180.0" stylesheets="@Stylesheet/ADMIN.css" BorderPane.alignment="CENTER">
+               <children>
+                  <Button mnemonicParsing="false" style="-fx-background-color: transparent;" styleClass="button0" stylesheets="@Stylesheet/ADMIN.css" />
+                  <Button fx:id="overviewbtn" alignment="BASELINE_LEFT" layoutX="8.0" layoutY="143.0" mnemonicParsing="false" onAction="#OverviewButtonClick" prefHeight="57.0" prefWidth="194.0" styleClass="sidebar-button" stylesheets="@Stylesheet/ADMIN.css" text="      Overview" textFill="WHITE">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Assets/000.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="DEFAULT" />
+                           </cursor>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <ImageView fitHeight="57.0" fitWidth="67.0" layoutX="9.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Assets/Asset.png" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="81.0" layoutY="14.0" prefHeight="59.0" prefWidth="109.0" stylesheets="@Stylesheet/ADMIN.css" text="FUNUSY" textFill="#e1a729">
+                     <font>
+                        <Font name="Bell MT Bold" size="26.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="projectsbtn" alignment="BASELINE_LEFT" layoutX="8.0" layoutY="219.0" mnemonicParsing="false" onAction="#ProjectsButtonClick" onMouseClicked="#ProjectsButtonClick" prefHeight="57.0" prefWidth="202.0" styleClass="sidebar-button" stylesheets="@Stylesheet/ADMIN.css" text="      Projects" textFill="#8b8585">
+                     <font>
+                        <Font name="Arial" size="14.0" />
+                     </font>
+                     <graphic>
+                        <ImageView fitHeight="34.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true" translateX="-1.5">
+                           <image>
+                              <Image url="@Assets/11111.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <ImageView fitHeight="24.0" fitWidth="28.0" layoutX="164.0" layoutY="501.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Assets/1241.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <styleClass>
+                  <String fx:value="body" />
+                  <String fx:value="anchor-pane" />
+               </styleClass>
+            </AnchorPane>
+         </left>
+         <center>
+            <AnchorPane fx:id="contentPlaceholder" prefHeight="552.0" prefWidth="704.0" styleClass="anchor-pane" stylesheets="@Stylesheet/ADMIN.css" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
