@@ -19,10 +19,13 @@
                     <TextField fx:id="emailField" prefHeight="25.0" prefWidth="200.0" />
                     <Label style="-fx-text-fill: #a69b13;" text="Mot de passe" />
                     <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="200.0" />
+                    <Label style="-fx-text-fill: #a69b13;" text="Code de récupération" />
+                    <TextField fx:id="recoveryCodeField" prefHeight="25.0" prefWidth="200.0" />
+                    <Label style="-fx-text-fill: #a69b13;" text="Nouveau mot de passe" />
+                    <PasswordField fx:id="newPasswordField" prefHeight="25.0" prefWidth="200.0" />
                     <Button mnemonicParsing="false" onAction="#signIn" style="-fx-background-color: #a69b13; -fx-text-fill: #673ab7;" text="Connexion" />
                     <Hyperlink fx:id="forgotPasswordLink" text="Forgot Password?" onAction="#forgotPassword" />
                     <Hyperlink fx:id="signUpLink" text="Don't have an account? Sign up" onAction="#goToSignUp"/>
-
                 </VBox>
             </children>
         </StackPane>
