@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="d57fdf5c-d77b-4e7a-97e5-2b602f9c92ac" name="@localhost Mapping">
+      <data-sources db="16076114-dbbd-4309-9167-5ade4e8ac0a8" />
+      <scope>
+        <node kind="schema" qname="funusy" />
+      </scope>
+    </mapping>
+  </component>
+</project>

@@ -110,3 +110,69 @@
     -fx-background-color:#E6E5E5;
     -fx-background-radius:8px;
 }
+.split-pane
+{
+    -fx-padding: 0;
+}
+
+.table-view {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+}
+
+.table-view .column-header,
+.table-view .column-header-background .filler {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-view .cell {
+    -fx-cell-size: 40;
+    -fx-alignment: center-left;
+    -fx-text-fill: black;
+}
+
+
+
+/* Scrollbar customization (optional) */
+.table-view .scroll-bar:horizontal .track,
+.table-view .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+}
+
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #ddd;
+    -fx-background-radius: 5px;
+}
+
+.text-field {
+    -fx-background-color: #fff;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px 10px;
+}
+
+.text-field .text {
+    -fx-fill: #aaa;
+    -fx-opacity: 0.7;
+}
+
+.text-field:focused {
+    -fx-border-color: #3399FF;
+}
+
+.text-field:invalid {
+    -fx-border-color: red;
+}
+
+/* Optional: Set font and alignment */
+.text-field {
+    -fx-font: 14px sans-serif;
+    -fx-alignment: CENTER_LEFT;
+}
