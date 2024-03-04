@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="pidev.esprit.Controllers.Commentaire.SignalListController"
+            prefHeight="400.0" prefWidth="600.0">
+    <children>
+        <TableView fx:id="signalTableView" layoutX="25.0" layoutY="8.0" prefHeight="315.0" prefWidth="550.0">
+            <columns>
+                <TableColumn fx:id="idSignalColumn" prefWidth="50" text="ID">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="id_signal" />
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn fx:id="idCommentColumn" prefWidth="100" text="Comment ID">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="id_commentaire" />
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn fx:id="descriptionColumn" prefWidth="200" text="Description">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="description" />
+                    </cellValueFactory>
+                </TableColumn>
+
+                <TableColumn fx:id="dateSignalColumn" prefWidth="150" text="Date Signal">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="date_signal" />
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+        <Button layoutX="237.0" layoutY="346.0" mnemonicParsing="false" onAction="#deleteSignal" text="Delete Signal" />
+    </children>
+</AnchorPane>
