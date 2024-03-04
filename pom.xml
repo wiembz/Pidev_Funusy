@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -25,7 +24,7 @@
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>17.0.6</version>
+      <version>23-ea+3</version>
     </dependency>
 
     <dependency>
@@ -41,13 +40,45 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.33</version>
+
+        <groupId>com.mysql</groupId>
+        <artifactId>mysql-connector-j</artifactId>
+        <version>8.2.0</version>
+
+
+    </dependency>
+
+    <!-- Apache HttpClient -->
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.14</version> <!-- Latest stable version -->
+    </dependency>
+
+    <!-- Twilio SDK -->
+    <dependency>
+      <groupId>com.twilio.sdk</groupId>
+      <artifactId>twilio</artifactId>
+      <version>7.0.0</version>
+    </dependency>
+
+    <!-- Updated version of commons-codec -->
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.15</version> <!-- Latest version -->
     </dependency>
 
 
+  <dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.22</version> <!-- Use the latest version available -->
+    <scope>provided</scope>
+  </dependency>
+
   </dependencies>
+
 
   <build>
     <plugins>
@@ -58,6 +89,7 @@
         <configuration>
           <mainClass>pidev.esprit.Controllers.Main.MainWindow</mainClass>
         </configuration>
+
       </plugin>
     </plugins>
   </build>

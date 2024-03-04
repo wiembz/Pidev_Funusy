@@ -28,11 +28,9 @@
          </font></Label>
       <TextField fx:id="tf_tel" layoutX="491.0" layoutY="192.0" prefHeight="26.0" prefWidth="175.0" />
       <TextField fx:id="tf_CVV2" layoutX="491.0" layoutY="244.0" prefHeight="26.0" prefWidth="175.0" />
-      <Button layoutX="55.0" layoutY="495.0" mnemonicParsing="false" onAction="#Add_Card" prefHeight="48.0" prefWidth="111.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="ADD" />
-      <Button layoutX="288.0" layoutY="495.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="111.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="UPDATE" />
-      <Button layoutX="548.0" layoutY="495.0" mnemonicParsing="false" onAction="#Delete_Card" onMouseClicked="#Delete_Card" prefHeight="43.0" prefWidth="102.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="DELETE" />
-      <ListView fx:id="CB" editable="true" layoutX="64.0" layoutY="69.0" onKeyPressed="#handleDelete" prefHeight="110.0" prefWidth="629.0" />
-      <Label layoutX="264.0" layoutY="7.0" prefHeight="61.0" prefWidth="300.0" text="Card List " textAlignment="CENTER" textFill="#e1a729">
+      <Button layoutX="336.0" layoutY="484.0" mnemonicParsing="false" onAction="#Add_Card" prefHeight="48.0" prefWidth="111.0" styleClass="nav-btn" stylesheets="@Stylesheet/Style.css" text="ADD" />
+      <ListView fx:id="CB" editable="true" layoutX="65.0" layoutY="69.0" onKeyPressed="#handleDelete" prefHeight="110.0" prefWidth="629.0" />
+      <Label layoutX="294.0" layoutY="7.0" prefHeight="61.0" prefWidth="300.0" text="Card List " textAlignment="CENTER" textFill="#e1a729">
          <font>
             <Font name="System Bold Italic" size="40.0" />
          </font>
@@ -53,12 +51,12 @@
             <Font name="System Bold" size="13.0" />
          </font>
       </Label>
-      <RadioButton fx:id="tf_3y" layoutX="290.0" layoutY="348.0" mnemonicParsing="false" text="3 years" onAction="#handleRadioButtonAction">
+      <RadioButton fx:id="tf_3y" layoutX="290.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="3 years">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="tf_5y" layoutX="414.0" layoutY="348.0" mnemonicParsing="false" text="5 years" onAction="#handleRadioButtonAction">
+      <RadioButton fx:id="tf_5y" layoutX="414.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleRadioButtonAction" text="5 years">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>

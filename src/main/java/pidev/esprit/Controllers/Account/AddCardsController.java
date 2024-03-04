@@ -273,11 +273,12 @@ import pidev.esprit.services.CompteCrud;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.EventObject;
 import java.util.List;
 import java.util.Optional;
-import pidev.esprit.Controllers.Account.CardsController;
-import static pidev.esprit.entities.CarteBancaire.generateNum;
+
+import static pidev.esprit.Controllers.Account.TwilioService.sendSMS;
+import static pidev.esprit.services.CardCrud.sendExpirationReminders;
+
 
 public class AddCardsController {
 
@@ -310,6 +311,7 @@ public class AddCardsController {
     private ObservableList<CarteBancaire> cardList = FXCollections.observableArrayList();
     private Object actionEvent;
 
+    private int selectedDurationYears = 0;
     private void showAlert(Alert.AlertType alertType, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle("Erreur !! ");
@@ -318,7 +320,11 @@ public class AddCardsController {
         alert.showAndWait();
     }
 
+    private static int duration; // Make duration static if you intend to access it from static methods
 
+    public static void setDuration(int duration) {
+        CardsController.setDuration(duration); // Access static variable directly within a static method
+    }
 
     @FXML
     void Add_Card() {
@@ -331,7 +337,7 @@ public class AddCardsController {
 
         // Generate card number
         String numCarte = CarteBancaire.generateNum();
-
+selectedDurationYears=3;
         // Generate code and CVV2
         int code = CarteBancaire.generateCode();
         int cvv2 = CarteBancaire.generateCVV2();
@@ -352,12 +358,12 @@ public class AddCardsController {
         tf_CVV2.setText(String.valueOf(cvv2));
 
         showAlert(Alert.AlertType.INFORMATION, "Card added successfully.");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Card.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Card.fxml"));
         Parent root;
         try {
             root = loader.load();
             CardsController controller = loader.getController();
-            controller.setCardAndUserDetails(carte, user); // Pass both the card and user details
+            controller.setCardAndUserDetails(carte, user,selectedDurationYears); // Pass both the card and user details
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
@@ -366,14 +372,11 @@ public class AddCardsController {
         }
     }
 
-
-
-
     @FXML
     void Delete_Card() {
         CarteBancaire selectedCard = CB.getSelectionModel().getSelectedItem();
         if (selectedCard != null) {
-            CardCrud.getInstance().deleteCard(selectedCard.getNum_carte());
+            CardCrud.deleteCard(selectedCard.getNum_carte());
             cardList.remove(selectedCard);
             showAlert(Alert.AlertType.INFORMATION, "Card deleted successfully.");
         } else {
@@ -396,16 +399,22 @@ public class AddCardsController {
     }
     @FXML
     void initialize() throws SQLException {
+        System.out.println("c bon ");
         if (CB == null) {
             System.out.println("CB is null");
         } else {
-            System.out.println("CB is not null");
             CB.setEditable(true);
             List<CarteBancaire> cards = CardCrud.getInstance().displayCard();
             cardList.addAll(cards);
             CB.setItems(cardList);
             tf_rib.setOnAction(event -> onRIBFieldClicked());
-        }
+          System.out.println("avant appel");
+
+            sendExpirationReminders();
+          System.out.println("apres appel");
+
+            }
+
     }
 
 
@@ -414,7 +423,7 @@ public class AddCardsController {
         String rib = tf_rib.getText().trim();
         User user = CompteCrud.retrieveUserByRIB(rib);
         if (user != null) {
-            tf_tel.setText(String.valueOf(User.getTel()));
+            tf_tel.setText(String.valueOf(user.getTel()));
 
             // Generate card details
             String numCarte = CarteBancaire.generateNum();
@@ -431,7 +440,7 @@ public class AddCardsController {
             CarteBancaire carte = new CarteBancaire(numCarte, cvv2, code, dateExp, rib);
             CardCrud.getInstance().addCard(carte, rib);
         } else {
-            showAlert(Alert.AlertType.ERROR, "User not found for the provided RIB.");
+
         }
     }
 
@@ -444,10 +453,12 @@ public class AddCardsController {
             // Add 3 years to the current date
             LocalDate expirationDate = currentDate.plusYears(3);
             date.setValue(expirationDate);
+            selectedDurationYears=3;
         } else if (selectedRadioButton == tf_5y) {
             // Add 5 years to the current date
             LocalDate expirationDate = currentDate.plusYears(5);
             date.setValue(expirationDate);
+            selectedDurationYears=5;
         }
     }
 
@@ -465,8 +476,8 @@ public class AddCardsController {
                 // Show a confirmation dialog
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Confirmation");
-                alert.setHeaderText("Delete Carte Bancaire");
-                alert.setContentText("Are you sure you want to delete this Carte Bancaire?");
+                alert.setHeaderText("Delete Card ?");
+                alert.setContentText("Are you sure you want to delete this Card?"+selectedCarte.getNum_carte());
 
                 // Handle the user's response
                 Optional<ButtonType> result = alert.showAndWait();
@@ -485,6 +496,15 @@ public class AddCardsController {
         }
     }
 
+
+    @FXML
+    private void refreshListView() {
+        // Fetch accounts from the database using CompteCrud singleton instance
+        List<CarteBancaire> cartes = CardCrud.getInstance().displayCard();
+
+        // Populate the ListView with the fetched accounts
+       CB.getItems().setAll(cartes);
+    }
     @FXML
     private void handleKeyPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.DELETE) {

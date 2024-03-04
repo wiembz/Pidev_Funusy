@@ -118,7 +118,6 @@ public class CompteCrud implements CRUD<Compte> {
 
     public void updateCompte(Compte c) {
         String sql = "UPDATE compte SET solde = ?, date_ouverture = ?, type_compte = ? WHERE rib = ?";
-
         try {
             PreparedStatement pstmt = cnx2.prepareStatement(sql);
             pstmt.setDouble(1, c.getSolde());
@@ -129,7 +128,7 @@ public class CompteCrud implements CRUD<Compte> {
 
             int rowsUpdated = pstmt.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("Compte with RIB " + c.getRib() + " updated successfully.");
+                System.out.println("Compte with RIB " + c.getRib() + " updated successfully."); // Add logging here
             } else {
                 System.out.println("No compte found with RIB " + c.getRib() + ".");
             }
@@ -185,17 +184,9 @@ public class CompteCrud implements CRUD<Compte> {
         try {
             // Establish database connection
             pstmt = cnx2.prepareStatement(sql);
-
-            // Prepare SQL statement to select user information based on ID
-
-
             pstmt.setInt(1, id_user);
             rs = pstmt.executeQuery();
-
-            // Execute the query
             rs = pstmt.executeQuery();
-
-            // If a user with the given ID is found, populate the User object
             if (rs.next()) {
                 user = new User();
                 user.setNom_user(rs.getString("nom_user"));

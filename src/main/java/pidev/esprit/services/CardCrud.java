@@ -1,4 +1,6 @@
 package pidev.esprit.services;
+import lombok.Getter;
+import pidev.esprit.Controllers.Account.TwilioService;
 import pidev.esprit.entities.CarteBancaire;
 import pidev.esprit.Tools.MyConnection;
 import java.sql.*;
@@ -7,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+
+import pidev.esprit.entities.User;
+import pidev.esprit.services.CompteCrud;
+
+import static pidev.esprit.services.CompteCrud.retrieveUserByRIB;
 
 public class CardCrud implements CRUDC<CarteBancaire> {
     public static Connection cnx2;
@@ -72,11 +79,8 @@ card.setRib(rs.getString("rib"));
         return cards;
     }
 
+    @Getter
     private static final CardCrud instance = new CardCrud();
-
-    public static CardCrud getInstance() {
-        return instance;
-    }
 
 
     @Override
@@ -121,37 +125,79 @@ card.setRib(rs.getString("rib"));
         }
     }
 
-    public boolean cardExistsForUser(String rib) {
+//    public boolean cardExistsForUser(String rib) {
+//        boolean cardExists = false;
+//
+//        try {
+//            String sql = "SELECT COUNT(*) AS count FROM carte_bancaire WHERE rib = ?";
+//            Connection connection = MyConnection.getInstance().getCnx();
+//            PreparedStatement pstmt = connection.prepareStatement(sql);
+//            pstmt.setString(1, rib);
+//
+//            // Execute query
+//            ResultSet rs = pstmt.executeQuery();
+//
+//            // Check if any card exists for the given RIB
+//            if (rs.next()) {
+//                int count = rs.getInt("count");
+//                cardExists = count > 0;
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            // Handle database errors
+//        }
+//
+//        return cardExists;
+//    }
 
 
-        boolean cardExists = false;
+//*********** SMS TWILIO ***********//
+public static void sendExpirationReminders() {
+    System.out.println("fl appel");
+    List<CarteBancaire> cards = CardCrud.instance.displayCard();
+    for (CarteBancaire card : cards) {
+        if (isExpiringSoon(card))
+            sendReminder(card);
+    }
+}
 
+    public static boolean isExpiringSoon(CarteBancaire card) {
+        // Get today's date without considering time
+        LocalDate today = LocalDate.now();
 
-        try {
+        // Get the expiration date of the card without considering time
+        LocalDate expirationDate = card.getDate_exp().toLocalDate();
 
-            String sql = "SELECT COUNT(*) AS count FROM Card WHERE rib = ?";
-            Connection connection = MyConnection.getInstance().getCnx();
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            // Execute query
-            ResultSet rs = pstmt.executeQuery();
+        // Calculate the difference between today's date and the expiration date
+        long daysUntilExpiration = java.time.temporal.ChronoUnit.DAYS.between(today, expirationDate);
 
-            // Check if any card exists for the given RIB
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                cardExists = count > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle database errors
-
-        }
-
-        return cardExists;
+        // Check if the expiration date is within 30 days from today
+        return daysUntilExpiration ==0;
     }
 
+    public static void sendReminder(CarteBancaire card) {
+        System.out.println("reminder");
+        String message = "Dear our customer, your credit card with number " + card.getNum_carte() + " is expiring in 30 days . Please renew it.";
 
+        // Retrieve the customer's phone number based on the card's RIB (assuming you have a method for that)
+       String phoneNumber = getPhoneNumberByRIB(card.getRib());
 
+        // Send the reminder message using Twilio
+        TwilioService.sendSMS(phoneNumber, message);
+    }
 
+    // Method to retrieve the customer's phone number based on the card's RIB
+    private static String getPhoneNumberByRIB(String rib) {
+        User user = retrieveUserByRIB(rib);
+        if (user != null) {
+            int tel = user.getTel();
+            System.out.println(tel);
+            return String.valueOf(tel);
+        } else {
+            System.out.println("User not found for RIB: " + rib);
+            return ""; // or handle the case where user is not found
+        }
+    }
 
 
 

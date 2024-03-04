@@ -124,7 +124,7 @@ public class User {
         this.CIN = CIN;
     }
 
-    public static int getTel() {
+    public  int getTel() {
         return tel;
     }
 

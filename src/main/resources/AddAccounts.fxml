@@ -9,10 +9,19 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#handleEditCommit" prefHeight="671.0" prefWidth="957.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Account.AddAccountController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="671.0" prefWidth="957.0" styleClass="background" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Account.AddAccountController">
    <children>
+      <BorderPane prefHeight="239.0" prefWidth="957.0">
+         <top>
+            <Label prefHeight="48.0" prefWidth="302.0" text="Account List " textFill="#e1a729" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="System Bold Italic" size="44.0" />
+               </font>
+            </Label>
+         </top></BorderPane>
       <TextField fx:id="tf_rib" layoutX="566.0" layoutY="319.0" />
       <TextField fx:id="tf_solde" layoutX="304.0" layoutY="367.0" />
       <Label layoutX="503.0" layoutY="322.0" prefHeight="18.0" prefWidth="42.0" text="RIB">
@@ -23,7 +32,7 @@
          <font>
             <Font name="System Bold" size="15.0" />
          </font></Label>
-      <Button layoutX="84.0" layoutY="568.0" mnemonicParsing="false" onAction="#add_account" onMouseClicked="#add_account" prefHeight="37.0" prefWidth="110.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="ADD" />
+      <Button layoutX="214.0" layoutY="569.0" mnemonicParsing="false" onAction="#add_account" onMouseClicked="#add_account" prefHeight="37.0" prefWidth="110.0" styleClass="nav-btn" stylesheets="@Stylesheet/Style.css" text="ADD" />
       <Label layoutX="221.0" layoutY="509.0" text="Account Type">
          <font>
             <Font name="System Bold" size="15.0" />
@@ -40,22 +49,17 @@
          <font>
             <Font name="System Bold" size="15.0" />
          </font></RadioButton>
-      <Button fx:id="update_account" layoutX="640.0" layoutY="568.0" mnemonicParsing="false" onAction="#update_account" onMouseClicked="#update_account" prefHeight="34.0" prefWidth="123.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="UPDATE" />
+      <Button fx:id="update_account" layoutX="544.0" layoutY="570.0" mnemonicParsing="false" onAction="#update_account" onMouseClicked="#update_account" prefHeight="34.0" prefWidth="123.0" styleClass="nav-btn" stylesheets="@Stylesheet/Style.css" text="UPDATE" />
       <ImageView fitHeight="48.0" fitWidth="117.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Assets/1.png" />
          </image>
       </ImageView>
-      <Button layoutX="335.0" layoutY="568.0" mnemonicParsing="false" onAction="#Delete_account" onMouseClicked="#Delete_account" prefHeight="46.0" prefWidth="109.0" styleClass="buttonAccount" stylesheets="@Stylesheet/Style.css" text="DELETE" />
 
-       <ListView fx:id="accountListView" editable="true" layoutX="75.0" layoutY="70.0" onKeyPressed="#handleDelete" prefHeight="152.0" prefWidth="808.0">
-         
+
+       <ListView fx:id="accountListView" editable="true" layoutX="75.0" layoutY="70.0" onKeyPressed="#handleDelete" prefHeight="152.0" prefWidth="866.0">
+
        </ListView>
-      <Label layoutX="302.0" layoutY="4.0" prefHeight="48.0" prefWidth="302.0" text="Account List " textFill="#e1a729">
-         <font>
-            <Font name="System Bold Italic" size="44.0" />
-         </font>
-      </Label>
       <TextField fx:id="tf_user" layoutX="304.0" layoutY="240.0" />
       <Label layoutX="194.0" layoutY="243.0" prefHeight="20.0" prefWidth="55.0" text="Id_user">
          <font>
@@ -98,8 +102,8 @@
             <Font name="System Bold" size="15.0" />
          </font>
       </Label>
-      <TextField fx:id="tf_search" layoutX="785.0" layoutY="80.0" prefHeight="26.0" prefWidth="97.0" />
-      <Label layoutX="717.0" layoutY="83.0" prefHeight="20.0" prefWidth="55.0" text="Search">
+      <TextField fx:id="tf_search" layoutX="834.0" layoutY="80.0" prefHeight="26.0" prefWidth="97.0" />
+      <Label layoutX="771.0" layoutY="83.0" prefHeight="20.0" prefWidth="55.0" text="Search">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
