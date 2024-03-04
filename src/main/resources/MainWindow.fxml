@@ -48,7 +48,7 @@
             <AnchorPane maxHeight="486.0" maxWidth="234.0" prefHeight="324.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <children>
                 <!-- Left Sidebar Content -->
-                <Button fx:id="overviewbtn" alignment="BASELINE_LEFT" layoutX="19.0" layoutY="14.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="215.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" text="      Overview" textFill="#8b8585">
+                <Button fx:id="overviewbtn" alignment="BASELINE_LEFT" layoutX="19.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleProfilesButtonClick" prefHeight="57.0" prefWidth="215.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" text="      Overview" textFill="#8b8585">
                   <font>
                     <Font name="Arial" size="14.0" />
                   </font>

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GestionTransaction implements IGestionTransaction<Transaction> {
-    Connection             connection = MyConnection.getInstance().getCnx();
+    Connection connection = MyConnection.getInstance().getCnx();
 
 
 
@@ -49,15 +49,19 @@ public class GestionTransaction implements IGestionTransaction<Transaction> {
 
     @Override
     public void modifier(Transaction t) throws SQLException {
-        String sql = "";
+        String sql = "UPDATE transaction SET montant_transaction = ?, destination = ?, rib = ? WHERE id_transaction = ?";
         PreparedStatement preparedStatement= connection.prepareStatement(sql);
+        preparedStatement.setDouble(1,t.getMontant());
+        preparedStatement.setString(2,t.getDestination());
+        preparedStatement.setString(3, t.getSource());
+        preparedStatement.setInt(4,t.getId());
         preparedStatement.executeUpdate();
 
     }
 
     @Override
     public void supprimer(int id) throws SQLException {
-        String sql = "Delete from produit where IdProduit = ? ";
+        String sql = "Delete from transaction where id_transaction = ? ";
         PreparedStatement preparedStatement= connection.prepareStatement(sql);
         preparedStatement.setInt(1,id);
         preparedStatement.executeUpdate();
@@ -85,5 +89,20 @@ public class GestionTransaction implements IGestionTransaction<Transaction> {
             System.out.println(e.getMessage());
         }
         return transactions;
+    }
+    public boolean EntiteExists(Transaction t) {
+        String query = "SELECT COUNT(*) FROM transaction WHERE id_transaction = ? ";
+        try {
+            PreparedStatement pst = connection.prepareStatement(query);
+            pst.setInt(1, t.getId());
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0;
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
     }
 }

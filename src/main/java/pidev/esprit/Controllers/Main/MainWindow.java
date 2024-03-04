@@ -19,6 +19,8 @@ public class MainWindow extends Application {
 
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/MainWindow.fxml"));
+           //Parent root = FXMLLoader.load(getClass().getResource("/GestionInvestissementAdmin.fxml"));
+
             primaryStage.setTitle("Inscription");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();

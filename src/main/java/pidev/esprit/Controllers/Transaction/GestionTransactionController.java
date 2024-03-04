@@ -19,6 +19,8 @@ public class GestionTransactionController {
     private AnchorPane contentPlaceholder;
 
     @FXML
+    private Button load_Admin;
+    @FXML
     private Pane accountsPane;
 
     @FXML
@@ -53,5 +55,15 @@ public class GestionTransactionController {
             e.printStackTrace();
         }
 
+    }
+
+    @FXML
+    void load_Admin(javafx.event.ActionEvent actionEvent) {
+        try {
+            Parent GestionAgence = FXMLLoader.load(getClass().getResource("/GestionAgenceAdmin.fxml"));
+            mainBorderPane.setCenter(GestionAgence);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
