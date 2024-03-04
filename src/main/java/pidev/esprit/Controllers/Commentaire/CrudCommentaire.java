@@ -1,5 +1,7 @@
 package pidev.esprit.Controllers.Commentaire;
 
+import pidev.esprit.Utils.BadWordsLoader;
+
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,19 +13,15 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import pidev.esprit.Controllers.Commentaire.CommentListController;
 import pidev.esprit.Entities.Commentaire;
 import pidev.esprit.Entities.Projet;
 import pidev.esprit.Services.CommentaireCrud;
 import pidev.esprit.Services.ProjetServices;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+
 
 public class CrudCommentaire {
 
@@ -129,17 +127,20 @@ public class CrudCommentaire {
     }
 
 
+
     @FXML
     public void submitComment() {
         String commentContent = commentTextArea.getText().trim();
         Projet selectedProject = projetTableView.getSelectionModel().getSelectedItem();
 
-        // Check if the comment field is empty
+        // Charger la liste des mots indésirables
+        List<String> badWords = BadWordsLoader.loadBadWords("C:\\Users\\ASUS\\Downloads\\validationmetier\\List.txt");
+
+        // Check if comment content is empty
         if (commentContent.isEmpty()) {
-            // Show an error message if the comment field is empty
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please fill the comment field!", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter a comment!", ButtonType.OK);
             alert.show();
-            return; // Exit the method without submitting the comment
+            return;
         }
 
         // Check if the comment is identical to the previous comment
@@ -147,21 +148,29 @@ public class CrudCommentaire {
             // Show an error message for potential spam
             Alert alert = new Alert(Alert.AlertType.ERROR, "Please avoid spamming the same comment!", ButtonType.OK);
             alert.show();
-            return; // Exit the method without submitting the comment
+            return;
         }
 
-        // Create a Commentaire object and add it to the database
+        // Vérifier si le commentaire contient des mots indésirables
+        for (String badWord : badWords) {
+            if (commentContent.toLowerCase().contains(badWord)) {
+                // Afficher un message d'erreur et ne pas ajouter le commentaire
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Your comment contains inappropriate words!", ButtonType.OK);
+                alert.show();
+                return;
+            }
+        }
+
+        // Le commentaire est valide, continuez avec l'ajout à la base de données
         Commentaire commentaire = new Commentaire();
         commentaire.setContenue(commentContent);
         commentaire.setDate_commentaire(LocalDate.now());
         commentaire.setId_projet(selectedProject.getId_projet());
 
-        // Call the service to add the Commentaire to the database
         CommentaireCrud commentaireCrud = new CommentaireCrud();
         commentaireCrud.ajouterEntite(commentaire);
 
-        // Store the current comment content as the last comment content
-        lastCommentContent = commentContent;
+        // Autres actions après l'ajout du commentaire...
 
         // Clear the comment text area
         commentTextArea.clear();
@@ -169,10 +178,14 @@ public class CrudCommentaire {
         // Hide the comment section after submission (optional)
         commentSection.setVisible(false);
 
+        // Update last comment content
+        lastCommentContent = commentContent;
+
         // Show a success message
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Comment added successfully!", ButtonType.OK);
         alert.show();
     }
+
 
     @FXML
     private void listComments() {

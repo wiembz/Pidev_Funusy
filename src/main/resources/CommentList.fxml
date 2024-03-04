@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Commentaire.CommentListController">
     <children>
-        <TableView fx:id="commentTableView" layoutX="25.0" layoutY="8.0" prefHeight="315.0" prefWidth="550.0">
+        <TableView fx:id="commentTableView" layoutX="25.0" layoutY="8.0" prefHeight="315.0" prefWidth="550.0" stylesheets="@Stylesheet/ADMIN.css">
             <columns>
                 <TableColumn fx:id="idCommentColumn" prefWidth="96.79998779296875" text="Id_comment">
                     <cellValueFactory>
@@ -37,13 +37,14 @@
                 </TableColumn>
             </columns>
         </TableView>
-      <Button layoutX="203.0" layoutY="341.0" mnemonicParsing="false" onAction="#deleteComment" prefHeight="38.0" prefWidth="187.0" stylesheets="@Stylesheet/Style.css" text="Delete Commentaire">
-         <font>
-            <Font name="Berlin Sans FB Demi Bold" size="12.0" />
-         </font>
-         <styleClass>
-            <String fx:value="my-button" />
-            <String fx:value="button" />
-         </styleClass></Button>
+        <Button layoutX="203.0" layoutY="341.0" mnemonicParsing="false" onAction="#deleteComment" prefHeight="38.0" prefWidth="187.0" stylesheets="@Stylesheet/Style.css" text="Delete Commentaire">
+            <font>
+                <Font name="Berlin Sans FB Demi Bold" size="12.0" />
+            </font>
+            <styleClass>
+                <String fx:value="my-button" />
+                <String fx:value="button" />
+            </styleClass></Button>
+        <Button fx:id="translate_btn" layoutX="455.0" layoutY="348.0" mnemonicParsing="false" onAction="#translateComments" text="translate" />
     </children>
 </AnchorPane>

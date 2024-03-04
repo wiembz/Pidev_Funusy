@@ -8,10 +8,10 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
 import pidev.esprit.Entities.Commentaire;
 import pidev.esprit.Services.CommentaireCrud;
+import pidev.esprit.Utils.Translator;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public class CommentListController {
 
@@ -34,6 +34,9 @@ public class CommentListController {
     private Button deletebtn;
 
     @FXML
+    private Button translateButton; // New button for translation
+
+    @FXML
     public void initialize() {
         // Set up cell value factories
         idCommentColumn.setCellValueFactory(new PropertyValueFactory<>("id_commentaire"));
@@ -45,8 +48,9 @@ public class CommentListController {
         idProjetColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         idProjetColumn.setOnEditCommit(event -> {
             // Get the edited value and update the corresponding Commentaire object
-            Commentaire commentaire = event.getRowValue();
-            commentaire.setId_projet(event.getNewValue());
+            TableColumn.CellEditEvent<Commentaire, Integer> cellEditEvent = (TableColumn.CellEditEvent<Commentaire, Integer>) event;
+            Commentaire commentaire = cellEditEvent.getRowValue();
+            commentaire.setId_projet(cellEditEvent.getNewValue());
 
             // Update the Commentaire object in the database
             CommentaireCrud commentaireCrud = new CommentaireCrud();
@@ -64,8 +68,9 @@ public class CommentListController {
         contentColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         contentColumn.setOnEditCommit(event -> {
             // Get the edited value and update the corresponding Commentaire object
-            Commentaire commentaire = event.getRowValue();
-            commentaire.setContenue(event.getNewValue());
+            TableColumn.CellEditEvent<Commentaire, String> cellEditEvent = (TableColumn.CellEditEvent<Commentaire, String>) event;
+            Commentaire commentaire = cellEditEvent.getRowValue();
+            commentaire.setContenue(cellEditEvent.getNewValue());
 
             // Update the Commentaire object in the database
             CommentaireCrud commentaireCrud = new CommentaireCrud();
@@ -83,7 +88,7 @@ public class CommentListController {
         commentTableView.setEditable(true);
     }
 
-
+    @FXML
     public void setComments(List<Commentaire> comments) {
         // Clear existing items in the table view
         commentTableView.getItems().clear();
@@ -121,6 +126,33 @@ public class CommentListController {
                 alert.showAndWait();
             }
         });
+    }
+
+    @FXML
+    public void translateComments(ActionEvent event) {
+        // Get the selected comment from the table view
+        Commentaire selectedComment = commentTableView.getSelectionModel().getSelectedItem();
+        if (selectedComment == null) {
+            // If no comment is selected, show an error dialog
+            showErrorDialog("No Selection", "Please select a Comment to translate.");
+            return;
+        }
+
+        try {
+            // Translate the French comment to English using Translator class
+            String frenchComment = selectedComment.getContenue();
+            String translatedComment = Translator.translate("fr", "en", frenchComment);
+
+
+            // Update the Commentaire object in the table with the translated comment
+            selectedComment.setContenue(translatedComment);
+
+            // Refresh the table view to reflect the changes
+            commentTableView.refresh();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showErrorDialog("Translation Error", "An error occurred while translating the comment.");
+        }
     }
 
     private void showErrorDialog(String title, String content) {
