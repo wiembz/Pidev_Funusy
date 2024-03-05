@@ -1,8 +1,13 @@
 package pidev.esprit.Controllers.Overview;
 
+
+import javafx.animation.Animation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import pidev.esprit.Controllers.Transaction.AddTransactionController;
 
 
@@ -22,7 +27,11 @@ import javafx.util.Duration;
 import pidev.esprit.Entities.Transaction;
 import pidev.esprit.Services.GestionTransaction;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 import java.util.List;
 
@@ -52,9 +61,13 @@ public class OverviewController {
 
     @FXML
     private TableColumn<Transaction, Date> dateColumn;
+
+    @FXML
+    private AnchorPane top_Anchor;
     @FXML
 
     private GestionTransaction gestionTransaction;
+    private Timeline timeline;
 
     public OverviewController() {
         gestionTransaction = new GestionTransaction();
@@ -76,42 +89,82 @@ public class OverviewController {
             System.out.println(e);
         }
     }
+    
 
 
     public void initialize() {
-        message.setText("EXCHANGE RATES");
-        createMarquee(exchange_rates, message);
+        //System.out.println(generateExchangeRates());
+        //message.setText(generateExchangeRates());
+        message.setText("EXCHANGES RATES EXCHANGES RATES EXCHANGES RATES ");
+        createMarquee(exchange_rates, message,10,600,50);
         populateTransactionsTable();
 
+
     }
 
+    private String generateExchangeRates(){
+        String urlString = "https://v6.exchangerate-api.com/v6/41fcfd977b145ffc1d85eb84/latest/TND";
 
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
 
-    public void createMarquee(Pane container, Text message) {
-        // Scene width
-        double sceneWidth = container.prefWidthProperty().get();
-
-        // Text width
-        message.layoutBoundsProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = message.getLayoutBounds().getWidth();
-
-            Timeline timeline = new Timeline();
-            timeline.setCycleCount(Timeline.INDEFINITE);
-
-            // Keyframe to update text position
-            KeyFrame keyFrame = new KeyFrame(Duration.millis(50), event -> {
-                double layoutX = message.getLayoutX();
-                layoutX -= 1;
-                message.setLayoutX(layoutX);
-
-                if (layoutX + textWidth < 0) {
-                    layoutX = sceneWidth;
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) { // success
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder builder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
                 }
-            });
+                reader.close();
 
-            timeline.getKeyFrames().add(keyFrame);
-            timeline.play();
-        });
+                return builder.toString();
+            } else {
+                System.out.println("Error: " + responseCode);
+            }
+
+            connection.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+
+
+    public void createMarquee(Pane container, Text text, double speed, double width, double height) {
+        // Text
+        text.setFont(Font.font("Arial", 24));
+        text.setFill(Color.GREEN);
+        text.setLayoutX(width);
+        text.setLayoutY((height - text.getBoundsInLocal().getHeight()) / 2);
+
+        // Timeline
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.millis(speed), event -> {
+                    double layoutX = text.getLayoutX();
+                    layoutX -= 1;
+                    text.setLayoutX(layoutX);
+
+                    if (layoutX + text.getBoundsInLocal().getWidth() < 0) {
+                        layoutX = width; // Reset layoutX to width of container
+                    }
+                })
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+
+        // Add text to container and set clip property
+        container.getChildren().remove(text); // Remove text from container if it already exists
+        container.getChildren().add(text);
+        container.setClip(new Rectangle(0, 0, width, height));
+    }
+
     }
 
 
@@ -119,9 +172,6 @@ public class OverviewController {
 
 
 
-
-
-}
 
 
 

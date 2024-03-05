@@ -3,13 +3,18 @@ package pidev.esprit.Controllers.User;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import pidev.esprit.User.Entities.User;
 import pidev.esprit.User.Services.GestionUser;
 import pidev.esprit.User.Entities.Role;
 import pidev.esprit.User.Entities.AdresseUser;
+
+import java.io.IOException;
 
 public class DashboardClientController {
 
@@ -38,6 +43,8 @@ public class DashboardClientController {
 
     @FXML
     private TextField telTextField;
+    @FXML
+    private BorderPane mainBorderPane;
 
     @FXML
     private ChoiceBox<Role> roleChoiceBox;
@@ -100,9 +107,16 @@ public class DashboardClientController {
     }
 
     public void handleAccountsButtonClick(ActionEvent event) {
+
     }
 
     public void handleTransactionsButtonClick(ActionEvent event) {
+        try {
+            Parent GestionTransaction = FXMLLoader. load(getClass().getResource("/GestionTransaction.fxml"));
+            mainBorderPane.setCenter(GestionTransaction);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void handleCreditsButtonClick(ActionEvent event) {
