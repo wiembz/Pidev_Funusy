@@ -29,7 +29,7 @@ public class HomePage extends Application {
             primaryStage.setScene(scene);
 
             // Set the title of the stage
-            primaryStage.setTitle("Your Application Title");
+            primaryStage.setTitle("Login and Signup");
 
             // Show the stage
             primaryStage.show();

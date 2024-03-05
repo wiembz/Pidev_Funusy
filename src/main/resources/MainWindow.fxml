@@ -15,7 +15,7 @@
       <children>
         <BorderPane fx:id="mainBorderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="2.2737367544323206E-13" AnchorPane.rightAnchor="4.800000000000182" AnchorPane.topAnchor="0.0">
           <top>
-            <AnchorPane prefHeight="76.0" prefWidth="600.0">
+            <AnchorPane prefHeight="76.0" prefWidth="600.0" style="-fx-background-color: F2EFE5;">
               <children>
                 <!-- Top Content -->
                 <ImageView fitHeight="67.0" fitWidth="208.0" layoutX="14.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">

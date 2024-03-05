@@ -115,7 +115,7 @@
                         </AnchorPane>
                      </left>
                      <center>
-                        <AnchorPane onMouseClicked="#handleAccountsButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@/Stylesheet/Style.css" BorderPane.alignment="CENTER" />
+                        <AnchorPane fx:id="mainpage" onMouseClicked="#handleAccountsButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@/Stylesheet/Style.css" BorderPane.alignment="CENTER" />
                         <AnchorPane onMouseClicked="#handleTransactionsButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@/Stylesheet/Style.css" BorderPane.alignment="CENTER" />
                         <AnchorPane onMouseClicked="#handleCreditsButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@/Stylesheet/Style.css" BorderPane.alignment="CENTER" />
                         <AnchorPane onMouseClicked="#handleInvestmentsButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@/Stylesheet/Style.css" BorderPane.alignment="CENTER" />

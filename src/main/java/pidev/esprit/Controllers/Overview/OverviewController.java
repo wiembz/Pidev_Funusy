@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import pidev.esprit.Controllers.Transaction.AddTransactionController;
 
@@ -60,6 +61,9 @@ public class OverviewController {
 
     @FXML
     private TableColumn<Transaction, Date> dateColumn;
+
+    @FXML
+    private AnchorPane top_Anchor;
     @FXML
 
     private GestionTransaction gestionTransaction;
@@ -92,7 +96,7 @@ public class OverviewController {
         //System.out.println(generateExchangeRates());
         //message.setText(generateExchangeRates());
         message.setText("EXCHANGES RATES EXCHANGES RATES EXCHANGES RATES ");
-        createMarquee(exchange_rates, message,10,300,50);
+        createMarquee(exchange_rates, message,10,600,50);
         populateTransactionsTable();
 
 
@@ -148,16 +152,17 @@ public class OverviewController {
                     text.setLayoutX(layoutX);
 
                     if (layoutX + text.getBoundsInLocal().getWidth() < 0) {
-                        layoutX = width;
+                        layoutX = width; // Reset layoutX to width of container
                     }
                 })
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        // Add text to container
+        // Add text to container and set clip property
         container.getChildren().remove(text); // Remove text from container if it already exists
         container.getChildren().add(text);
+        container.setClip(new Rectangle(0, 0, width, height));
     }
 
     }
