@@ -1,5 +1,6 @@
 package pidev.esprit.Entities;
 
+import java.io.File;
 import java.util.Arrays;
 
 public class Garantie extends Credit {
@@ -30,7 +31,6 @@ public class Garantie extends Credit {
         this.preuve = data;
 
     }
-
     public int getId_garantie() {
         return Id_garantie;
     }

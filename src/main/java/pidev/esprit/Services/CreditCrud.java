@@ -2,14 +2,18 @@ package pidev.esprit.Services;
 
 
 import pidev.esprit.Entities.Credit;
+import pidev.esprit.Entities.Garantie;
+import pidev.esprit.Entities.User;
 import pidev.esprit.Tools.MyConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static pidev.esprit.Controllers.Credit.SmsCredit.sendSMS;
+
 public class CreditCrud implements ICrud<Credit> {
-    Connection cnx2;
+    static Connection cnx2;
 
     public CreditCrud() {
         cnx2 = MyConnection.getInstance().getCnx();
@@ -178,4 +182,5 @@ public class CreditCrud implements ICrud<Credit> {
             e.printStackTrace();
         }
     }
+    
 }

@@ -93,7 +93,7 @@ public class SimulationController {
             double totalPrincipal = montant;
             double totalInterets = echeances.stream().mapToDouble(Echeance::getInterets).sum();
             double totalMensualites = echeances.stream().mapToDouble(Echeance::getMensualite).sum();
-            Echeance totalEcheance = new Echeance(duree + 1, null, totalPrincipal, 0, totalInterets, totalMensualites);
+            Echeance totalEcheance = new Echeance(duree+1, null, totalPrincipal, 0, totalInterets, totalMensualites);
             echeances.add(totalEcheance);
 
             return echeances;
@@ -270,6 +270,7 @@ public class SimulationController {
         }
 
     }
+
 }
 
 

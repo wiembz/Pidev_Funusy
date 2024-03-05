@@ -9,13 +9,16 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="587.0" prefWidth="719.0" styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Credit.AjouterCredit">
+<AnchorPane prefHeight="700.0" prefWidth="800.0" styleClass="background" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Credit.AjouterCredit">
     <children>
-        <Label alignment="TOP_CENTER" layoutX="240.0" layoutY="40.0" prefHeight="28.0" prefWidth="239.20000000000005" styleClass="scroll-bar" stylesheets="@Stylesheet/Style.css" text="Add Credit" textAlignment="CENTER" textFill="#e1a729">
+        <!-- Titre -->
+        <Label alignment="TOP_CENTER" layoutX="275.0" layoutY="40.0" prefHeight="28.0" prefWidth="239.20000000000005" styleClass="scroll-bar" stylesheets="@Stylesheet/Style.css" text="Add Credit" textAlignment="CENTER" textFill="#e1a729">
             <font>
-                <Font name="System Bold Italic" size="21.0" />
+                <Font name="System Bold Italic" size="24.0" />
             </font>
         </Label>
+
+        <!-- Labels et champs de saisie pour les informations du crédit -->
         <Label alignment="CENTER_RIGHT" layoutX="59.0" layoutY="105.0" text="AmountCredit" />
         <Label alignment="CENTER_RIGHT" layoutX="230.0" layoutY="105.0" text="DurationCredit" />
         <Label alignment="CENTER_RIGHT" layoutX="413.0" layoutY="105.0" text="InterestRateCredit" />
@@ -24,26 +27,28 @@
         <TextField fx:id="tf_duree" layoutX="228.0" layoutY="135.0" prefWidth="122.0" />
         <TextField fx:id="tf_taux" layoutX="412.0" layoutY="135.0" prefWidth="122.0" />
         <TextField fx:id="tf_user" layoutX="576.0" layoutY="135.0" prefWidth="122.0" />
-        <Button fx:id="deleteButton" layoutX="385.0" layoutY="195.0" mnemonicParsing="false" onAction="#deleteRow" prefHeight="42.0" prefWidth="102.0" stylesheets="@Stylesheet/Style.css" text="DELETE" />
         <Label alignment="CENTER_RIGHT" layoutX="187.0" layoutY="140.0" text="DT" />
         <Label alignment="CENTER_RIGHT" layoutX="360.0" layoutY="141.0" text="Month" />
         <Label alignment="CENTER_RIGHT" layoutX="545.0" layoutY="141.0" text="\%" />
-        <AnchorPane layoutY="255.0" prefHeight="287.0" prefWidth="719.0">
-            <children>
-                <TableView fx:id="table" editable="true" layoutX="38.0" prefHeight="287.0" prefWidth="670.0" stylesheets="@Stylesheet/Style.css">
-                    <columns>
-                        <TableColumn fx:id="id_credit" prefWidth="56.0" text="Id" />
-                        <TableColumn fx:id="montant_credit" prefWidth="86.4" text="Amount" />
-                        <TableColumn fx:id="duree_credit" prefWidth="85.6" text="Duration" />
-                        <TableColumn fx:id="taux_credit" prefWidth="107.20001220703125" text="InterestRate" />
-                        <TableColumn fx:id="date_credit" prefWidth="135.199951171875" text="Date" />
-                        <TableColumn fx:id="id_user" prefWidth="99.20001220703125" text="User ID" />
-                  <TableColumn fx:id="Status" prefWidth="93.5999755859375" text="Status" />
-                    </columns>
-                </TableView>
-            </children>
-        </AnchorPane>
-      <Button fx:id="btncontinue" layoutX="258.0" layoutY="197.0" mnemonicParsing="false" onAction="#SaveCredit" prefHeight="42.0" prefWidth="93.0" stylesheets="@Stylesheet/Style.css" text="Continue" />
+
+        <!-- TableView pour afficher les crédits -->
+        <TableView fx:id="table" editable="true" layoutX="34.0" layoutY="192.0" prefHeight="300.0" prefWidth="730.0" stylesheets="@Stylesheet/Style.css">
+            <columns>
+                <TableColumn fx:id="id_credit" prefWidth="56.0" text="Id" />
+                <TableColumn fx:id="montant_credit" prefWidth="86.4" text="Amount" />
+                <TableColumn fx:id="duree_credit" prefWidth="85.6" text="Duration" />
+                <TableColumn fx:id="taux_credit" prefWidth="107.20001220703125" text="InterestRate" />
+                <TableColumn fx:id="date_credit" prefWidth="135.199951171875" text="Date" />
+                <TableColumn fx:id="id_user" prefWidth="99.20001220703125" text="User ID" />
+                <TableColumn fx:id="Status" prefWidth="93.5999755859375" text="Status" />
+            </columns>
+        </TableView>
+
+        <!-- Bouton pour supprimer un crédit -->
+        <Button fx:id="deleteButton" layoutX="431.0" layoutY="520.0" mnemonicParsing="false" onAction="#deleteRow" prefHeight="42.0" prefWidth="102.0" stylesheets="@Stylesheet/Style.css" text="DELETE" />
+
+        <!-- Bouton pour continuer -->
+        <Button fx:id="btncontinue" layoutX="277.0" layoutY="520.0" mnemonicParsing="false" onAction="#SaveCredit" prefHeight="42.0" prefWidth="93.0" stylesheets="@Stylesheet/Style.css" text="Continue" />
     </children>
     <opaqueInsets>
         <Insets />

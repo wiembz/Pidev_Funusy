@@ -5,22 +5,26 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import pidev.esprit.Entities.Credit;
 import pidev.esprit.Entities.CreditGarantieWrapper;
 import pidev.esprit.Services.CreditCrud;
 import pidev.esprit.Services.GarantieCrud;
 import pidev.esprit.Entities.Garantie;
-import pidev.esprit.Entities.Nature;
-import pidev.esprit.Controllers.Credit.GarantieController;
-import pidev.esprit.Controllers.Credit.AjouterCredit;
-
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import static pidev.esprit.Controllers.Credit.SmsCredit.sendSMS;
 
 public class AdminCreditController {
 
     @FXML
-    private TableView<Credit> tableAdmin;
+    private TableView<CreditGarantieWrapper> tableAdmin;
 
     @FXML
     private TableColumn<Credit, Integer> id_credit;
@@ -53,6 +57,9 @@ public class AdminCreditController {
     @FXML
     private Button rejectedCredit;
 
+    @FXML
+    private TextField tf_search; // Champ de recherche
+
     public void initialize() {
         // Configurer les colonnes de crédit
         id_credit.setCellValueFactory(new PropertyValueFactory<>("id_credit"));
@@ -80,42 +87,105 @@ public class AdminCreditController {
                 tableAdmin.getItems().add(wrapper);
             }
         }
+
+        // Appeler la méthode de filtrage lorsque le texte dans le champ de recherche change
+        tf_search.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                // Si le champ de recherche est vide, rafraîchissez la liste
+                refreshTableView();
+            } else {
+                // Sinon, effectuez la recherche
+                tableAdmin(newValue);
+            }
+        });
+
+
+        Preuvebutton();
     }
 
+    private void tableAdmin(String newValue) {
+        filterTableView(newValue);
+    }
 
     @FXML
     private void handleAcceptedCredit() {
-        CreditGarantieWrapper selectedWrapper = (CreditGarantieWrapper) tableAdmin.getSelectionModel().getSelectedItem();
+        CreditGarantieWrapper selectedWrapper = tableAdmin.getSelectionModel().getSelectedItem();
         if (selectedWrapper != null) {
             Credit selectedCredit = selectedWrapper.getCredit();
-            selectedCredit.setStatus("Accepted"); // Mettre à jour le statut localement
+            selectedCredit.setStatus("Accepted");
             CreditCrud creditCrud = new CreditCrud();
-            creditCrud.updateCreditStatus(selectedCredit.getId_credit(), "Accepted"); // Mettre à jour dans la base de données
-
-
-            // Rafraîchir la TableView pour refléter les changements
+            creditCrud.updateCreditStatus(selectedCredit.getId_credit(), "Accepted");
             refreshTableView();
+
+
         }
     }
 
     @FXML
     private void handleRejectedCredit() {
-        CreditGarantieWrapper selectedWrapper = (CreditGarantieWrapper) tableAdmin.getSelectionModel().getSelectedItem();
+        CreditGarantieWrapper selectedWrapper = tableAdmin.getSelectionModel().getSelectedItem();
         if (selectedWrapper != null) {
             Credit selectedCredit = selectedWrapper.getCredit();
-            selectedCredit.setStatus("Rejected"); // Mettre à jour le statut localement
+            selectedCredit.setStatus("Rejected");
             CreditCrud creditCrud = new CreditCrud();
-            creditCrud.updateCreditStatus(selectedCredit.getId_credit(), "Rejected"); // Mettre à jour dans la base de données
-
-            // Rafraîchir la TableView pour refléter les changements
+            creditCrud.updateCreditStatus(selectedCredit.getId_credit(), "Rejected");
             refreshTableView();
+
         }
     }
 
     private void refreshTableView() {
-        // Effacer le TableView et recharger les données
         tableAdmin.getItems().clear();
-        initialize(); // Recharger les données
+        initialize();
     }
 
+    private void Preuvebutton() {
+        preuve.setCellFactory(tc -> new TableCell<Garantie, String>() {
+            @Override
+            protected void updateItem(String preuve, boolean empty) {
+                super.updateItem(preuve, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    Button preuveButton = new Button("Data File");
+                    preuveButton.setOnAction(event -> openFile(preuve));
+                    setGraphic(preuveButton);
+                }
+            }
+        });
+    }
+
+    private void openFile(String filePath) {
+        try {
+            Desktop.getDesktop().open(new File(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void filterTableView(String searchText) {
+        if (searchText == null || searchText.isEmpty()) {
+            tableAdmin.setItems(getAllCreditGarantieWrappers());
+            return;
+        }
+        ObservableList<CreditGarantieWrapper> filteredList = FXCollections.observableArrayList();
+        for (CreditGarantieWrapper wrapper : getAllCreditGarantieWrappers()) {
+            if (wrapper.getGarantie().getNature_garantie().toLowerCase().contains(searchText.toLowerCase())) {
+                filteredList.add(wrapper);
+            }
+        }
+        tableAdmin.getItems().clear();
+        tableAdmin.setItems(filteredList);
+        tableAdmin.refresh();
+
+    }
+
+    private ObservableList<CreditGarantieWrapper> getAllCreditGarantieWrappers() {
+        ObservableList<CreditGarantieWrapper> wrappers = FXCollections.observableArrayList();
+        for (CreditGarantieWrapper wrapper : tableAdmin.getItems()) {
+            wrappers.add(wrapper);
+        }
+        return wrappers;
+    }
 }

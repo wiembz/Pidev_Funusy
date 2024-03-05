@@ -5,24 +5,29 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.converter.DoubleStringConverter;
 import pidev.esprit.Entities.Garantie;
 import pidev.esprit.Entities.Nature;
 import pidev.esprit.Services.CreditCrud;
 import pidev.esprit.Services.GarantieCrud;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.util.Optional;
 
+import static jdk.jfr.consumer.EventStream.openFile;
 
 public class GarantieController {
 
@@ -33,7 +38,7 @@ public class GarantieController {
     private TableColumn<Garantie, Integer> id_garantie;
 
     @FXML
-    private TableColumn<Object, Nature> nature_garantie;
+    private TableColumn<Garantie, Nature> nature_garantie;
 
     @FXML
     private TableColumn<Garantie, String> preuve;
@@ -59,23 +64,21 @@ public class GarantieController {
     @FXML
     private TextField tf_valeur;
 
-    private String fileContent; // Variable de classe pour stocker le contenu du fichier
+    private String fileContent;
+    private File selectedFile;
+
 
     GarantieCrud garantieServices = new GarantieCrud();
 
-    private int idcredit; // Variable to store id_credit
-    private ObservableList<Garantie> GarantieList = FXCollections.observableArrayList();// Créez une liste observable pour stocker les données de crédit
+    private int idcredit;
+    private ObservableList<Garantie> GarantieList = FXCollections.observableArrayList();
 
-
-    // Setter method for id_credit
     public void setId_credit(int idcredit) {
         this.idcredit = idcredit;
     }
 
     public void addGarantie(Garantie newGarantie) {
-        // Ajoutez le nouveau crédit à la liste observable
         GarantieList.add(newGarantie);
-
     }
 
     @FXML
@@ -83,24 +86,21 @@ public class GarantieController {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a file");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        // Ajouter un filtre pour les fichiers PDF
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Fichiers PDF (*.pdf)", "*.pdf");
         fileChooser.getExtensionFilters().add(extFilter);
-        // Désactiver les autres filtres pour afficher tous les fichiers
         fileChooser.setSelectedExtensionFilter(extFilter);
 
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        selectedFile = fileChooser.showOpenDialog(new Stage());
         if (selectedFile != null) {
             try {
-                // Lire le contenu du fichier sélectionné en tant que String
                 fileContent = new String(Files.readAllBytes(selectedFile.toPath()));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            // Afficher le nom du fichier sélectionné sur le bouton
             btnChoose.setText(selectedFile.getName());
         }
     }
+
 
     private void showErrorDialog(String noSelection, String s) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -111,28 +111,25 @@ public class GarantieController {
     }
 
     public void initialize() {
-        // Initialisation de la ComboBox avec les valeurs de l'énumération Garantie.Nature
         tf_nature.setItems(FXCollections.observableArrayList(Nature.values()));
 
         id_garantie.setCellValueFactory(new PropertyValueFactory<>("id_garantie"));
         id_credit.setCellValueFactory(new PropertyValueFactory<>("id_credit"));
-        nature_garantie.setCellValueFactory(new PropertyValueFactory<Object, Nature>("nature_garantie"));
+        nature_garantie.setCellValueFactory(new PropertyValueFactory<>("nature_garantie"));
         Valeur_Garantie.setCellValueFactory(new PropertyValueFactory<>("Valeur_Garantie"));
         preuve.setCellValueFactory(new PropertyValueFactory<>("preuve"));
+
         GarantieCrud gc = new GarantieCrud();
         GarantieList.clear();
         GarantieList.addAll(gc.afficherEntite());
         table_garantie.setItems(GarantieList);
-        // Configurer la sélection de ligne
+
         table_garantie.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-        // Ajouter un écouteur d'événements pour les clics sur les lignes de la TableView
         table_garantie.setRowFactory(tv -> {
             TableRow<Garantie> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-                    Garantie selectedItem = row.getItem();
-                    // Sélectionner la ligne et mettre à jour les boutons
                     btndelete.setDisable(false);
                 }
             });
@@ -141,36 +138,36 @@ public class GarantieController {
         setupEditableGarantie();
     }
 
-
-    public void InsertGarantie(ActionEvent actionEvent) {
+    @FXML
+    void InsertGarantie(ActionEvent actionEvent) {
         if (fileContent != null) {
-            if (tf_nature.getValue() != null && !tf_nature.getValue().isEmpty()) { // Vérifiez si une nature de garantie est sélectionnée
+            if (tf_nature.getValue() != null && !tf_nature.getValue().isEmpty()) {
                 try {
                     CreditCrud cc = new CreditCrud();
                     double montantCredit = cc.getLastInsertedMontantCredit();
                     double valeurGarantie = Double.parseDouble(tf_valeur.getText());
 
                     if (montantCredit <= valeurGarantie) {
-                        // Créer un nouvel objet Garantie
                         Garantie G = new Garantie();
                         G.setId_credit(idcredit);
-                        G.setNature_garantie(String.valueOf(Nature.valueOf(String.valueOf(tf_nature.getValue()))));
+                        G.setNature_garantie(String.valueOf(tf_nature.getValue()));
                         G.setValeur_Garantie(valeurGarantie);
-                        G.setPreuve(fileContent);
+                        G.setPreuve(selectedFile.getAbsolutePath()); // Assuming selectedFile is the selected PDF file
 
-                        // Vérifier si la garantie existe déjà
                         if (garantieServices.EntiteExists(G)) {
                             showErrorDialog("Existing Warranty", "This warranty already exists.");
                             return;
                         }
 
-                        // Si la garantie n'existe pas, l'ajouter à la base de données
                         GarantieCrud gc = new GarantieCrud();
                         gc.ajouterGarantie(G, idcredit);
                         addGarantie(G);
                         initialize();
                         table_garantie.refresh();
                         showAlert(Alert.AlertType.INFORMATION, "Added Warranty");
+
+                        // Open the file associated with the inserted garantie
+                        openFile(fileContent);
                     } else {
                         showAlert(Alert.AlertType.ERROR, "The amount of the credit is greater than the value of the guarantee");
                     }
@@ -184,13 +181,10 @@ public class GarantieController {
             showAlert(Alert.AlertType.ERROR, "Please choose a file");
         }
     }
-
     @FXML
     void deleteGarantie(ActionEvent event) {
-// Récupérer la ligne sélectionnée dans la TableView
         Garantie selectedGarantie = table_garantie.getSelectionModel().getSelectedItem();
         if (selectedGarantie == null) {
-            // Aucun élément sélectionné, afficher un message d'avertissement
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("No selection");
             alert.setHeaderText(null);
@@ -199,7 +193,6 @@ public class GarantieController {
             return;
 
         }
-        // Afficher une boîte de dialogue de confirmation
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Deletion confirmation");
         confirmationAlert.setHeaderText(null);
@@ -207,15 +200,12 @@ public class GarantieController {
 
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // L'utilisateur a confirmé la suppression, supprimer le crédit de la base de données
             GarantieCrud cc = new GarantieCrud();
             cc.deleteEntite(selectedGarantie);
 
-            // Supprimer le crédit de la liste observable et rafraîchir la TableView
             GarantieList.remove(selectedGarantie);
             table_garantie.refresh();
 
-            // Afficher un message de confirmation
             Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
             successAlert.setTitle("Deletion successful");
             successAlert.setHeaderText(null);
@@ -225,17 +215,13 @@ public class GarantieController {
     }
 
     private void setupEditableGarantie() {
-        // Nature_garantie
         ObservableList<Nature> natureOptions = FXCollections.observableArrayList(Nature.values());
-        // Créez une factory de cellules pour la colonne nature_garantie
-        Callback<TableColumn<Object, Nature>, TableCell<Object, Nature>> cellFactory = ComboBoxTableCell.forTableColumn(natureOptions);
 
-        // Configurez la factory de cellules pour la colonne nature_garantie
-        nature_garantie.setCellFactory(cellFactory);
+        nature_garantie.setCellFactory(ComboBoxTableCell.forTableColumn(natureOptions));
         nature_garantie.setOnEditCommit(event -> {
             String newValueString = String.valueOf(event.getNewValue());
             Nature newValue = Nature.valueOf(newValueString);
-            Garantie selectedGarantie = (Garantie) event.getTableView().getItems().get(event.getTablePosition().getRow());
+            Garantie selectedGarantie = event.getTableView().getItems().get(event.getTablePosition().getRow());
 
             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
             confirmationAlert.setTitle("Confirmation");
@@ -245,15 +231,14 @@ public class GarantieController {
             confirmationAlert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     selectedGarantie.setNature_garantie(newValue.getTypeName());
-                    table_garantie.refresh(); // Rafraîchir la TableView pour refléter les modifications
-                    garantieServices.updateEntite(selectedGarantie); // Enregistrer les modifications dans la base de données
+                    table_garantie.refresh();
+                    garantieServices.updateEntite(selectedGarantie);
                 } else {
-                    // Annuler la modification, ne rien faire
+                    // Cancel the modification
                 }
             });
         });
 
-        // Valeur_Garantie
         Valeur_Garantie.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
         Valeur_Garantie.setOnEditCommit(event -> {
             Double newValue = event.getNewValue();
@@ -267,35 +252,44 @@ public class GarantieController {
             confirmationAlert.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
                     selectedGarantie.setValeur_Garantie(newValue);
-                    table_garantie.refresh(); // Rafraîchir la TableView pour refléter les modifications
-                    garantieServices.updateEntite(selectedGarantie); // Enregistrer les modifications dans la base de données
+                    table_garantie.refresh();
+                    garantieServices.updateEntite(selectedGarantie);
                 } else {
-                    // Annuler la modification, ne rien faire
+                    // Cancel the modification
                 }
             });
         });
 
-        // preuve
-        preuve.setCellFactory(TextFieldTableCell.forTableColumn());
-        preuve.setOnEditCommit(event -> {
-            String newValue = event.getNewValue();
-            Garantie selectedGarantie = event.getTableView().getItems().get(event.getTablePosition().getRow());
+        preuve.setCellFactory(col -> new TableCell<Garantie, String>() {
+            final Button button = new Button("Open File");
 
-            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmationAlert.setTitle("Confirmation");
-            confirmationAlert.setHeaderText("Change warranty");
-            confirmationAlert.setContentText("Are you sure you want to change this warranty  ?");
+            {
+                button.setOnAction(event -> {
+                    Garantie garantie = getTableView().getItems().get(getIndex());
+                    if (garantie != null && garantie.getPreuve() != null) {
+                        openFile(garantie.getPreuve());
+                    }
+                });
+            }
 
-            confirmationAlert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    selectedGarantie.setPreuve(newValue);
-                    table_garantie.refresh(); // Rafraîchir la TableView pour refléter les modifications
-                    garantieServices.updateEntite(selectedGarantie); // Enregistrer les modifications dans la base de données
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
                 } else {
-                    // Annuler la modification, ne rien faire
+                    setGraphic(button);
                 }
-            });
+            }
         });
+    }
+    private void openFile(String filePath) {
+        try {
+            File file = new File(filePath);
+            Desktop.getDesktop().open(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showAlert(Alert.AlertType alertType, String message) {

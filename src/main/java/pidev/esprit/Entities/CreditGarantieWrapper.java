@@ -52,6 +52,10 @@ public class CreditGarantieWrapper extends Credit {
         return credit;
     }
 
+    public CreditGarantieWrapper getGarantie() {
+        return this;
+    }
+
     // Ajoutez d'autres getters si nécessaire
 }
 

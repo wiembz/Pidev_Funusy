@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 import pidev.esprit.Entities.Credit;
+import pidev.esprit.Entities.User;
 import pidev.esprit.Services.CreditCrud;
 import pidev.esprit.Services.GarantieCrud;
 
@@ -296,6 +297,7 @@ public class AjouterCredit {
         creditList.clear();
         creditList.addAll(cc.afficherEntite());
         table.setItems(creditList);// Associez la liste observable à votre TableView
+
         // Configurer la sélection de ligne
         table.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
