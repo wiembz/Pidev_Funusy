@@ -14,7 +14,11 @@ import pidev.esprit.User.Entities.Role;
 import pidev.esprit.User.Entities.User;
 import pidev.esprit.User.Services.GestionUser;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.util.Properties;
 
 public class SignInController {
 
@@ -25,6 +29,7 @@ public class SignInController {
     private PasswordField passwordField;
 
     private GestionUser gestionUser;
+    private User user;
 
     public SignInController() {
         gestionUser = new GestionUser();
@@ -35,29 +40,51 @@ public class SignInController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        User user = gestionUser.SignIn(email, password);
+        // Check if the user exists
+        User user = gestionUser.selectUserByEmail(email);
         if (user != null) {
-            // Successful sign-in
-            showAlert(Alert.AlertType.INFORMATION, "Connexion réussie", "Bienvenue!");
+            // Check if the email and password match
+            if (user.getEmail_user().equals(email) && user.getMdp().equals(password)) {
+                // Successful sign-in
+                showAlert(Alert.AlertType.INFORMATION, "Connexion réussie", "Bienvenue!");
 
-            try {
-                FXMLLoader loader;
-                if (user.getRole_user().equals(Role.ADMIN.getRole())) {
-                    loader = new FXMLLoader(getClass().getResource("/DashboardAdmin.fxml"));
-                } else if (user.getRole_user().equals(Role.CLIENT.getRole())){
-                    loader = new FXMLLoader(getClass().getResource("/DashboardClient.fxml"));
+                try {
+                    FXMLLoader loader;
+                    if (user.getRole_user().equals(Role.ADMIN.getRole())) {
+                        loader = new FXMLLoader(getClass().getResource("/DashboardAdmin.fxml"));
+                    } else if (user.getRole_user().equals(Role.CLIENT.getRole())){
+                        loader = new FXMLLoader(getClass().getResource("/DashboardClient.fxml"));
+                    }
+                    else return;
+
+                    Parent dashboardParent = loader.load();
+                    Scene dashboardScene = new Scene(dashboardParent);
+
+                    // Get the stage from the event and set the new scene
+                    Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    appStage.setScene(dashboardScene);
+                    appStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                else return;
+            } else {
+                // Invalid password
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ResetPassword.fxml"));
+                    Parent resetPasswordParent = loader.load();
+                    ResetPasswordController resetPasswordController = loader.getController();
+                    resetPasswordController.setGestionUser(gestionUser);
+                    resetPasswordController.setUser(user);
 
-                Parent dashboardParent = loader.load();
-                Scene dashboardScene = new Scene(dashboardParent);
+                    Scene resetPasswordScene = new Scene(resetPasswordParent);
 
-                // Get the stage from the event and set the new scene
-                Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                appStage.setScene(dashboardScene);
-                appStage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+                    // Get the stage from the event and set the new scene
+                    Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    appStage.setScene(resetPasswordScene);
+                    appStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         } else {
             // Invalid credentials
@@ -67,19 +94,34 @@ public class SignInController {
 
     @FXML
     void forgotPassword(ActionEvent event) {
-        // Handle the "Forgot Password" action
+        // Get the user's email from the emailField
         String email = emailField.getText();
-        User user = gestionUser.getUserByEmail(email);
 
+        // Check if the user exists
+        User user = gestionUser.selectUserByEmail(email);
         if (user != null) {
-            gestionUser.sendForgotPasswordEmail(user);
-            showAlert(Alert.AlertType.INFORMATION, "Forgot Password", "A password reset email has been sent to your registered email address.");
+            // User exists, redirect to ResetPassword.fxml
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/ResetPassword.fxml"));
+                Parent resetPasswordParent = loader.load();
+                ResetPasswordController resetPasswordController = loader.getController();
+                resetPasswordController.setGestionUser(gestionUser);
+                resetPasswordController.setUser(user);
+
+                Scene resetPasswordScene = new Scene(resetPasswordParent);
+
+                // Get the stage from the event and set the new scene
+                Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                appStage.setScene(resetPasswordScene);
+                appStage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
-            showAlert(Alert.AlertType.ERROR, "Forgot Password", "No user found with the provided email address.");
+            showAlert(Alert.AlertType.ERROR, "Password Reset", "No user found with the provided email address.");
         }
     }
 
-    // ... (existing code)
 
     private void showAlert(Alert.AlertType alertType, String title, String content) {
         Alert alert = new Alert(alertType);
@@ -101,5 +143,16 @@ public class SignInController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void setGestionUser(GestionUser gestionUser) {
+        this.gestionUser = gestionUser;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

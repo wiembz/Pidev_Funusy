@@ -7,8 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import pidev.esprit.User.Tools.EmailSender;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 import pidev.esprit.Tools.MyConnection;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 public class GestionUser implements IGestionUser<User> {
     private Connection cnx2;
 
@@ -95,31 +103,31 @@ public class GestionUser implements IGestionUser<User> {
 
     @Override
     public void updateUser(User user) {
-    String req = "UPDATE user SET nom_user = ?, prenom_user = ?, email_user = ?, mdp = ?, salaire = ?, date_naissance = ?, CIN = ?, tel = ?, adresse_user = ?, role_user = ? WHERE id_user = ?";
-try
+        String req = "UPDATE user SET nom_user = ?, prenom_user = ?, email_user = ?, mdp = ?, salaire = ?, date_naissance = ?, CIN = ?, tel = ?, adresse_user = ?, role_user = ? WHERE id_user = ?";
+        try
 
-    {
-        PreparedStatement pst = cnx2.prepareStatement(req);
-        pst.setString(1,user.getNom_user());
-        pst.setString(2, user.getPrenom_user());
-        pst.setString(3, user.getEmail_user());
-        pst.setString(4, user.getMdp());
-        pst.setDouble(5, user.getSalaire());
-        pst.setDate(6, new Date(user.getDate_naissance().getTime()));
-        pst.setInt(7, user.getCIN());
-        pst.setInt(8, user.getTel());
-        pst.setString(9, user.getAdresse_user()); // Assuming you want to store the enum as a string
-        pst.setString(10, user.getRole_user()); // Assuming you want to store the enum name
-        pst.setInt(11, user.getId_user()); // Set the id_user
-        pst.executeUpdate();
-        System.out.println("Update successful");
-    } catch(
-    SQLException e)
+        {
+            PreparedStatement pst = cnx2.prepareStatement(req);
+            pst.setString(1,user.getNom_user());
+            pst.setString(2, user.getPrenom_user());
+            pst.setString(3, user.getEmail_user());
+            pst.setString(4, user.getMdp());
+            pst.setDouble(5, user.getSalaire());
+            pst.setDate(6, new Date(user.getDate_naissance().getTime()));
+            pst.setInt(7, user.getCIN());
+            pst.setInt(8, user.getTel());
+            pst.setString(9, user.getAdresse_user()); // Assuming you want to store the enum as a string
+            pst.setString(10, user.getRole_user()); // Assuming you want to store the enum name
+            pst.setInt(11, user.getId_user()); // Set the id_user
+            pst.executeUpdate();
+            System.out.println("Update successful");
+        } catch(
+                SQLException e)
 
-    {
-        System.err.println("Error updating entity: " + e.getMessage());
+        {
+            System.err.println("Error updating entity: " + e.getMessage());
+        }
     }
-}
     public void updateUserClient(User user) {
         String req = "UPDATE user SET nom_user = ?, prenom_user = ?, email_user = ?, mdp = ?, salaire = ?, CIN = ?, tel = ?, adresse_user = ? = ? WHERE id_user = ?";
         try {
@@ -134,7 +142,7 @@ try
             pst.setInt(7, user.getCIN());
             pst.setInt(8, user.getTel());
             pst.setString(9, user.getAdresse_user()); // Assuming you want to store the enum as a string
-             // Assuming you want to store the enum name
+            // Assuming you want to store the enum name
             pst.executeUpdate();
             System.out.println("Update successful");
         } catch (SQLException e) {
@@ -229,18 +237,18 @@ try
         }
         return null; // Return null if no user found or an error occurs
     }
-    public void sendForgotPasswordEmail(User user) {
-        String numericCode = generateNumericCode();
-        storeNumericCodeInDatabase(user, numericCode);
-
-        String subject = "Password Reset";
-        String body = "Dear " + user.getNom_user() + ",\n\n"
-                + "To reset your password, please use the following numeric code: " + numericCode;
-
-        // Send the email using JavaMail API
-        // Implement the email sending logic here
-        EmailSender.sendEmail(user.getEmail_user(), subject, body);
-    }
+//    public void sendForgotPasswordEmail(User user) {
+//        String numericCode = generateNumericCode();
+//        storeNumericCodeInDatabase(user, numericCode);
+//
+//        String subject = "Password Reset";
+//        String body = "Dear " + user.getNom_user() + ",\n\n"
+//                + "To reset your password, please use the following numeric code: " + numericCode;
+//
+//        // Send the email using JavaMail API
+//        // Implement the email sending logic here
+//        EmailSender.sendEmail(user.getEmail_user(), subject, body);
+//    }
 
     public boolean resetPasswordWithCode(String email, String numericCode, String newPassword) {
         // Verify the numeric code and check its validity
@@ -307,6 +315,7 @@ try
         }
     }
 
+
     private void invalidateNumericCode(String email, String numericCode) {
         // Optionally, implement the logic to invalidate or remove the numeric code from the database
         String query = "UPDATE user SET numeric_code = NULL WHERE email_user = ?";
@@ -345,4 +354,77 @@ try
         }
         return null; // Return null if no user found or an error occurs
     }
+    public void storeRecoveryCode(String userEmail, String recoveryCode) {
+        String query = "UPDATE user SET numeric_code = ? WHERE email_user = ?";
+        try (PreparedStatement pst = cnx2.prepareStatement(query)) {
+            pst.setString(1, recoveryCode);
+            pst.setString(2, userEmail);
+            pst.executeUpdate();
+            System.out.println("Recovery code stored for user with email: " + userEmail);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public boolean resetPassword(String userEmail, String recoveryCode, String newPassword) {
+        String sql = "UPDATE user SET mdp = ? WHERE email_user = ? AND numeric_code = ?";
+        try (PreparedStatement pst = cnx2.prepareStatement(sql)){
+
+            pst.setString(1, newPassword);
+            pst.setString(2, userEmail);
+            pst.setString(3, recoveryCode);
+
+            int affectedRows = pst.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("Password reset successful for user with email: " + userEmail);
+                return true;
+            } else {
+                System.out.println("Invalid recovery code or email: " + userEmail);
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public void sendForgotPasswordEmail(User user) {
+        String numericCode = generateNumericCode();
+        storeNumericCodeInDatabase(user, numericCode);
+
+        String subject = "Password Reset";
+        String body = "Dear " + user.getNom_user() + ",\n\n"
+                + "To reset your password, please use the following numeric code: " + numericCode + "\n\n"
+                + "If you did not request a password reset, please ignore this email.";
+
+        String to = user.getEmail_user();
+        String from = "mbarkih302@gmail.com"; // Replace with your email address
+        String password = "apxn yakm zshr ture"; // Replace with your email password
+
+        Properties properties = System.getProperties();
+        properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+        properties.setProperty("mail.smtp.port", "587");
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(from, password);
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.setSubject(subject);
+            message.setText(body);
+
+            Transport.send(message);
+            System.out.println("Email sent successfully to: " + to);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
