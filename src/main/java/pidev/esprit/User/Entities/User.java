@@ -18,10 +18,27 @@ public class User {
     private int tel;
     private String adresse_user;
     private String role_user;
-
+private String recoveryCode;
     public User() {
     }
+    // Getter and Setter for recoveryCode
+    public String getRecoveryCode() {
+        return recoveryCode;
+    }
 
+    public void setRecoveryCode(String recoveryCode) {
+        this.recoveryCode = recoveryCode;
+    }
+
+    // Utility method to generate a recovery code
+    public String generateRecoveryCode() {
+        // Implement your logic to generate a recovery code
+        // For example, you can use a random code generator
+        // Make sure to store it in the recoveryCode field
+        // Replace this with your actual implementation
+        recoveryCode = String.valueOf((int) (Math.random() * 900000) + 100000); // Generates a random 6-digit code
+        return recoveryCode;
+    }
     public User(String nom_user, String prenom_user, String email_user, String mdp, double salaire, Date date_naissance, int CIN, int tel, String adresse_user, String role_user) {
         this.nom_user = nom_user;
         this.prenom_user = prenom_user;

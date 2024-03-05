@@ -7,8 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Properties;
 import pidev.esprit.Tools.MyConnection;
+
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 public class GestionUser implements IGestionUser<User> {
     private Connection cnx2;
 
@@ -379,4 +387,44 @@ public class GestionUser implements IGestionUser<User> {
             return false;
         }
     }
+    public void sendForgotPasswordEmail(User user) {
+        String numericCode = generateNumericCode();
+        storeNumericCodeInDatabase(user, numericCode);
+
+        String subject = "Password Reset";
+        String body = "Dear " + user.getNom_user() + ",\n\n"
+                + "To reset your password, please use the following numeric code: " + numericCode + "\n\n"
+                + "If you did not request a password reset, please ignore this email.";
+
+        String to = user.getEmail_user();
+        String from = "mbarkih302@gmail.com"; // Replace with your email address
+        String password = "apxn yakm zshr ture"; // Replace with your email password
+
+        Properties properties = System.getProperties();
+        properties.setProperty("mail.smtp.host", "smtp.gmail.com");
+        properties.setProperty("mail.smtp.port", "587");
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(from, password);
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+            message.setSubject(subject);
+            message.setText(body);
+
+            Transport.send(message);
+            System.out.println("Email sent successfully to: " + to);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
