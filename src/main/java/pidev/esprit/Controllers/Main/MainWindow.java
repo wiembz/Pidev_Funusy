@@ -18,7 +18,7 @@ public class MainWindow extends Application {
     public void start(Stage primaryStage) {
 
         try {                                                                                    //GestionInvestissementAdmin.fxml
-            Parent root = FXMLLoader.load(getClass().getResource("/MainWindow.fxml"));    //MainWindow.fxml
+            Parent root = FXMLLoader.load(getClass().getResource("/GestionInvestissementAdmin.fxml"));    //MainWindow.fxml
             primaryStage.setTitle("Funusy App");
             primaryStage.setScene(new Scene(root));
             primaryStage.show();

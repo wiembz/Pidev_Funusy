@@ -1,6 +1,4 @@
 package pidev.esprit.Entities;
-import pidev.esprit.Entities.ProjectType;
-
 
 public class Projet {
     private int id_projet;
@@ -10,7 +8,6 @@ public class Projet {
     private String type_projet;
     private String longitude;
     private String latitude;
-
     private String description;
 
     public Projet() {
@@ -108,7 +105,7 @@ public class Projet {
                 ", id_user=" + id_user +
                 ", nom_projet='" + nom_projet + '\'' +
                 ", montant_req=" + montant_req +
-                ", type_projet=" + type_projet +
+                ", type_projet='" + type_projet + '\'' +
                 ", longitude='" + longitude + '\'' +
                 ", latitude='" + latitude + '\'' +
                 ", Description='" + description + '\'' +

@@ -12,6 +12,7 @@ import okhttp3.*;
 import pidev.esprit.Entities.*;
 import pidev.esprit.Services.*;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -32,7 +33,8 @@ public class AddProjectAdminController {
     private TextField descriptionField;
     @FXML
     private Button askAiButton;
-
+    @FXML
+    private TextField fulladdress;
     @FXML
     private WebView mapView;
     @FXML
@@ -40,7 +42,7 @@ public class AddProjectAdminController {
 
     private ProjetServices projetServices;
     private ProjetAdminController parentController;
-    private static final String OPENAI_API_KEY = "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";
+    private static final String OPENAI_API_KEY = "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";
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/engines/text-davinci-003/completions";
 
     private boolean mapLoaded = false;
@@ -71,7 +73,6 @@ public class AddProjectAdminController {
     }
 
 
-
     @FXML
     private void loadMap() {
         WebEngine webEngine = mapView.getEngine();
@@ -90,8 +91,58 @@ public class AddProjectAdminController {
     public void setLocation(String location) {
         // Update the addressField with the selected location
         addressField.setText(location);
+
+        // Fetch detailed address using reverse geocoding
+        CompletableFuture.supplyAsync(() -> reverseGeocode(location))
+                .thenAccept(this::updateFullAddressField)
+                .exceptionally(this::handleGeocodingException);
+    }
+    private String reverseGeocode(String location) {
+        // Use Google Maps Geocoding API to fetch detailed address based on latitude and longitude
+        // You need to replace YOUR_API_KEY with your actual Google Maps API key
+        String apiKey = "AIzaSyBy784gK1NlXXRq1uUMnBMqape7Q6w_vmY";
+        String apiUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + location + "&key=" + apiKey;
+
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                String responseBody = response.body().string();
+                // Parse the JSON response to extract the detailed address
+                String detailedAddress = parseAddressFromJson(responseBody);
+                return detailedAddress;
+            } else {
+                // Handle unsuccessful response
+                return "Error: " + response.code();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
+    private String parseAddressFromJson(String json) {
+        // Implement JSON parsing logic to extract the detailed address
+        // Example:
+        // This is just a placeholder. You need to replace it with actual JSON parsing logic.
+        String detailedAddress = "Your parsed address from JSON";
+        return detailedAddress;
+    }
+
+    private void updateFullAddressField(String detailedAddress) {
+        // Update the full address field with the detailed address
+        fulladdress.setText(detailedAddress);
+    }
+
+    private Void handleGeocodingException(Throwable throwable) {
+        showErrorDialog("Geocoding Error", "Failed to fetch detailed address.");
+        throwable.printStackTrace();
+        return null;
+    }
     @FXML
     private void showMap(ActionEvent event) {
         if (!mapLoaded) {
@@ -187,24 +238,24 @@ public class AddProjectAdminController {
         Request request = new Request.Builder()
                 .url(OPENAI_API_URL)
                 .post(body)
-                .addHeader("Authorization", "Bearer " + OPENAI_API_KEY)
+                .addHeader("Authorization", "Bearer " + OPENAI_API_KEY) // This line sets the Authorization header
                 .build();
 
         try {
             Response response = client.newCall(request).execute();
             return response.body().string();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
     private void handleAiResponse(String response) {
-        String amountRequired = calculateAmountFromResponse(response);
+        String amountRequired = extractAmountFromResponse(response);
         montant_reqField.setText(amountRequired);
     }
 
-    private String calculateAmountFromResponse(String response) {
+    private String extractAmountFromResponse(String response) {
         // Convert the response to lowercase for case-insensitive matching
         String lowercaseResponse = response.toLowerCase();
 
@@ -251,9 +302,8 @@ public class AddProjectAdminController {
         }
 
         // If no amount is found, return a default value in TND
-        return "1000 TND"; // Default value in TND
+        return "1000";
     }
-
 
     private Void handleApiException(Throwable throwable) {
         showErrorDialog("API Error", "Failed to fetch data from the API.");

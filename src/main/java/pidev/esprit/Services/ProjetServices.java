@@ -5,7 +5,9 @@ import pidev.esprit.Tools.MyConnection;
 import pidev.esprit.Entities.ProjectType;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProjetServices implements ICrud<Projet> {
     Connection cnx2;
@@ -50,16 +52,11 @@ public class ProjetServices implements ICrud<Projet> {
 
     @Override
     public boolean EntiteExists(Projet p) {
-        String query = "SELECT COUNT(*) FROM projet WHERE id_user = ? AND nom_projet = ? AND montant_req = ? AND longitude = ? AND latitude = ? AND type_projet = ? AND description = ?";
+        String query = "SELECT COUNT(*) FROM projet WHERE nom_projet = ? AND type_projet = ?";
         try {
             PreparedStatement pst = cnx2.prepareStatement(query);
-            pst.setInt(1, p.getId_user());
-            pst.setString(2, p.getNom_projet());
-            pst.setFloat(3, p.getMontant_req());
-            pst.setString(4, p.getLongitude());
-            pst.setString(5, p.getLatitude());
-            pst.setString(6, p.getType_projet()); // Use a method to get the ID of the ProjectType enum
-            pst.setString(7, p.getDescription());
+            pst.setString(1, p.getNom_projet());
+            pst.setString(2, p.getType_projet());
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 int count = rs.getInt(1);
@@ -69,6 +66,24 @@ public class ProjetServices implements ICrud<Projet> {
             System.err.println(e.getMessage());
         }
         return false;
+    }
+    public Map<ProjectType, Integer> getProjectCountByType() {
+        String query = "SELECT type_projet, COUNT(*) FROM projet GROUP BY type_projet";
+        Map<ProjectType, Integer> projectCounts = new HashMap<>();
+
+        try (PreparedStatement pst = cnx2.prepareStatement(query)) {
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                String typeName = rs.getString("type_projet");
+                int count = rs.getInt(2);
+                ProjectType type = ProjectType.valueOf(typeName.toUpperCase()); // Convert string to enum
+                projectCounts.put(type, count);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return projectCounts;
     }
 
     @Override
@@ -130,12 +145,23 @@ public class ProjetServices implements ICrud<Projet> {
     }
 
 
-    public List<Projet> search(float amount) {
+    public List<Projet> search(String query) {
         List<Projet> filteredProjetList = new ArrayList<>();
-        String query = "SELECT * FROM projet WHERE montant_req = ?";
+        StringBuilder searchQuery = new StringBuilder("SELECT * FROM projet WHERE ");
+
+        // Construct the search query dynamically based on the attributes
+        searchQuery.append("nom_projet LIKE ? OR ");
+        searchQuery.append("type_projet LIKE ? OR ");
+        searchQuery.append("montant_req = ? OR ");
+        searchQuery.append("longitude LIKE ? OR ");
+        searchQuery.append("latitude LIKE ? OR ");
+        searchQuery.append("description LIKE ?");
+
         try {
-            PreparedStatement pst = cnx2.prepareStatement(query);
-            pst.setFloat(1, amount);
+            PreparedStatement pst = cnx2.prepareStatement(searchQuery.toString());
+            for (int i = 1; i <= 6; i++) {
+                pst.setString(i, "%" + query + "%"); // Set the search query for each attribute
+            }
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 Projet projet = new Projet();
@@ -154,4 +180,7 @@ public class ProjetServices implements ICrud<Projet> {
         }
         return filteredProjetList;
     }
+
+
+
 }

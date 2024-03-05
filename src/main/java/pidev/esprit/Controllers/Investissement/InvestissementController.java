@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -59,6 +60,11 @@ public class InvestissementController {
     private Projet selectedProject;
     @FXML
     private WebView gifWebView;
+    @FXML
+    private TextField searchField;
+    private ObservableList<Investissement> filteredInvestissementData;
+
+    private ObservableList<Investissement> investissementData;
 
     public InvestissementController() {
         investissementServices = new InvestissementServices();
@@ -67,7 +73,18 @@ public class InvestissementController {
     @FXML
     private void initialize() {
         setupCellFactories();
+        investissementData = FXCollections.observableArrayList(); // Initialize investissementData as class-level variable
         populateInvestissementTable();
+        filteredInvestissementData = FXCollections.observableArrayList(); // Initialize filteredInvestissementData as class-level variable
+
+        // Add listener to search field text property
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                table.setItems(investissementData); // Reset to original data if search field is empty
+            } else {
+                handleSearch();
+            }
+        });
     }
 
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -100,6 +117,7 @@ public class InvestissementController {
         periode.setCellValueFactory(new PropertyValueFactory<>("periode"));
         date_investissement.setCellValueFactory(new PropertyValueFactory<>("date_investissement"));
     }
+
     @FXML
     private void handleCellEditCommit(TableColumn.CellEditEvent<Investissement, ?> event) {
         // Handle cell edit commit
@@ -116,6 +134,9 @@ public class InvestissementController {
             if (response == ButtonType.OK) {
                 // Update the entity in the database
                 switch (columnName) {
+                    case "id_investissement":
+                        selectedInvestissement.setId_investissement((Integer) event.getNewValue());
+                        break;
                     case "id_user":
                         selectedInvestissement.setId_user((Integer) event.getNewValue());
                         break;
@@ -127,6 +148,9 @@ public class InvestissementController {
                         break;
                     case "periode":
                         selectedInvestissement.setPeriode((Integer) event.getNewValue());
+                        break;
+                    case "id_projet":
+                        selectedInvestissement.setId_projet((Integer) event.getNewValue());
                         break;
                 }
                 investissementServices.updateEntite(selectedInvestissement);
@@ -198,8 +222,7 @@ public class InvestissementController {
         Label amountLabel = new Label("Investment Amount: " + montantField.getText());
         Label periodLabel = new Label("Investment Period: " + periodeField.getValue() + " months");
 
-        // Calculate profit
-        float profit = calculateProfit(selectedProject, Float.parseFloat(montantField.getText()), Integer.parseInt(periodeField.getValue().toString()));
+        float profit = ProfitController.calculateProfit(Float.parseFloat(montantField.getText()), Integer.parseInt(periodeField.getValue().toString()), selectedProject.getType_projet());
         Label profitLabel = new Label("Expected Profit: " + profit);
 
         // Add labels to the VBox
@@ -221,82 +244,6 @@ public class InvestissementController {
         // Show the dialog
         dialog.showAndWait();
     }
-
-
-    // Method to apply blur effect to a node
-
-    private float calculateProfit(Projet project, float investmentAmount, int investmentPeriod) {
-        // Perform profit calculation logic based on the project type, details, investment amount, and period
-        float profitPercentage;
-
-        // Adjust profit calculation based on project type
-        switch (project.getType_projet()) {
-            case "Agriculture":
-                profitPercentage = calculateProfitPercentageForAgriculture(investmentPeriod);
-                break;
-            case "Technologique":
-                profitPercentage = calculateProfitPercentageForTechnologique(investmentPeriod);
-                break;
-            case "Bourse":
-                profitPercentage = calculateProfitPercentageForBourse(investmentPeriod);
-                break;
-            case "Immobilier":
-                profitPercentage = calculateProfitPercentageForImmobilier(investmentPeriod);
-                break;
-            default:
-                profitPercentage = 0.01f; // Default profit percentage
-        }
-
-        // Calculate total profit based on investment amount, period, and profit percentage
-        float totalProfit = investmentAmount * profitPercentage * investmentPeriod;
-        return totalProfit;
-    }
-
-    // Define separate methods to calculate profit percentage for each type of project
-    private float calculateProfitPercentageForAgriculture(int investmentPeriod) {
-        // Define profit percentage calculation logic for Agriculture projects
-        // Adjust this logic based on your specific requirements
-        // For example:
-        if (investmentPeriod <= 6) {
-            return 0.01f; // 1% interest rate for investments less than or equal to 6 months
-        } else {
-            return 0.015f; // 1.5% interest rate for investments greater than 6 months
-        }
-    }
-
-    private float calculateProfitPercentageForTechnologique(int investmentPeriod) {
-        // Define profit percentage calculation logic for Technologique projects
-        // Adjust this logic based on your specific requirements
-        // For example:
-        if (investmentPeriod <= 6) {
-            return 0.015f; // 1.5% interest rate for investments less than or equal to 6 months
-        } else {
-            return 0.02f; // 2% interest rate for investments greater than 6 months
-        }
-    }
-
-    private float calculateProfitPercentageForBourse(int investmentPeriod) {
-        // Define profit percentage calculation logic for Bourse projects
-        // Adjust this logic based on your specific requirements
-        // For example:
-        if (investmentPeriod <= 12) {
-            return 0.02f; // 2% interest rate for investments less than or equal to 12 months
-        } else {
-            return 0.025f; // 2.5% interest rate for investments greater than 12 months
-        }
-    }
-
-    private float calculateProfitPercentageForImmobilier(int investmentPeriod) {
-        // Define profit percentage calculation logic for Immobilier projects
-        // Adjust this logic based on your specific requirements
-        // For example:
-        if (investmentPeriod <= 24) {
-            return 0.025f; // 2.5% interest rate for investments less than or equal to 24 months
-        } else {
-            return 0.03f; // 3% interest rate for investments greater than 24 months
-        }
-    }
-
 
     private boolean validateInput() {
         String id_userText = id_userField.getText().trim();
@@ -426,5 +373,14 @@ public class InvestissementController {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void handleSearch() {
+        String query = searchField.getText().toLowerCase();
+        // Search for investments based on the query
+        List<Investissement> searchResults = investissementServices.searchInvestments(query);
+        ObservableList<Investissement> searchResultList = FXCollections.observableArrayList(searchResults);
+        table.setItems(searchResultList);
     }
 }

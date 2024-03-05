@@ -13,9 +13,12 @@ public class InvestissementServices implements ICrud<Investissement> {
     public InvestissementServices() {
         cnx2 = MyConnection.getInstance().getCnx();
     }
-
-    @Override
+@Override
     public void ajouterEntite(Investissement i) {
+        if (EntiteExists(i)) {
+            System.out.println("Investment with the same attributes already exists.");
+            return;
+        }
         String requet = "INSERT INTO investissement (id_user, montant, date_inv, periode, id_projet) VALUES (?, ?, ?, ?, ?)";
         try {
             PreparedStatement pst = cnx2.prepareStatement(requet);
@@ -29,6 +32,7 @@ public class InvestissementServices implements ICrud<Investissement> {
             System.err.println(e.getMessage());
         }
     }
+
     public List<Investissement> findInvestmentsByProjectId(int projectId) {
         List<Investissement> investments = new ArrayList<>();
         String query = "SELECT * FROM investissement WHERE id_projet = ?";
@@ -96,6 +100,7 @@ public class InvestissementServices implements ICrud<Investissement> {
     }
 
     @Override
+    // In InvestissementServices class
     public void updateEntite(Investissement i) {
         String req = "UPDATE investissement SET id_user = ?, montant = ?, date_inv = ?, periode = ?, id_projet = ? WHERE id_investissement = ?";
         try {
@@ -104,14 +109,15 @@ public class InvestissementServices implements ICrud<Investissement> {
             pst.setFloat(2, i.getMontant());
             pst.setDate(3, new java.sql.Date(i.getDate_investissement().getTime()));
             pst.setInt(4, i.getPeriode());
-            pst.setInt(5, i.getId_investissement());
-            pst.setInt(6, i.getId_projet());
+            pst.setInt(5, i.getId_projet());
+            pst.setInt(6, i.getId_investissement());
             pst.executeUpdate();
             System.out.println("Update successful");
         } catch (SQLException e) {
             System.err.println("Error updating entity: " + e.getMessage());
         }
     }
+
 
     @Override
     public void deleteEntite(int id) {
@@ -124,4 +130,30 @@ public class InvestissementServices implements ICrud<Investissement> {
             System.err.println(e.getMessage());
         }
     }
+    public List<Investissement> searchInvestments(String query) {
+        List<Investissement> filteredInvestments = new ArrayList<>();
+        String queryString = "SELECT * FROM investissement WHERE id_user LIKE ? OR montant LIKE ? OR periode LIKE ? OR date_inv LIKE ?";
+        try {
+            PreparedStatement pst = cnx2.prepareStatement(queryString);
+            pst.setString(1, "%" + query + "%");
+            pst.setString(2, "%" + query + "%");
+            pst.setString(3, "%" + query + "%");
+            pst.setString(4, "%" + query + "%");
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                Investissement inv = new Investissement();
+                inv.setId_investissement(rs.getInt("id_investissement"));
+                inv.setId_user(rs.getInt("id_user"));
+                inv.setMontant(rs.getFloat("montant"));
+                inv.setDate_investissement(rs.getDate("date_inv"));
+                inv.setPeriode(rs.getInt("periode"));
+                inv.setId_projet(rs.getInt("id_projet"));
+                filteredInvestments.add(inv);
+            }
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+        return filteredInvestments;
+    }
+
 }

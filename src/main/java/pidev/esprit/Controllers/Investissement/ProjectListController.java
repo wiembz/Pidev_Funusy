@@ -40,6 +40,7 @@ public class ProjectListController {
 
     private void populateProjectTable() {
         List<Projet> projects = projetServices.afficherEntite();
+        projectTableView.getItems().clear(); // Clear existing items
         projectTableView.getItems().addAll(projects);
 
         TableColumn<Projet, Integer> id_projetCol = new TableColumn<>("ID");
@@ -51,8 +52,17 @@ public class ProjectListController {
         TableColumn<Projet, Float> montant_reqCol = new TableColumn<>("Required Amount");
         montant_reqCol.setCellValueFactory(new PropertyValueFactory<>("montant_req"));
 
-        projectTableView.getColumns().addAll(id_projetCol, nom_projetCol, montant_reqCol);
+        TableColumn<Projet, String> type_projetCol = new TableColumn<>("Type");
+        type_projetCol.setCellValueFactory(new PropertyValueFactory<>("type_projet"));
+
+        TableColumn<Projet, String> descriptionCol = new TableColumn<>("Description");
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        // Clear existing columns before adding new ones
+        projectTableView.getColumns().clear();
+        projectTableView.getColumns().addAll(id_projetCol, nom_projetCol, montant_reqCol, type_projetCol, descriptionCol);
     }
+
 
     @FXML
     private void handleSelectButtonAction() {

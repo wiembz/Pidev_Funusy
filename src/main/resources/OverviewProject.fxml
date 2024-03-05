@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -8,7 +9,7 @@
 
 <AnchorPane prefHeight="418.0" prefWidth="661.0" styleClass="anchor-pane" stylesheets="@Stylesheet/ADMIN.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Investissement.OverviewProjectController">
 
-     <TableView fx:id="projetTable" layoutX="25.0" layoutY="79.0" prefHeight="325.0" prefWidth="611.0" stylesheets="@Stylesheet/ADMIN.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="79.0">
+     <TableView fx:id="projetTable" layoutX="14.0" layoutY="88.0" prefHeight="320.0" prefWidth="440.0" stylesheets="@Stylesheet/ADMIN.css" AnchorPane.bottomAnchor="14.399999999999977" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="212.39999999999998" AnchorPane.topAnchor="88.0">
          <columns>
              <TableColumn fx:id="id_projetColumn" prefWidth="75.0" text="ID" />
              <TableColumn fx:id="nom_projetColumn" prefWidth="150.0" text="Name" />
@@ -20,9 +21,10 @@
          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
       </columnResizePolicy>
      </TableView>
-   <Label layoutX="25.0" layoutY="14.0" prefHeight="48.0" prefWidth="309.0" styleClass="title" stylesheets="@Stylesheet/ADMIN.css" text="consult invested projects">
+   <Label layoutX="60.0" layoutY="27.0" prefHeight="48.0" prefWidth="309.0" styleClass="title" stylesheets="@Stylesheet/ADMIN.css" text="consult invested projects">
       <font>
          <Font size="11.0" />
       </font>
    </Label>
+   <PieChart layoutX="453.0" layoutY="151.0" prefHeight="218.0" prefWidth="200.0" />
 </AnchorPane>

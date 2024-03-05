@@ -47,7 +47,7 @@
                                                 <Button fx:id="deleteButton" layoutX="467.0" layoutY="18.0" mnemonicParsing="false" onAction="#handleDeleteButtonAction" prefHeight="34.0" prefWidth="88.0" stylesheets="@Stylesheet/Style.css" text="Delete" AnchorPane.leftAnchor="467.0" />
                                                 <Pane layoutX="49.0" layoutY="16.0" prefHeight="38.0" prefWidth="181.0" AnchorPane.rightAnchor="372.0">
                                                     <children>
-                                                        <TextField alignment="CENTER" prefHeight="32.0" prefWidth="175.0" promptText="Search Investment" />
+                                                        <TextField fx:id="searchField" alignment="CENTER" prefHeight="32.0" prefWidth="175.0" promptText="Search Investment" onKeyReleased="#handleSearch" />
                                                         <FontAwesomeIconView fill="#716e6e" glyphName="SEARCH" layoutX="4.0" layoutY="23.0" selectionFill="#dcd3d3" size="13.5" text="" wrappingWidth="19.942906379699707" x="5.0" />
                                                     </children>
                                                 </Pane>
