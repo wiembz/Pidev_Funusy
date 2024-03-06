@@ -182,5 +182,25 @@ public class CreditCrud implements ICrud<Credit> {
             e.printStackTrace();
         }
     }
-    
+    // Méthode pour récupérer le numéro de téléphone de l'utilisateur par son ID
+    public String recupererNumeroTelephoneParId(int idUtilisateur) {
+        String numeroTelephone = null;
+        String query = "SELECT tel FROM user WHERE id_user = ?";
+        try (PreparedStatement statement = cnx2.prepareStatement(query)) {
+            statement.setInt(1, idUtilisateur);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String tel = resultSet.getString("tel");
+                // Ajouter le code du pays au début du numéro de téléphone
+                numeroTelephone = "+216" + tel; // Remplacez "216" par le code de votre pays si nécessaire
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return numeroTelephone;
+    }
+
+
+
+
 }

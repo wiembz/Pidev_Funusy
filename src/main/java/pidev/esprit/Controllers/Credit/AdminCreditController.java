@@ -115,9 +115,12 @@ public class AdminCreditController {
             selectedCredit.setStatus("Accepted");
             CreditCrud creditCrud = new CreditCrud();
             creditCrud.updateCreditStatus(selectedCredit.getId_credit(), "Accepted");
-            refreshTableView();
+            String numeroTelephone = creditCrud.recupererNumeroTelephoneParId(selectedCredit.getId_user());
+            if (numeroTelephone != null) {
+                SmsCredit.sendSMS(numeroTelephone, "Votre crédit a été accepté.");
+                refreshTableView();
 
-
+            }
         }
     }
 
@@ -129,10 +132,14 @@ public class AdminCreditController {
             selectedCredit.setStatus("Rejected");
             CreditCrud creditCrud = new CreditCrud();
             creditCrud.updateCreditStatus(selectedCredit.getId_credit(), "Rejected");
-            refreshTableView();
-
+            String numeroTelephone = creditCrud.recupererNumeroTelephoneParId(selectedCredit.getId_user());
+            if (numeroTelephone != null) {
+                SmsCredit.sendSMS(numeroTelephone, "Votre crédit a été rejeté.");
+                refreshTableView();
+            }
         }
     }
+
 
     private void refreshTableView() {
         tableAdmin.getItems().clear();
