@@ -87,6 +87,16 @@
       <artifactId>javafx-swing</artifactId>
       <version>17.0.6</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.xbean</groupId>
+      <artifactId>xbean-reflect</artifactId>
+      <version>3.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20211205</version> <!-- or the latest version available -->
+    </dependency>
 
 
   </dependencies>

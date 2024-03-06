@@ -9,10 +9,15 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 import okhttp3.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 import pidev.esprit.Entities.*;
 import pidev.esprit.Services.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,7 +35,7 @@ public class AddProjectAdminController {
     @FXML
     private ComboBox<ProjectType> type_projetField;
     @FXML
-    private TextField descriptionField;
+    private TextArea descriptionField;
     @FXML
     private Button askAiButton;
     @FXML
@@ -42,8 +47,8 @@ public class AddProjectAdminController {
 
     private ProjetServices projetServices;
     private ProjetAdminController parentController;
-    private static final String OPENAI_API_KEY = "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";
-    private static final String OPENAI_API_URL = "https://api.openai.com/v1/engines/text-davinci-003/completions";
+    private static final String GEMINI_API_KEY = "AIzaSyDO8XvJHwgslZeTJWYCy868Z0OfgqCD4dA";
+    private static final String GEMINI_API_URL = "https://api.gemini.com/";
 
     private boolean mapLoaded = false;
 
@@ -91,17 +96,13 @@ public class AddProjectAdminController {
     public void setLocation(String location) {
         // Update the addressField with the selected location
         addressField.setText(location);
-
-        // Fetch detailed address using reverse geocoding
-        CompletableFuture.supplyAsync(() -> reverseGeocode(location))
-                .thenAccept(this::updateFullAddressField)
-                .exceptionally(this::handleGeocodingException);
+        // Fetch and display the detailed address
+        String detailedAddress = reverseGeocode(location);
+        fulladdress.setText(detailedAddress);
     }
+
     private String reverseGeocode(String location) {
-        // Use Google Maps Geocoding API to fetch detailed address based on latitude and longitude
-        // You need to replace YOUR_API_KEY with your actual Google Maps API key
-        String apiKey = "AIzaSyBy784gK1NlXXRq1uUMnBMqape7Q6w_vmY";
-        String apiUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + location + "&key=" + apiKey;
+        String apiUrl = "https://nominatim.openstreetmap.org/reverse?lat=" + location.split(",")[0] + "&lon=" + location.split(",")[1] + "&format=json";
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -126,23 +127,15 @@ public class AddProjectAdminController {
     }
 
     private String parseAddressFromJson(String json) {
-        // Implement JSON parsing logic to extract the detailed address
-        // Example:
-        // This is just a placeholder. You need to replace it with actual JSON parsing logic.
-        String detailedAddress = "Your parsed address from JSON";
-        return detailedAddress;
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            return jsonObject.getString("display_name");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return "Error parsing JSON";
+        }
     }
 
-    private void updateFullAddressField(String detailedAddress) {
-        // Update the full address field with the detailed address
-        fulladdress.setText(detailedAddress);
-    }
-
-    private Void handleGeocodingException(Throwable throwable) {
-        showErrorDialog("Geocoding Error", "Failed to fetch detailed address.");
-        throwable.printStackTrace();
-        return null;
-    }
     @FXML
     private void showMap(ActionEvent event) {
         if (!mapLoaded) {
@@ -150,7 +143,6 @@ public class AddProjectAdminController {
             mapLoaded = true;
         }
     }
-
     @FXML
     private void AddProject() {
         String id_userText = id_userField.getText().trim();
@@ -224,86 +216,74 @@ public class AddProjectAdminController {
             return;
         }
 
-        CompletableFuture.supplyAsync(() -> callChatGpt(descriptionText))
+        CompletableFuture.supplyAsync(() -> callGeminiApi(descriptionText))
                 .thenAccept(this::handleAiResponse)
                 .exceptionally(this::handleApiException);
     }
 
-    private String callChatGpt(String description) {
-        OkHttpClient client = new OkHttpClient();
-        MediaType mediaType = MediaType.parse("application/json");
 
-        RequestBody body = RequestBody.create(mediaType, "{\"prompt\":\"The project requires " + description + "\",\"max_tokens\":50}");
+    private String callGeminiApi(String description) {
+        // Print the description to check if it's passed correctly
+        System.out.println("Description: " + description);
 
-        Request request = new Request.Builder()
-                .url(OPENAI_API_URL)
-                .post(body)
-                .addHeader("Authorization", "Bearer " + OPENAI_API_KEY) // This line sets the Authorization header
-                .build();
+        // Extract amounts from the description
+        List<String> amounts = extractAmountFromResponse(description);
 
-        try {
-            Response response = client.newCall(request).execute();
-            return response.body().string();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private void handleAiResponse(String response) {
-        String amountRequired = extractAmountFromResponse(response);
-        montant_reqField.setText(amountRequired);
-    }
-
-    private String extractAmountFromResponse(String response) {
-        // Convert the response to lowercase for case-insensitive matching
-        String lowercaseResponse = response.toLowerCase();
-
-        // Define patterns to match different representations of amounts in text
-        // Patterns for USD
-        Pattern patternUSD1 = Pattern.compile("\\d+ usd"); // Matches "123 usd"
-        Pattern patternUSD2 = Pattern.compile("\\d+ dollars"); // Matches "123 dollars"
-        Pattern patternUSD3 = Pattern.compile("\\d+ \\$"); // Matches "123 $"
-        // Patterns for TND
-        Pattern patternTND1 = Pattern.compile("\\d+ tnd"); // Matches "123 tnd"
-        Pattern patternTND2 = Pattern.compile("\\d+ dinar"); // Matches "123 dinar"
-        // Patterns for GBP
-        Pattern patternGBP1 = Pattern.compile("\\d+ gbp"); // Matches "123 gbp"
-        Pattern patternGBP2 = Pattern.compile("\\d+ pound"); // Matches "123 pound"
-        Pattern patternGBP3 = Pattern.compile("\\d+ £"); // Matches "123 £"
-
-        // Try to find matches for each currency pattern
-        Matcher matcherUSD1 = patternUSD1.matcher(lowercaseResponse);
-        Matcher matcherUSD2 = patternUSD2.matcher(lowercaseResponse);
-        Matcher matcherUSD3 = patternUSD3.matcher(lowercaseResponse);
-        Matcher matcherTND1 = patternTND1.matcher(lowercaseResponse);
-        Matcher matcherTND2 = patternTND2.matcher(lowercaseResponse);
-        Matcher matcherGBP1 = patternGBP1.matcher(lowercaseResponse);
-        Matcher matcherGBP2 = patternGBP2.matcher(lowercaseResponse);
-        Matcher matcherGBP3 = patternGBP3.matcher(lowercaseResponse);
-
-        // If any pattern matches, return the found amount with currency
-        if (matcherUSD1.find()) {
-            return matcherUSD1.group();
-        } else if (matcherUSD2.find()) {
-            return matcherUSD2.group();
-        } else if (matcherUSD3.find()) {
-            return matcherUSD3.group();
-        } else if (matcherTND1.find()) {
-            return matcherTND1.group();
-        } else if (matcherTND2.find()) {
-            return matcherTND2.group();
-        } else if (matcherGBP1.find()) {
-            return matcherGBP1.group();
-        } else if (matcherGBP2.find()) {
-            return matcherGBP2.group();
-        } else if (matcherGBP3.find()) {
-            return matcherGBP3.group();
+        // Print the extracted amounts and their cleaned versions
+        for (String amount : amounts) {
+            String cleanedAmount = amount.replaceAll("[^\\d.]", "");
+            System.out.println("Original Amount: " + amount + ", Cleaned Amount: " + cleanedAmount);
         }
 
-        // If no amount is found, return a default value in TND
-        return "1000";
+        // Calculate total funding required
+        float totalFundingRequired = calculateTotalFunding(amounts);
+
+        // Return the total funding required as a string
+        return String.valueOf(totalFundingRequired);
     }
+
+
+
+
+    private float calculateTotalFunding(List<String> amounts) {
+        float totalFunding = 0.0f;
+
+        // Iterate through extracted amounts and sum them up
+        for (String amount : amounts) {
+            // Remove any non-numeric characters before parsing
+            String cleanedAmount = amount.replaceAll("[^\\d.]", "");
+
+            // If the cleaned amount is not empty, parse it
+            if (!cleanedAmount.isEmpty()) {
+                // Extract numerical value from the cleaned amount string
+                float value = Float.parseFloat(cleanedAmount);
+
+                // Add the numerical value to total funding
+                totalFunding += value;
+            }
+        }
+
+        return totalFunding;
+    }
+    private void handleAiResponse(String totalFunding) {
+
+        montant_reqField.setText(totalFunding);
+    }
+    private List<String> extractAmountFromResponse(String description) {
+        List<String> amounts = new ArrayList<>();
+
+        // Regular expression pattern to match amounts with different currencies
+        Pattern pattern = Pattern.compile("\\b(?:\\d+(?:\\.\\d+)?|\\d*(?:\\.\\d+))\\s*(?:usd|dollars|\\$|tnd|dinar|gbp|pound|£|€|euros)?\\b", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(description);
+
+        // Iterate through matches and add to list
+        while (matcher.find()) {
+            amounts.add(matcher.group());
+        }
+
+        return amounts;
+    }
+
 
     private Void handleApiException(Throwable throwable) {
         showErrorDialog("API Error", "Failed to fetch data from the API.");
@@ -337,6 +317,7 @@ public class AddProjectAdminController {
         type_projetField.getSelectionModel().clearSelection();
         descriptionField.clear();
         addressField.clear();
+        fulladdress.clear();
     }
 
     public void setParentController(ProjetAdminController parentController) {
