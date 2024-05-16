@@ -10,15 +10,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import pidev.esprit.User.Entities.Role;
-import pidev.esprit.User.Entities.User;
-import pidev.esprit.User.Services.GestionUser;
+import pidev.esprit.Entities.Role;
+import pidev.esprit.Entities.User;
+import pidev.esprit.Services.GestionUser;
+import pidev.esprit.Tools.MyConnection;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.util.Properties;
 
 public class SignInController {
 
@@ -34,7 +31,9 @@ public class SignInController {
     public SignInController() {
         gestionUser = new GestionUser();
     }
-
+    private void setLoggedInUserId(int userId) {
+        MyConnection.getInstance().setLoggedInUserId(userId);
+    }
     @FXML
     void signIn(ActionEvent event) {
         String email = emailField.getText();
@@ -46,6 +45,7 @@ public class SignInController {
             // Check if the email and password match
             if (user.getEmail_user().equals(email) && user.getMdp().equals(password)) {
                 // Successful sign-in
+                setLoggedInUserId(user.getId_user()); // Set the user's ID
                 showAlert(Alert.AlertType.INFORMATION, "Connexion réussie", "Bienvenue!");
 
                 try {
@@ -53,7 +53,7 @@ public class SignInController {
                     if (user.getRole_user().equals(Role.ADMIN.getRole())) {
                         loader = new FXMLLoader(getClass().getResource("/DashboardAdmin.fxml"));
                     } else if (user.getRole_user().equals(Role.CLIENT.getRole())){
-                        loader = new FXMLLoader(getClass().getResource("/DashboardClient.fxml"));
+                        loader = new FXMLLoader(getClass().getResource("/MainWindow.fxml"));
                     }
                     else return;
 

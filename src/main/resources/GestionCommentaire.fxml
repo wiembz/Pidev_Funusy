@@ -8,10 +8,10 @@
    <children>
       <BorderPane fx:id="mainBorderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="background" stylesheets="@Stylesheet/Style.css" BorderPane.alignment="CENTER">
                <children>
-                  <Button layoutX="15.0" layoutY="94.0" mnemonicParsing="false" onAction="#handleCommentairesButtonClick" onMouseClicked="#handleCommentairesButtonClick" prefHeight="50.0" prefWidth="162.0" styleClass="my-button" stylesheets="@Stylesheet/Style.css" text="Comments" />
-                  <Button layoutX="21.0" layoutY="231.0" mnemonicParsing="false" onAction="#handleSignalButtonClick" prefHeight="48.0" prefWidth="158.0" stylesheets="@Stylesheet/Style.css" text="Signal" />
+                  <Button layoutX="14.0" layoutY="48.0" mnemonicParsing="false" onAction="#handleCommentairesButtonClick" onMouseClicked="#handleCommentairesButtonClick" prefHeight="50.0" prefWidth="182.0" styleClass="sidebar-button1" stylesheets="@Stylesheet/ADMIN.css" text="Comments" />
+                  <Button layoutX="9.0" layoutY="121.0" mnemonicParsing="false" onAction="#handleSignalButtonClick" prefHeight="48.0" prefWidth="181.0" styleClass="sidebar-button1" stylesheets="@Stylesheet/ADMIN.css" text="Signal" />
                </children>
             </AnchorPane>
          </left>

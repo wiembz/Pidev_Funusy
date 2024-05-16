@@ -1,29 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
+<?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="645.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.User.SignInController">
-    <children>
-        <StackPane layoutX="-3.0" layoutY="2.0" prefHeight="384.0" prefWidth="645.0" style="-fx-background-color: #673ab7;">
-            <children>
-                <VBox alignment="CENTER" spacing="10">
-                    <Label style="-fx-text-fill: #a69b13;" text="Connectez-vous" />
-                    <Label style="-fx-text-fill: #a69b13;" text="Email" />
-                    <TextField fx:id="emailField" prefHeight="25.0" prefWidth="200.0" />
-                    <Label style="-fx-text-fill: #a69b13;" text="Mot de passe" />
-                    <PasswordField fx:id="passwordField" prefHeight="25.0" prefWidth="200.0" />
-                    <Button mnemonicParsing="false" onAction="#signIn" style="-fx-background-color: #a69b13; -fx-text-fill: #673ab7;" text="Connexion" />
-                    <Hyperlink fx:id="forgotPasswordLink" text="Mot de passe oublié?" onAction="#forgotPassword" />
-                    <Hyperlink fx:id="signUpLink" text="Pas de compte? Inscrivez-vous" onAction="#goToSignUp"/>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-                </VBox>
-            </children>
-        </StackPane>
-    </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="774.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.User.SignInController">
+   <children>
+      <AnchorPane layoutY="-3.0" prefHeight="631.0" prefWidth="370.0" styleClass="body" stylesheets="@Stylesheet/ADMIN.css">
+         <children>
+            <ImageView fitHeight="52.0" fitWidth="207.0" layoutX="74.0" layoutY="383.0">
+               <image>
+                  <Image url="@Assets/1x/Asset%206.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="177.0" fitWidth="223.0" layoutX="66.0" layoutY="181.0">
+               <image>
+                  <Image url="@Assets/Asset.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <TextField fx:id="emailField" layoutX="520.0" layoutY="272.0" prefHeight="39.0" prefWidth="200.0" promptText="example@gmail.com">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font>
+      </TextField>
+      <PasswordField fx:id="passwordField" layoutX="520.0" layoutY="344.0" prefHeight="39.0" prefWidth="200.0" promptText="example1234">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font>
+      </PasswordField>
+      <Button layoutX="529.0" layoutY="437.0" mnemonicParsing="false" onAction="#signIn" style=": #673ab7;" text="Connexion">
+         <stylesheets>
+            <URL value="@Stylesheet/Style.css" />
+            <URL value="@Stylesheet/ADMIN.css" />
+         </stylesheets>
+         <styleClass>
+            <String fx:value="my-button1" />
+            <String fx:value="my-button2" />
+         </styleClass>
+      </Button>
+      <Hyperlink fx:id="forgotPasswordLink" blendMode="SRC_ATOP" layoutX="629.0" layoutY="503.0" onAction="#forgotPassword" prefHeight="25.0" prefWidth="121.0" text="Mot de passe oublié?" textFill="#6f7da6" />
+      <Hyperlink fx:id="signUpLink" layoutX="425.0" layoutY="504.0" onAction="#goToSignUp" text="Pas de compte? Inscrivez-vous" textFill="#6f7da6" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="496.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Assets/imageSignIn.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="39.0" fitWidth="31.0" layoutX="449.0" layoutY="272.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Assets/email_iconnn.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="39.0" fitWidth="31.0" layoutX="449.0" layoutY="348.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@Assets/paswword_icon.png" />
+         </image>
+      </ImageView>
+   </children>
 </AnchorPane>

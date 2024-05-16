@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="pidev.esprit.Controllers.Credit.GestionCreditController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@Stylesheet/ADMIN.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Credit.GestionCreditController">
+    <children>
+        <BorderPane fx:id="mainBorderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <left>
+                <AnchorPane fx:id="backgroundbtn" prefHeight="400.0" prefWidth="190.0" stylesheets="@Stylesheet/ADMIN.css" BorderPane.alignment="CENTER">
+                    <children>
+                        <Button fx:id="Creditbtn" alignment="CENTER" layoutX="6.0" layoutY="53.0" mnemonicParsing="false" onAction="#handleCreditsButtonClick" onMouseClicked="#handleCreditsButtonClick" prefHeight="48.0" prefWidth="177.0" styleClass="sidebar-button1" stylesheets="@Stylesheet/ADMIN.css" text="Credit" textFill="#e1a729" />
+                        <Button fx:id="estimbtn" alignment="CENTER" layoutX="5.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleEstimationButtonClick" prefHeight="48.0" prefWidth="184.0" styleClass="sidebar-button1" stylesheets="@Stylesheet/ADMIN.css" text="Simulation" textFill="#e1a729" />
+                    </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+                </AnchorPane>
+            </left>
+            <center>
+                <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                <AnchorPane onMouseClicked="#handleCreditsButtonClick" prefHeight="560.0" prefWidth="858.0" styleClass="background" stylesheets="@Stylesheet/Style.css" BorderPane.alignment="CENTER" />
+
+            </center>
+        </BorderPane>
+    </children>
 
 </AnchorPane>

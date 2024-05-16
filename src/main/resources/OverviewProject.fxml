@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="418.0" prefWidth="661.0" styleClass="anchor-pane" stylesheets="@Stylesheet/ADMIN.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Investissement.OverviewProjectController">
+
+     <TableView fx:id="projetTable" layoutX="19.2" layoutY="92.80000000000001" prefHeight="311.0" prefWidth="632.0" stylesheets="@Stylesheet/ADMIN.css" AnchorPane.bottomAnchor="17.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="90.0">
+         <columns>
+             <TableColumn fx:id="id_projetColumn" prefWidth="75.0" text="ID" />
+             <TableColumn fx:id="nom_projetColumn" prefWidth="150.0" text="Name" />
+             <TableColumn fx:id="montant_reqColumn" prefWidth="150.0" text="Required Amount" />
+             <TableColumn fx:id="descriptionColumn" prefWidth="223.0" text="Description" />
+             <TableColumn fx:id="investissementsColumn" prefWidth="192.0" text="Investissements" />
+         </columns>
+      <columnResizePolicy>
+         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+      </columnResizePolicy>
+     </TableView>
+   <Label layoutX="34.0" layoutY="21.0" prefHeight="48.0" prefWidth="309.0" styleClass="title" stylesheets="@Stylesheet/ADMIN.css" text="consult invested projects">
+      <font>
+         <Font size="11.0" />
+      </font>
+   </Label>
+</AnchorPane>

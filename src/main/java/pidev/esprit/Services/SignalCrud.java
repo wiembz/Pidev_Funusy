@@ -1,11 +1,9 @@
 package pidev.esprit.Services;
 
-import pidev.esprit.Entities.Projet;
-import pidev.esprit.Tools.MyConnection;
 import pidev.esprit.Entities.Signal;
+import pidev.esprit.Tools.MyConnection;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,27 +35,26 @@ public class SignalCrud implements ICrud<Signal> {
     }
 
 
-
     @Override
     public List<Signal> afficherEntite() {
-            List<Signal> signals = new ArrayList<>();
-            String req3 = "SELECT * FROM signale";
-            try {
-                Statement stm = cnx2.createStatement();
-                ResultSet rs = stm.executeQuery(req3);
-                while (rs.next()) {
-                   Signal signal = new Signal();
-                    signal.setId_signal(rs.getInt("id_signal"));
-                   signal.setId_commentaire(rs.getInt("id_commentaire"));
-                    signal.setDescription(rs.getString("description"));
-                    signal.setDate_signal(rs.getDate("date_signal").toLocalDate());
-                    signals.add(signal);
-                }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
+        List<Signal> signals = new ArrayList<>();
+        String req3 = "SELECT * FROM signale";
+        try {
+            Statement stm = cnx2.createStatement();
+            ResultSet rs = stm.executeQuery(req3);
+            while (rs.next()) {
+                Signal signal = new Signal();
+                signal.setId_signal(rs.getInt("id_signal"));
+                signal.setId_commentaire(rs.getInt("id_commentaire"));
+                signal.setDescription(rs.getString("description"));
+                signal.setDate_signal(rs.getDate("date_signal").toLocalDate());
+                signals.add(signal);
             }
-            return signals;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
+        return signals;
+    }
 
     @Override
     public boolean EntiteExists(Signal s) {

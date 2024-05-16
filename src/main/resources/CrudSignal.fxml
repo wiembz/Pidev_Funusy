@@ -17,9 +17,9 @@
                         <TableColumn fx:id="contentColumn" prefWidth="75.0" text="Content" />
                         <TableColumn fx:id="dateColumn" prefWidth="96.0" text="Date Comment" />
                     </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
                 </TableView>
                 <Button fx:id="signalButton" layoutX="522.0" layoutY="82.0" onAction="#Signaler" stylesheets="@Stylesheet/Style.css" text="Signal" />
             </children>

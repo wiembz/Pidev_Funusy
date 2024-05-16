@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane prefHeight="552.0" prefWidth="909.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Transaction.GestionTransactionAdmin">
+    <children>
+
+        <BorderPane fx:id="mainBorderPane" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+            <left>
+                <AnchorPane maxWidth="210.0" minHeight="150.0" minWidth="150.0" prefHeight="552.0" prefWidth="210.0" styleClass="body" stylesheets="@Stylesheet/ADMIN.css" BorderPane.alignment="CENTER">
+                    <children>
+                          <Button fx:id="load_Admin" alignment="BASELINE_LEFT" contentDisplay="TOP" layoutX="5.0" layoutY="38.0" mnemonicParsing="false" onAction="#load_Admin" prefHeight="82.0" prefWidth="191.0" stylesheets="@Stylesheet/ADMIN.css" text="     Transactions Details" textFill="WHITE">
+                     <styleClass>
+                        <String fx:value="button0" />
+                        <String fx:value="button1" />
+                     </styleClass>
+                  </Button>
+                    </children>
+                </AnchorPane>
+            </left>
+            <center>
+                <AnchorPane minWidth="400.0" prefHeight="200.0" prefWidth="438.0" BorderPane.alignment="CENTER" />
+            </center>
+        </BorderPane>
+    </children>
+</AnchorPane>

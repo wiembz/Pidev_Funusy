@@ -134,7 +134,7 @@ public class CrudCommentaire {
         Projet selectedProject = projetTableView.getSelectionModel().getSelectedItem();
 
         // Charger la liste des mots indésirables
-        List<String> badWords = BadWordsLoader.loadBadWords("C:\\Users\\ASUS\\Downloads\\validationmetier\\List.txt");
+        List<String> badWords = BadWordsLoader.loadBadWords("C:\\Users\\wiem\\OneDrive\\Bureau\\Funusyy\\Pidev_Funusy\\src\\main\\java\\pidev\\esprit\\API\\List.txt");
 
         // Check if comment content is empty
         if (commentContent.isEmpty()) {

@@ -23,22 +23,37 @@ public class GestionTransaction implements IGestionTransaction<Transaction> {
     @Override
     public void ajouter(Transaction T) throws SQLException {
         try {
-
             connection = MyConnection.getInstance().getCnx();
 
+            String sqlInsert = "INSERT INTO `transaction` (`id_transaction`, `rib`, `destination`, `montant_transaction`, `type_transaction`, `date_transaction`) VALUES (?, ?, ?, ?, ? ,?) ON DUPLICATE KEY UPDATE `date_transaction` = VALUES(`date_transaction`), `type_transaction` = VALUES(`type_transaction`), `montant_transaction` = VALUES(`montant_transaction`), `rib` = VALUES(`rib`);";
+            PreparedStatement statementInsert = connection.prepareStatement(sqlInsert);
 
-            String sql = "INSERT INTO transaction (`id_transaction`, `rib`, `destination`, `montant_transaction`, `type_transaction`, `date_transaction`) VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement statement = connection.prepareStatement(sql);
+            statementInsert.setInt(1, T.getId());
+            statementInsert.setString(2, T.getSource());
+            statementInsert.setString(3, T.getDestination());
+            statementInsert.setDouble(4, T.getMontant());
+            statementInsert.setString(5, "VIREMENT");
+            statementInsert.setDate(6, new Date(java.util.Calendar.getInstance().getTimeInMillis()));
 
-            statement.setInt(1, T.getId());
-            statement.setString(2, T.getSource());
-            statement.setString(3, T.getDestination());
-            statement.setDouble(4, T.getMontant());
-            statement.setString(5,"VIREMENT");
-            statement.setDate(6,new Date(java.util.Calendar.getInstance().getTimeInMillis()));
+            statementInsert.executeUpdate();
+            statementInsert.close();
 
-            statement.executeUpdate();
-            statement.close();
+            String sqlUpdate1 = "UPDATE `compte` SET `solde` = (`solde` + ?) WHERE `rib` = ?;";
+            PreparedStatement statementUpdate1 = connection.prepareStatement(sqlUpdate1);
+
+            statementUpdate1.setDouble(1, T.getMontant());
+            statementUpdate1.setString(2, T.getDestination());
+
+            statementUpdate1.executeUpdate();
+
+            statementUpdate1.close();String sqlUpdate2 = "UPDATE `compte` SET `solde` = (`solde` - ?) WHERE `rib` = ?;";
+            PreparedStatement statementUpdate2 = connection.prepareStatement(sqlUpdate2);
+
+            statementUpdate2.setDouble(1, T.getMontant());
+            statementUpdate2.setString(2, T.getSource());
+
+            statementUpdate2.executeUpdate();
+            statementUpdate2.close();
 
             System.out.println("Transaction insérée avec succès.");
         } catch (SQLException e) {

@@ -8,6 +8,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
 import pidev.esprit.Entities.Signal;
 import pidev.esprit.Services.SignalCrud;
+import pidev.esprit.Utils.Translator;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,66 +33,53 @@ public class SignalListController {
     private Button deleteButton;
 
     @FXML
+    private Button traduction_btn; // Ajout du bouton de traduction
+
+    @FXML
     public void initialize() {
-        // Set up cell value factories
         idSignalColumn.setCellValueFactory(new PropertyValueFactory<>("id_signal"));
         idCommentColumn.setCellValueFactory(new PropertyValueFactory<>("id_commentaire"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         dateSignalColumn.setCellValueFactory(new PropertyValueFactory<>("date_signal"));
 
-        // Enable tableview to start editing with a single click
         signalTableView.setEditable(true);
 
-        // Make idCommentColumn editable
         idCommentColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         idCommentColumn.setOnEditCommit(event -> {
-            // Get the edited value and update the corresponding Signal object
             Signal signal = event.getRowValue();
             signal.setId_commentaire(event.getNewValue());
 
-            // Update the Signal object in the database
             SignalCrud signalCrud = new SignalCrud();
             signalCrud.updateEntite(signal);
 
-            // Show a success message
             showAlert("Success", "Comment ID updated successfully!");
         });
 
-        // Make DescriptionColumn editable
         descriptionColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         descriptionColumn.setOnEditCommit(event -> {
-            // Get the edited value and update the corresponding Signal object
             Signal signal = event.getRowValue();
             signal.setDescription(event.getNewValue());
 
-            // Update the Signal object in the database
             SignalCrud signalCrud = new SignalCrud();
             signalCrud.updateEntite(signal);
 
-            // Show a success message
             showAlert("Success", "Description updated successfully!");
         });
     }
 
     public void setSignals(List<Signal> signals) {
-        // Clear existing items in the table view
         signalTableView.getItems().clear();
-
-        // Add new Signals to the table view
         signalTableView.getItems().addAll(signals);
     }
 
     @FXML
     public void deleteSignal(ActionEvent event) {
-        // Get the selected signal from the table view
         Signal selectedSignal = signalTableView.getSelectionModel().getSelectedItem();
         if (selectedSignal == null) {
-            // If no signal is selected, show an error dialog
             showErrorDialog("No Selection", "Please select a Signal to delete.");
             return;
         }
 
-        // Show a confirmation dialog before deleting the Signal
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText("Delete Record");
@@ -99,16 +87,35 @@ public class SignalListController {
 
         confirmationAlert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
-                // User confirmed the deletion
                 int idToDelete = selectedSignal.getId_signal();
-                SignalCrud signalCrud = new SignalCrud(); // Create an instance of SignalCrud
-                signalCrud.deleteEntite(idToDelete); // Call deleteEntite on the instance
-                // Remove the deleted Signal from the table view
+                SignalCrud signalCrud = new SignalCrud();
+                signalCrud.deleteEntite(idToDelete);
                 signalTableView.getItems().remove(selectedSignal);
-                // Show a success message
                 showAlert("Success", "Signal deleted successfully!");
             }
         });
+    }
+
+    // Nouvelle méthode pour traduire le signal
+    @FXML
+    public void translateSignal(ActionEvent event) {
+        Signal selectedSignal = signalTableView.getSelectionModel().getSelectedItem();
+        if (selectedSignal == null) {
+            showErrorDialog("No Selection", "Please select a Signal to translate.");
+            return;
+        }
+
+        try {
+            String frenchDescription = selectedSignal.getDescription();
+            String translatedDescription = Translator.translate("fr", "en", frenchDescription);
+
+            selectedSignal.setDescription(translatedDescription);
+
+            signalTableView.refresh();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showErrorDialog("Translation Error", "An error occurred while translating the description.");
+        }
     }
 
     private void showAlert(String title, String content) {

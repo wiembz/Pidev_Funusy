@@ -1,10 +1,9 @@
 package pidev.esprit.Controllers.User;
-import pidev.esprit.User.Entities.Role;
-import pidev.esprit.User.Entities.User;
+import pidev.esprit.Entities.Role;
+import pidev.esprit.Entities.User;
 
 import java.time.LocalDate;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -8,11 +8,12 @@ import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import pidev.esprit.User.Entities.User;
-import pidev.esprit.User.Services.GestionUser;
-import pidev.esprit.User.Entities.Role;
-import pidev.esprit.User.Entities.AdresseUser;
+import pidev.esprit.Entities.User;
+import pidev.esprit.Services.GestionUser;
+import pidev.esprit.Entities.Role;
+import pidev.esprit.Entities.AdresseUser;
 
 import java.io.IOException;
 
@@ -51,6 +52,7 @@ public class DashboardClientController {
 
     @FXML
     private ChoiceBox<AdresseUser> adresseChoiceBox;
+
     @FXML
     void initialize() {
         adresseChoiceBox.setItems(FXCollections.observableArrayList(AdresseUser.values()));
@@ -110,6 +112,18 @@ public class DashboardClientController {
 
     }
 
+
+
+    public void handleCreditsButtonClick(ActionEvent event) {
+    }
+
+
+    public void handleCommentairesButtonClick(ActionEvent event) {
+    }
+
+    public void handleProfilesButtonClick(ActionEvent event) {
+    }
+
     public void handleTransactionsButtonClick(ActionEvent event) {
         try {
             Parent GestionTransaction = FXMLLoader. load(getClass().getResource("/GestionTransaction.fxml"));
@@ -117,18 +131,6 @@ public class DashboardClientController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public void handleCreditsButtonClick(ActionEvent event) {
-    }
-
-    public void handleInvestmentsButtonClick(ActionEvent event) {
-    }
-
-    public void handleCommentairesButtonClick(ActionEvent event) {
-    }
-
-    public void handleProfilesButtonClick(ActionEvent event) {
     }
 
     // Handle other button actions if needed

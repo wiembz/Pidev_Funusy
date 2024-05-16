@@ -9,20 +9,23 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@Stylesheet/Style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Transaction.AddAgenceController">
    <children>
-      <TableView fx:id="table_agence" layoutX="14.0" layoutY="116.0" prefHeight="270.0" prefWidth="555.0">
+      <TableView fx:id="table_agence" layoutX="33.0" layoutY="153.0" prefHeight="230.0" prefWidth="534.0" stylesheets="@Stylesheet/ADMIN.css" AnchorPane.bottomAnchor="16.599999999999994" AnchorPane.leftAnchor="32.80000000000007" AnchorPane.rightAnchor="32.60000000000002" AnchorPane.topAnchor="152.79999999999998">
         <columns>
           <TableColumn fx:id="codeColumn" prefWidth="125.59994506835938" text="Code" />
           <TableColumn fx:id="adressColumn" prefWidth="124.79998779296875" text="Adresse" />
             <TableColumn fx:id="PostalColumn" minWidth="0.0" prefWidth="124.79998779296875" text="Postal" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
-      <TextField fx:id="tf_code_postal" layoutX="165.0" layoutY="82.0" promptText="2541" />
+      <TextField fx:id="tf_code_postal" layoutX="165.0" layoutY="95.0" promptText="2541" />
       <TextField fx:id="tf_adresse" layoutX="165.0" layoutY="49.0" promptText="Ariana,Technopole..." />
-      <TextField fx:id="tf_code_agence" layoutX="165.0" layoutY="14.0" promptText="51428" />
-      <Label layoutX="65.0" layoutY="18.0" text="Code Agence" />
-      <Label layoutX="80.0" layoutY="53.0" text="Adresse" />
-      <Label layoutX="69.0" layoutY="86.0" text="Code Postal" />
-      <Button fx:id="ajouter_agence" layoutX="375.0" layoutY="22.0" mnemonicParsing="false" onAction="#ajouter_agence" text="Ajouter Agence" />
-      <Button fx:id="delete_agence" layoutX="365.0" layoutY="74.0" mnemonicParsing="false" onAction="#delete_agence" text="Supprimer Agence" />
+      <TextField fx:id="tf_code_agence" layoutX="165.0" layoutY="4.0" promptText="51428" />
+      <Label layoutX="39.0" layoutY="14.0" styleClass="label1" stylesheets="@Stylesheet/ADMIN.css" text="Code Agence" />
+      <Label layoutX="44.0" layoutY="54.0" styleClass="label1" stylesheets="@Stylesheet/ADMIN.css" text="Adresse" />
+      <Label layoutX="44.0" layoutY="97.0" styleClass="label1" stylesheets="@Stylesheet/ADMIN.css" text="Code Postal" />
+      <Button fx:id="ajouter_agence" layoutX="426.0" layoutY="33.0" mnemonicParsing="false" onAction="#ajouter_agence" styleClass="button0" stylesheets="@Stylesheet/ADMIN.css" text="Ajouter Agence" AnchorPane.rightAnchor="45.19999999999999" />
+      <Button fx:id="delete_agence" layoutX="423.0" layoutY="87.0" mnemonicParsing="false" onAction="#delete_agence" styleClass="button1" stylesheets="@Stylesheet/ADMIN.css" text="Supprimer Agence" AnchorPane.rightAnchor="41.80000000000001" />
    </children>
 </AnchorPane>

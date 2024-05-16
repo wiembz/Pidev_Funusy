@@ -1,12 +1,15 @@
 package pidev.esprit.Services;
 
+import java.sql.Date;
 import java.util.List;
 
-public interface ICrud <T>{
-    public void ajouterEntite(T c);
+public interface ICrud<T> {
+    public void ajouterEntite(T i);
+    public boolean EntiteExists(T i);
     public List<T> afficherEntite();
 
-    public boolean EntiteExists(T c);
-    public void updateEntite(T c);
+    public void updateEntite(T i);
+
     public void deleteEntite(int id);
+
 }

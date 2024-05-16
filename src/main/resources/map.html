@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+    <style type="text/css">
+        html, body { height: 100%; margin: 0; padding: 0; }
+        #map-container { position: relative; height: 100%; }
+        #map { height: calc(100% - 40px); z-index: 1; }
+        #search-container { position: absolute; bottom: 0; left: 0; width: 100%; height: 40px; background-color: #fff; padding: 5px; box-sizing: border-box; z-index: 2; }
+        #search { width: calc(100% - 100px); height: 20px; padding: 5px; border-radius: 3px; border: 1px solid #ccc; float: left; }
+        #search-btn { width: 80px; height: 30px; border-radius: 5px; border: none; background-color: #007bff; color: #fff; cursor: pointer; float: right; }
+    </style>
+    <!-- Include the Leaflet library -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script type="text/javascript">
+        let map;
+        let marker;
+
+        function initialize() {
+            var latlng = L.latLng(36.806496, 10.181532);
+            map = L.map('map').setView(latlng, 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            map.on('click', function(event) {
+                // Clear previous marker, if any
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+                // Create a new marker at the clicked position
+                marker = L.marker(event.latlng).addTo(map);
+                // Set the location in JavaFX controller
+                javaApp.setLocation(event.latlng.lat + "," + event.latlng.lng);
+            });
+
+            // Search functionality
+            var searchField = document.getElementById('search');
+            var searchBtn = document.getElementById('search-btn');
+            searchBtn.addEventListener('click', function(event) {
+                searchLocation(searchField.value);
+            });
+        }
+
+        function searchLocation(query) {
+            fetch('https://nominatim.openstreetmap.org/search?q=' + query + '&format=json')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        var latlng = L.latLng(data[0].lat, data[0].lon);
+                        map.setView(latlng, 14);
+                        // Set the location in JavaFX controller
+                        javaApp.setLocation(data[0].lat + "," + data[0].lon);
+                    } else {
+                        alert('Location not found');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching search results:', error);
+                    alert('Error fetching search results');
+                });
+        }
+
+        // Call initialize function when window is loaded
+        window.onload = initialize;
+    </script>
+</head>
+<body>
+<div id="map-container">
+    <div id="map"></div>
+    <div id="search-container">
+        <input type="text" id="search" placeholder="Search location...">
+        <button id="search-btn">Search</button>
+    </div>
+</div>
+</body>
+</html>

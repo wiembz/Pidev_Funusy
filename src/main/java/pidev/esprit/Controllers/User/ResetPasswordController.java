@@ -4,14 +4,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.w3c.dom.Node;
-import pidev.esprit.User.Entities.User;
-import pidev.esprit.User.Services.GestionUser;
+import pidev.esprit.Entities.User;
+import pidev.esprit.Services.GestionUser;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 public class ResetPasswordController {

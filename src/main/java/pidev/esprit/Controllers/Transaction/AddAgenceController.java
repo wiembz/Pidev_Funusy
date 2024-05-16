@@ -13,6 +13,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import pidev.esprit.Entities.Agence;
 import pidev.esprit.Entities.Transaction;
 import pidev.esprit.Services.GestionAgence;
@@ -109,9 +111,54 @@ public class AddAgenceController {
         gestionAgence.supprimer(Integer.valueOf(tf_code_agence.getText()) );
         populateTransactionsTable();
     }
+    public static void generateCode(TextField textField1, TextField textField2, TextField outputTextField) {
+        String text1 = textField1.getText().toUpperCase();
+        String text2 = textField2.getText().toUpperCase();
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < 5; i++) {
+            if (i < text1.length()) {
+                sb.append(text1.charAt(i));
+            } else if (i < text1.length() + text2.length()) {
+                sb.append(text2.charAt(i - text1.length()));
+            } else {
+                sb.append('X'); // fill remaining characters with 'X'
+            }
+        }
+
+        // Keep only digits in output string
+        StringBuilder output = new StringBuilder();
+        for (int i = 0; i < sb.length(); i++) {
+            if (Character.isDigit(sb.charAt(i))) {
+                output.append(sb.charAt(i));
+            }
+        }
+
+        outputTextField.setText(output.toString());
+    }
+
     @FXML
     void initialize() {
+        tf_code_postal.addEventFilter(KeyEvent.KEY_TYPED, event -> {
 
+            if (!event.getCharacter().matches("\\d")) {
+
+                event.consume();
+
+            }
+
+
+            if (tf_code_postal.getText().length() == 4) {
+
+                event.consume();
+
+            }
+
+        });
+
+        tf_adresse.textProperty().addListener((observable, oldValue, newValue) -> generateCode(tf_code_postal, tf_adresse, tf_code_agence));
+        tf_code_postal.textProperty().addListener((observable, oldValue, newValue) -> generateCode(tf_code_postal, tf_adresse, tf_code_agence));
         populateTransactionsTable();
     }
 

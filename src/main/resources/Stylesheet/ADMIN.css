@@ -82,7 +82,7 @@
     -fx-font-weight: bold;
     -fx-cursor: hand; /* Cursor on hover */
     -fx-border-radius: 9px;
-    -fx-border-color: rgba(128, 92, 92, 0.38); /* Bottom border color on hover */
+     -fx-border-color: rgba(128, 92, 92, 0.38); /* Bottom border color on hover */
     -fx-background-radius: 10px;
 }
 
@@ -148,7 +148,7 @@
 }
 .table-view .column-header-background{
     -fx-background-color: rgba(89, 88, 88, 0.47);
-    -fx-background-radius:12;
+ -fx-background-radius:12;
     -fx-background-insets: 0 0 0 0;
 
     -fx-font-weight: regular; /* Set header font weight to bold */

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="227.0" prefWidth="391.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Account.CardsController">
+    <Rectangle arcHeight="15.0" arcWidth="15.0" fill="linear-gradient(to right, #777B8E, #8086A5)" height="167.0" layoutX="386.0" layoutY="31.0" width="303.0" />
+
+    <ImageView fitHeight="39.0" fitWidth="109.0" layoutX="395.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@Assets/1.png" />
+    </ImageView>
+    <TextField fx:id="cardholderNameField" layoutX="417.0" layoutY="153.0" prefHeight="26.0" prefWidth="219.0" style="-fx-background-color: transparent; -fx-text-fill: #FFFFFF;">
+        <font>
+            <Font name="Wingdings" size="15.0" />
+        </font></TextField>
+    <TextField fx:id="cardNumberField" layoutX="401.0" layoutY="74.0" prefHeight="46.0" prefWidth="274.0" style="-fx-background-color: transparent; -fx-text-fill: #FFFFFF;">
+        <font>
+            <Font name="OCR A Extended" size="25.0" />
+        </font></TextField>
+    <TextField fx:id="expiryDateField" layoutX="567.0" layoutY="131.0" prefHeight="26.0" prefWidth="60.0" style="-fx-background-color: transparent; -fx-text-fill: #333333;" />
+    <ImageView fitHeight="64.0" fitWidth="60.0" layoutX="630.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@Assets/visa.png" />
+    </ImageView>
+    <ImageView fitHeight="33.0" fitWidth="30.0" layoutX="387.0" layoutY="164.0" pickOnBounds="true" preserveRatio="true">
+        <Image url="@Assets/triangle.png" />
+    </ImageView>
+    <Label layoutX="529.0" layoutY="126.0" prefHeight="18.0" prefWidth="38.0" text="Expire" textFill="#4b4848">
+        <font>
+            <Font name="OCR A Extended" size="10.0" />
+        </font></Label>
+    <Label layoutX="529.0" layoutY="140.0" prefHeight="18.0" prefWidth="38.0" text="Date" textFill="#4b4848">
+        <font>
+            <Font name="OCR A Extended" size="10.0" />
+        </font></Label>
+    <Label layoutX="398.0" layoutY="180.0" text="ELECTRONIC USE ONLY" textFill="#4b4747">
+        <font>
+            <Font name="System Italic" size="9.0" />
+        </font>
+    </Label>
+</AnchorPane>

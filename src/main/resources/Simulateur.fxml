@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pidev.esprit.Controllers.Credit.SimulationController">
+   <!-- Titre -->
+   <Label alignment="CENTER" style="-fx-font-size: 18pt; -fx-font-weight: bold" text="CREDIT SIMULATOR" />
+
+   <!-- Labels et champs de saisie -->
+   <Label text="Amount (DT):" />
+   <TextField fx:id="textFieldMontant" />
+
+   <Label text="Duration (Month):" />
+   <TextField fx:id="textFieldDuree" />
+
+   <Label text="InterestRate (%):" />
+   <TextField fx:id="textFieldTaux" />
+
+   <!-- Bouton pour valider -->
+   <Button fx:id="buttonValider" onAction="#ClickValider" text="Valider" />
+
+   <!-- TableView pour afficher les données -->
+   <TableView fx:id="tableView" prefHeight="400.0" prefWidth="565.0">
+      <columns>
+         <TableColumn fx:id="numero" prefWidth="49.60000765323639" text="N°" />
+         <TableColumn fx:id="echeance" prefWidth="104.00005340576172" text="ÉCHÉANCE" />
+         <TableColumn fx:id="principal" prefWidth="98.4000244140625" text="PRINCIPAL" />
+         <TableColumn fx:id="valeurResiduelle" prefWidth="92.0" text="VAL.RÉS." />
+         <TableColumn fx:id="interets" prefWidth="104.7999267578125" text="INTÉRÊTS" />
+         <TableColumn fx:id="mensualite" prefWidth="112.80001831054688" text="MENSUALITÉ" />
+      </columns>
+   </TableView>
+
+   <!-- Bouton pour générer le PDF -->
+   <Button fx:id="buttonGenererPDF" onAction="#handleGenererPDFButtonClicked" text="Générer PDF" />
+
+</VBox>

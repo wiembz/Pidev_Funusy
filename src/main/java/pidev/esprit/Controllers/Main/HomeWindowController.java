@@ -3,9 +3,13 @@ package pidev.esprit.Controllers.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
+import pidev.esprit.Controllers.Investissement.GestionInvestissementController;
+import pidev.esprit.Tools.MyConnection;
 
 import java.io.IOException;
 
@@ -15,6 +19,7 @@ public class HomeWindowController {
     private BorderPane mainBorderPane;
     @FXML
     private AnchorPane contentPlaceholder;
+    private Button selectedButton;
 
     @FXML
     private void loadUser() {
@@ -56,29 +61,48 @@ public class HomeWindowController {
         }
     }
 
-    public void handleAccountsButtonClick(ActionEvent actionEvent) {
-        try {
-            Parent GestionAccount = FXMLLoader.load(getClass().getResource("/GestionAccount.fxml"));
-            mainBorderPane.setCenter(GestionAccount);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
     public void handleInvestmentsButtonClick(ActionEvent actionEvent) {
+        int userId = MyConnection.getInstance().getLoggedInUserId(); // Get the user's ID
+
         try {
-            Parent gestionInvestissement = FXMLLoader.load(getClass().getResource("/GestionInvestissement.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionInvestissement.fxml"));
+            Parent gestionInvestissement = loader.load();
+            GestionInvestissementController controller = loader.getController();
+            controller.setUserId(userId); // Pass the user's ID
             mainBorderPane.setCenter(gestionInvestissement);
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load Investments page.");
         }
+        updateButtonStyle((Button) actionEvent.getSource());
     }
-    public void handleTransactionsButtonClick(ActionEvent mouseEvent) {
+
+    private void showAlert(Alert.AlertType alertType, String title, String content) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void updateButtonStyle(Button clickedButton) {
+        if (selectedButton != null) {
+            selectedButton.getStyleClass().remove("clicked");
+        }
+        clickedButton.getStyleClass().add("clicked");
+        selectedButton = clickedButton;
+    }
+
+    public void handleTransactionsButtonClick(ActionEvent actionEvent) {
         try {
             Parent GestionTransaction = FXMLLoader. load(getClass().getResource("/GestionTransaction.fxml"));
             mainBorderPane.setCenter(GestionTransaction);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        updateButtonStyle((Button) actionEvent.getSource());
+
     }
     public void handleCreditsButtonClick(ActionEvent mouseEvent) {
         try {
@@ -87,6 +111,8 @@ public class HomeWindowController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        updateButtonStyle((Button) mouseEvent.getSource());
+
     }
     public void handleCommentairesButtonClick(ActionEvent actionEvent) {
         try {
@@ -95,14 +121,28 @@ public class HomeWindowController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        updateButtonStyle((Button) actionEvent.getSource());
+
     }
 
     public void handleProfilesButtonClick(ActionEvent actionEvent) {
         try {
-            Parent gestionProfile = FXMLLoader.load(getClass().getResource("/Overview.fxml"));
+            Parent gestionProfile = FXMLLoader.load(getClass().getResource("/Profile.fxml"));
             mainBorderPane.setCenter(gestionProfile);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        updateButtonStyle((Button) actionEvent.getSource());
+
+    }
+
+    public void overviewButton(ActionEvent actionEvent) {
+        try {
+            Parent overview = FXMLLoader.load(getClass().getResource("/Overview.fxml"));
+            mainBorderPane.setCenter(overview);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        updateButtonStyle((Button) actionEvent.getSource());
     }
 }

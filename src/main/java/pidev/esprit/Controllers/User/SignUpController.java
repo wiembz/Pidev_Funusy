@@ -8,14 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import pidev.esprit.User.Entities.User;
-import pidev.esprit.User.Services.GestionUser;
+import pidev.esprit.Entities.User;
+import pidev.esprit.Services.GestionUser;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 
 public class SignUpController {
 

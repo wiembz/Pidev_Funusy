@@ -57,13 +57,13 @@ public class GestionTransactionController {
 
     }
 
-    @FXML
-    void load_Admin(javafx.event.ActionEvent actionEvent) {
-        try {
-            Parent GestionAgence = FXMLLoader.load(getClass().getResource("/GestionAgenceAdmin.fxml"));
-            mainBorderPane.setCenter(GestionAgence);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    @FXML
+//    void load_Admin(javafx.event.ActionEvent actionEvent) {
+//        try {
+//            Parent GestionAgence = FXMLLoader.load(getClass().getResource("/GestionAgenceAdmin.fxml"));
+//            mainBorderPane.setCenter(GestionAgence);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

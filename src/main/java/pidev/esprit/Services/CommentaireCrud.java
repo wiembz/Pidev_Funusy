@@ -57,7 +57,7 @@ public class CommentaireCrud implements ICrud<Commentaire>  {
 
     @Override
     public boolean EntiteExists(Commentaire c) {
-return true;
+        return true;
     }
 
     @Override
@@ -96,5 +96,24 @@ return true;
         }
 
     }
-
+    public List<Commentaire> getCommentsForProjet(int projetId) {
+        List<Commentaire> comments = new ArrayList<>();
+        String query = "SELECT * FROM commentaire WHERE id_projet = ?";
+        try {
+            PreparedStatement statement = cnx2.prepareStatement(query);
+            statement.setInt(1, projetId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Commentaire commentaire = new Commentaire();
+                commentaire.setId_commentaire(resultSet.getInt("id_commentaire"));
+                commentaire.setId_projet(resultSet.getInt("id_projet"));
+                commentaire.setContenue(resultSet.getString("contenue"));
+                commentaire.setDate_commentaire(resultSet.getDate("date_commentaire").toLocalDate());
+                comments.add(commentaire);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return comments;
+    }
 }
